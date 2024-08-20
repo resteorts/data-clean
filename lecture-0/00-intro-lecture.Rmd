@@ -21,9 +21,9 @@ Prof. Rebecca Steorts (resteorts.github.io)
 \vspace*{1em}
 
 \begin{itemize}
-\item Class: Tues/Th, 11:45 - 1:00 PM EDT (Old Chemistry 116)
-\item OH: Tues/Th, 1:00 - 2:00 PM EDT (Old Chemistry 216)
-\item Zoom ID: XXXXX
+\item Class: Wed/Fri, 11:45 - 1:00 PM EDT (Old Chemistry 116)
+\item OH: Wed/Fri, 1:00 - 2:00 PM EDT (Old Chemistry 216)
+\item Zoom ID: 953 6920 5290
 \item Course webpage: https://resteorts.github.io/teach/data-clean.html
 \end{itemize}
 
@@ -51,7 +51,7 @@ Where to find information
 - Course website (all major course information here): [https://resteorts.github.io/teach/data-clean.html](https://resteorts.github.io/teach/data-clean.html)
 
 
-- Course syllabus [https://github.com/resteorts/modern-bayes/blob/master/syllabus/syllabus-sta602-spring-23.pdf](https://github.com/resteorts/modern-bayes/blob/master/syllabus/syllabus-sta325-fall24.pdf)
+- Course syllabus [https://github.com/resteorts/data-clean/blob/main/syllabus/syllabus-sta325-fall24.pdf](https://github.com/resteorts/data-clean/blob/main/syllabus/syllabus-sta325-fall24.pdf)
 
 
 Where to find information
@@ -162,7 +162,7 @@ Remark: Canvas is for reproducible code. Gradescope is to make grading easier fo
 Why Canvas + Gradescope?
 ===
 
-1. Sakai will be used for reproducibility so this can be checked. This will account for part of your grade each assignment. 
+1. Canvas will be used for reproducibility so this can be checked. This will account for part of your grade each assignment. 
 
 2. Gradescope will be used to:
 
@@ -264,7 +264,7 @@ Technology/Other
 - Ensure the volume on all devices is set to mute.
 - Refrain from engaging in activities not related to the class discussion. Browsing the web and social media, excessive messaging, playing games, etc. is not only a distraction for you but is also a distraction for everyone around you.
 - If you have a question, I don't mind if you interrupt me during class. 
-- If you find a **typo in the slides**, please write these down and post these privately to the instructors on Piazza so they can be fixed. 
+- If you find a **typo in the slides**, please write these down and post these privately to the instructors on Canvas so they can be fixed. 
 
 Accessibility
 ===
