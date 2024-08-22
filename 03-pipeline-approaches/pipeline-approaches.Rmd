@@ -25,11 +25,6 @@ Agenda
 - Exact Matching 
 - Scoring Functions
 
-Reminders/check in
-===
-
-- Homework 0 is due today at 5 PM EDT. 
-- Homework 1 is ready for your to start! 
 
 Recap of Pipeline Approach
 ===
