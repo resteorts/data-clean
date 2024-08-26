@@ -10,10 +10,6 @@ font-size: 8px
 ---
 
 
-
-
-
-
 Instructor
 ===
 
@@ -43,8 +39,6 @@ Teaching Assistants
 
 
 
-
-
 Where to find information
 ===
 
@@ -64,6 +58,10 @@ Where to find information
 
 - Duke Gradescope (upload homeworks): This should be directly accessible through Canvas.
 
+Course resources
+===
+
+- Introduction to data cleaning: [https://arxiv.org/pdf/2008.04443](https://arxiv.org/pdf/2008.04443)
 
  
 
@@ -99,7 +97,33 @@ Course Objectives
 - Provide a basic understanding of data cleaning methods and algorithms
 - Learn to effectively communicate methods/algorithms/results through written assignments and exams 
 
+Machine learning versus statistics
+===
 
+Statisticians often focus on:
+
+- uncertainty quantification
+- theoretical performance or proofs
+- extending models that are well established
+- applications to well known fields
+
+Machine learners focus on:
+
+- algorithms and computational improvements
+- empirical performance on many data sets
+- applications in tech and industry
+- novelty methods or algorithsm 
+
+
+What is the focus of this course?
+===
+
+- Modern data cleaning and machine learning methods.
+- Such methods include data cleaning, data pipelines, entity resolution, record linkage,
+and thinking about problems in ways you may have not thought about before. 
+- We will not focus on classical ML methods, such as linear regression, logistic regression, bagging, boosting. 
+- Classical ML methods are taught in many courses at Duke, so take a different course if you want to learn these skills or read about them on your own. 
+- Again, do not expect to learn about classical ML models or you will be disappointed! 
 
 Missed class/review material?
 ===
