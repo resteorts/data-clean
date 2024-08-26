@@ -67,6 +67,11 @@ Course resources
 - (Almost) all of entity resolution: [https://arxiv.org/pdf/2008.04443](https://arxiv.org/pdf/2008.04443)
 \vspace*{1em}
 - Four Generations of Entity Resolution [https://link.springer.com/book/10.1007/978-3-031-01878-7](https://link.springer.com/book/10.1007/978-3-031-01878-7)
+\vspace*{1em}
+- An Introduction to Statistical Learning
+[https://www.statlearning.com/](https://www.statlearning.com/)
+
+Please do read the first two articles above within a week and be prepared to discuss them. 
 
  
 
@@ -141,7 +146,19 @@ The scope of this course
 \item Read core data cleaning papers and discuss them
 \item Be able to implement some data cleaning methods in R
 \item Be able to write about and discuss data cleaning methods
+\item Understand when certain methods are appropriate and when to utilize them over alternatives. 
 \end{itemize}
+
+Is it possible for one method to always dominate
+===
+
+- No method dominates all others, across all problems.
+- For any two methods, each one will perform better on some problems, comparatively. 
+- For evidence, refer to Wolpert (1996) as the ``no free lunch problem."
+- However, some methods to often perform better than others on certain types of 
+application areas or data sets. 
+- In summary, we cannot just apply black box methods to application areas or data sets. In fact, they may not be appropriate! 
+
 
 Missed class/review material?
 ===
