@@ -327,7 +327,7 @@ Where to find help
 
 - **Office Hours**: A lot of questions are most effectively answered in office hours, so please take advantage of these.
 
-- Canvas: Outside of class and office hours, any general questions about course content or assignments should be posted on the forum since there are likely other students with the same questions. **Please be careful not to give away the answers to homework questions and please keep it polite/friendly on the forum.**
+- Piazza: Outside of class and office hours, any general questions about course content or assignments should be posted on the forum since there are likely other students with the same questions. **Please be careful not to give away the answers to homework questions and please keep it polite/friendly on the forum.**
 
 Academic Resource Center
 ===
