@@ -61,7 +61,12 @@ Where to find information
 Course resources
 ===
 
-- Introduction to data cleaning: [https://arxiv.org/pdf/2008.04443](https://arxiv.org/pdf/2008.04443)
+- Data Cleaning Pipeline: [https://github.com/resteorts/data-clean/blob/main/articles/steorts-article-final-accepted.pdf](https://github.com/resteorts/data-clean/blob/main/articles/steorts-article-final-accepted.pdf)
+
+\vspace*{1em}
+- (Almost) all of entity resolution: [https://arxiv.org/pdf/2008.04443](https://arxiv.org/pdf/2008.04443)
+\vspace*{1em}
+- Four Generations of Entity Resolution [https://link.springer.com/book/10.1007/978-3-031-01878-7](https://link.springer.com/book/10.1007/978-3-031-01878-7)
 
  
 
@@ -112,7 +117,7 @@ Machine learners focus on:
 - algorithms and computational improvements
 - empirical performance on many data sets
 - applications in tech and industry
-- novelty methods or algorithsm 
+- novelty methods or algorithms 
 
 
 What is the focus of this course?
@@ -124,6 +129,19 @@ and thinking about problems in ways you may have not thought about before.
 - We will not focus on classical ML methods, such as linear regression, logistic regression, bagging, boosting. 
 - Classical ML methods are taught in many courses at Duke, so take a different course if you want to learn these skills or read about them on your own. 
 - Again, do not expect to learn about classical ML models or you will be disappointed! 
+
+The scope of this course
+===
+
+\begin{itemize}
+\item Cover important data cleaning methods
+\begin{itemize}
+\item Examples include deterministic and probablistic methods. Others include supervised and unsupervised methods. 
+\end{itemize}
+\item Read core data cleaning papers and discuss them
+\item Be able to implement some data cleaning methods in R
+\item Be able to write about and discuss data cleaning methods
+\end{itemize}
 
 Missed class/review material?
 ===
