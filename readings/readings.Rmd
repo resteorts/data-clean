@@ -10,12 +10,15 @@ urlcolor: blue
 
 Below, you will find a reading list of entity resolution papers. 
 
-## Introductory Tutorials and Books
+## Introductory Tutorials, Books, and Articles
 
 Tutorials and Books on Entity Resolution: 
 
 + Some of Entity Resolution Tutorial (https://github.com/cleanzr/record-linkage-tutorial), Steorts et al (2020). 
 + Data Matching - Concepts and Techniques for Record Linkage, Entity Resolution, and Duplicate Detection, Christen (2012).
++ Four Generations of Entity Resolution, Papadakis et al. (2021). (https://link.springer.com/book/10.1007/978-3-031-01878-7)
++ Almost All of Entity Resolution, [https://arxiv.org/pdf/2008.04443](https://arxiv.org/pdf/2008.04443), Binette and Steorts (2022). 
++ Data Cleaning Pipeline: [https://github.com/resteorts/data-clean/blob/main/articles/steorts-article-final-accepted.pdf](https://github.com/resteorts/data-clean/blob/main/articles/steorts-article-final-accepted.pdf), Steorts (2023).
 
 ## Seminal Papers and Extensions
 
@@ -79,6 +82,8 @@ Review papers on Record linkage:
 + Sadinle (2016): https://arxiv.org/abs/1601.06630
 + Sadinle (2018): https://arxiv.org/abs/1812.09590
 + McVeigh et al. (2020): https://arxiv.org/abs/1905.05337
++ Aleshin-Guendel et al. (2022)
++ Kundinger, Reiter, and Steorts (2023)
 
 ## Bayesian Graphical Entity Resolution papers 
 
@@ -87,6 +92,8 @@ Review papers on Record linkage:
 + Steorts, Hall, Fienberg (2016): https://arxiv.org/abs/1312.4645
 + Steorts (2015): https://arxiv.org/abs/1409.0643
 + Marchant, Steorts, Kaplan, Rubinstein, and Elzar (2020): https://arxiv.org/abs/1909.06039
++ Marchant et al. (2022)
++ Marchant et al. (2023)
 
 ## Microclustering papers
 
@@ -110,7 +117,7 @@ Review papers on Record linkage:
 + Dalzell and Reiter (2018): https://www.tandfonline.com/doi/abs/10.1080/10618600.2018.1458624
 + Steorts, Tancredi, Liseo (2018): https://arxiv.org/abs/1810.04808
 + Tanredi, Steorts, Liseo (2020): https://projecteuclid.org/euclid.ba/1551949260
-+ Tang, Reiter, Steorts (2020): In preparation. 
++ Tang, Reiter, Steorts (2020)
 
 ## Canonicalization (Data fusion papers)
 
@@ -118,7 +125,7 @@ Review papers on Record linkage:
 + Bleiholder and Naumann (2009): https://dl.acm.org/doi/pdf/10.1145/1456650.1456651
 + Cohen and Sagiv (2005): https://dl.acm.org/doi/pdf/10.1145/1099554.1099674
 + Culotta et al. (2007): https://dl.acm.org/doi/abs/10.1145/1281192.1281217
-+ Kaplan, Betancourt, Steorts (2020): https://arxiv.org/abs/1810.01538
++ Kaplan, Betancourt, Steorts (2022): https://arxiv.org/abs/1810.01538
 
 # Open Source Software 
 
@@ -165,8 +172,7 @@ Review papers on Record linkage:
 
 ## Other data sets 
 
-+ I'm interested in putting together some synthetic and real data sets this summer for broader use of the community and the research lab's use. Please let me know if this is of interest to you. One involves citation data, where we would build upon an existing data set (cora). One would involve twitter data. 
-
++ Please let me know if you find papers that are of interest or other data sets that help you throughout the class to update. 
 
 
 
