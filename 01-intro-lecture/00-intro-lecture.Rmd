@@ -135,6 +135,18 @@ and thinking about problems in ways you may have not thought about before.
 - Classical ML methods are taught in many courses at Duke, so take a different course if you want to learn these skills or read about them on your own. 
 - Again, do not expect to learn about classical ML models or you will be disappointed! 
 
+What is data cleaning?
+===
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{../figures/pipeline}
+    \caption{Data cleaning pipeline.}
+    \end{center}
+\end{figure}
+
+
+
 The scope of this course
 ===
 
@@ -149,7 +161,7 @@ The scope of this course
 \item Understand when certain methods are appropriate and when to utilize them over alternatives. 
 \end{itemize}
 
-Is it possible for one method to always dominate
+Is it possible for one method to always dominate?
 ===
 
 - No method dominates all others, across all problems.
@@ -157,7 +169,17 @@ Is it possible for one method to always dominate
 - For evidence, refer to Wolpert (1996) as the ``no free lunch problem."
 - However, some methods to often perform better than others on certain types of 
 application areas or data sets. 
-- In summary, we cannot just apply black box methods to application areas or data sets. In fact, they may not be appropriate! 
+- What do students think of this idea? It is intuitive or confusing? 
+
+What do you observe? 
+===
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{../figures/dblink-exp}
+    \caption{Data cleaning pipeline.}
+    \end{center}
+\end{figure}
 
 
 Missed class/review material?
@@ -179,7 +201,7 @@ Class Meetings
 Labs
 ===
 
-- Lab will be used as an opportunity to work with teaching assistants on course content and questions
+- Lab will be used as an opportunity to work with teaching assistants on course content and ask questions
 
 
     
