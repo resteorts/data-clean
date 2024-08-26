@@ -1,1 +1,1 @@
-Course materila for STA 325, Fall 2024. 
+Course material for STA 325, Fall 2024. 
