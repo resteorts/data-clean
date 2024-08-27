@@ -1,34 +1,13 @@
 
 ---
-title: "Homework 3"
-author: "STA 325: Understanding Entity Resolution Data"
-header-includes: 
-  - \usepackage{booktabs}
-  - \usepackage{longtable}
-  - \usepackage{floatrow}
-  - \usepackage{setspace}
-  - \usepackage{natbib}
-  - \floatsetup[table]{capposition=bottom}
-  - \usepackage[justification=centering]{caption}
-  - \captionsetup{width=6in}
-  - \numberwithin{equation}{section}
-  - \doublespacing
+title: "Exploring Entity Resolution"
+author: "STA 325: Homework 2"
 output: 
-  bookdown::pdf_document2:
-    toc: false
-    number_sections: true
+     pdf_document:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
 ---
-
-```{r setup, message = FALSE, echo=FALSE}
-set.seed(1)
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
-                      fig.width = 4, fig.height = 3, fig.align = "center")
-
-
-if (!require(pacman)) install.packages("pacman")
-pacman::p_load(tidyverse, RecordLinkage, kableExtra, visdat, cowplot, ggrepel)
-pacman::p_load_gh("OlivierBinette/pretty") # Makes pretty plots in R 
-```
 
 ***General instructions for homeworks***: Your code must be completely reproducible and must compile. No late homeworks will be accepted.
 
@@ -46,19 +25,33 @@ Code should be commented. See the Google style guide for questions regarding com
 
 \textbf{Total points on assignment: 5 (reproducibility) + 30 points for the assignment.}
 
-Consider the RLdata500 data set in the RecordLinkage package. Suppose that this data set is too large to work with and we would like to create a sample size of 10 records that is representative of the 500 records in this data set. Let’s investigate how we can do this!
+\begin{enumerate}
+\item (15 points) Find \textbf{three examples} of entity resolution tasks using information publicly available. For each of the three examples, describe the problem at hand and what information is needed in order to distinguish the unique entities (or link/merge record that belong to each entity). Be sure to include a list of the records for each example and the public source where you found them. \textbf{Entities can be people or objects. One example can be about yourself if you find this easier to discuss and talk about.}
 
-1. Perform an exploratory data analysis of the data set. Illustrate your findings with tables, visualizations and provide commentary of your findings. 
+\vspace*{2em}
 
-2. What happens if you randomly sample 10 records from the original data set? Do this a few times and describe what happens? Is this representative of the original data set? Explain and be specific. 
+For example, you might use Google Scholar to search for a textbook. What kind of results do you get back? Are they unique or not? As another example, what happens when you try and search for someone on PubMed (such as an author or paper). How could identify unique papers? What other public records might have linkage problems? 
 
-3. Propose something that works better than random sampling and explain why this works better.
+\item (5 points) Download and install the \texttt{RecordLinkage} package in R on your computer. View the help documentation for \texttt{strcmp}. Which string metrics can this function calculate?
 
-4. Propose evaluation metrics, visualizations, etc. to support any of your claims.
+\item (10 points) Read the six page paper describing the Jaro-Winkler string metric, ``String Comparator Metrics and Enhanced Decision Rules in the Fellegi-Sunter Model of Record Linkage.
+Concentrate on Sections 1, 2.3, 2.4, and 3. We will discuss the Fellegi-Sunter model in more depth in class. 
 
-Hint 1: Think about the fact that you have unique identifiers and you know the maximum cluster size here. 
+\vspace*{2em}
 
-Hint 2: Post a question if you’re getting stuck. This is a hard but very important problem. Do your best to work through this on your own. 
+On page 4, Table 1 provides Jaro-Winkler similarity values for several pairs of words.
 
+a.) (2 points) Pick a pair of words and use the function \texttt{jarowinkler} to experiment with typographical errors in different places. Be sure to illustrate your examples and reproduce them. 
 
+\vspace*{2em}
 
+b.) (2 points) What happens when you switch letters at the beginning of the word? the end? 
+
+c.) (2 points)  What if the letter moves two or three places? 
+
+d.) (2 points) What happens if you leave out letters in one of the words? 
+
+e.) (2 points) What types of changes result in larger decreases in the similarity score? 
+
+For each part above, describe your results and provide reproducible code in order to back up any claims. 
+\end{enumerate}

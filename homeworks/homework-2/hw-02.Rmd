@@ -1,6 +1,6 @@
 
 ---
-title: "Exploring Entity Resolution"
+title: "Evaluation Metrics for Entity Resolution"
 author: "STA 325: Homework 2"
 output: 
      pdf_document:
@@ -23,35 +23,16 @@ Code should be commented. See the Google style guide for questions regarding com
 0. Open a new R Markdown file; set the output to HTML mode and "Knit". This should produce a web page with the knitting procedure executing your code blocks. You can edit this new file to produce your homework submission.
 
 
-\textbf{Total points on assignment: 5 (reproducibility) + 30 points for the assignment.}
+\textbf{Total points on assignment: 5 (reproducibility) + X points for the assignment.}
 
-\begin{enumerate}
-\item (15 points) Find \textbf{three examples} of entity resolution tasks using information publicly available. For each of the three examples, describe the problem at hand and what information is needed in order to distinguish the unique entities (or link/merge record that belong to each entity). Be sure to include a list of the records for each example and the public source where you found them. \textbf{Entities can be people or objects. One example can be about yourself if you find this easier to discuss and talk about.}
+1. What are the four main challenges of entity resolution? 
+2. Suppose there are 10 records in a data set. What are the total number of brute-forte comparison needed to make all-to-all record comparisons? Repeat this for 100 records, 1000 records, 10,000 records. What do you observe about the number of comparisons that need to be made? 
+3. Consider the following record linkage data set with 1,000,0000 total records that are matched between two databases. Assume that 500,000 are true matches. Assume a classified (or method) finds 600,000 record pairs as matches, and of these 400,000 correspond as true matches. The number of TP + FP + TN + FN  = 50,000,000. 
 
-\vspace*{2em}
 
-For example, you might use Google Scholar to search for a textbook. What kind of results do you get back? Are they unique or not? As another example, what happens when you try and search for someone on PubMed (such as an author or paper). How could identify unique papers? What other public records might have linkage problems? 
-
-\item (5 points) Download and install the \texttt{RecordLinkage} package in R on your computer. View the help documentation for \texttt{strcmp}. Which string metrics can this function calculate?
-
-\item (10 points) Read the six page paper describing the Jaro-Winkler string metric, ``String Comparator Metrics and Enhanced Decision Rules in the Fellegi-Sunter Model of Record Linkage.
-Concentrate on Sections 1, 2.3, 2.4, and 3. We will discuss the Fellegi-Sunter model in more depth in class. 
-
-\vspace*{2em}
-
-On page 4, Table 1 provides Jaro-Winkler similarity values for several pairs of words.
-
-a.) (2 points) Pick a pair of words and use the function \texttt{jarowinkler} to experiment with typographical errors in different places. Be sure to illustrate your examples and reproduce them. 
-
-\vspace*{2em}
-
-b.) (2 points) What happens when you switch letters at the beginning of the word? the end? 
-
-c.) (2 points)  What if the letter moves two or three places? 
-
-d.) (2 points) What happens if you leave out letters in one of the words? 
-
-e.) (2 points) What types of changes result in larger decreases in the similarity score? 
-
-For each part above, describe your results and provide reproducible code in order to back up any claims. 
-\end{enumerate}
+a. Given the information above, find the following information in the confusion matrix: TP, FP, TN, and FN. 
+b. Calculate the accuracy. Comment on the reliability of this metric for this problem. 
+c. Calculate the precision.
+d. Calculate the recall. 
+e. Calculate the f-measure. 
+f. Comment on the reliability of the precision, recall, and f-measure for this problem. 

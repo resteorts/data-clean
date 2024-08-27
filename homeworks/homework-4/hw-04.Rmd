@@ -1,15 +1,38 @@
 
 ---
-title: "Logistic Regression for Entity Resolution"
-author: "STA 325: Homework 3"
+title: "Homework 3"
+author: "STA 325: Understanding Entity Resolution Data"
+header-includes: 
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{floatrow}
+  - \usepackage{setspace}
+  - \usepackage{natbib}
+  - \floatsetup[table]{capposition=bottom}
+  - \usepackage[justification=centering]{caption}
+  - \captionsetup{width=6in}
+  - \numberwithin{equation}{section}
+  - \doublespacing
 output: 
-     pdf_document:
-      includes: 
-          in_header: custom2.tex
-font-size: 8px
+  bookdown::pdf_document2:
+    toc: false
+    number_sections: true
 ---
 
+```{r setup, message = FALSE, echo=FALSE}
+set.seed(1)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.width = 4, fig.height = 3, fig.align = "center")
+
+
+if (!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, RecordLinkage, kableExtra, visdat, cowplot, ggrepel)
+pacman::p_load_gh("OlivierBinette/pretty") # Makes pretty plots in R 
+```
+
 ***General instructions for homeworks***: Your code must be completely reproducible and must compile. No late homeworks will be accepted.
+
+***Reading*** Read the paper Binette and Steorts (2022) to get an overview of entity resolution. You'll want to refer to this during the course of the semester as it's meant to be a quick reference regarding the concepts that we will be covering. For more details, refer to the book by Christen (2012). 
 
 ***Advice***: Start early on the homeworks and it is advised that you not wait until the day of as these homeworks are meant to be longer and treated as case studies.
 
@@ -21,41 +44,21 @@ Code should be commented. See the Google style guide for questions regarding com
 0. Open a new R Markdown file; set the output to HTML mode and "Knit". This should produce a web page with the knitting procedure executing your code blocks. You can edit this new file to produce your homework submission.
 
 
-\textbf{Total points on assignment: 5 (reproducibility) + 12 points for the assignment.}
+\textbf{Total points on assignment: 5 (reproducibility) + 30 points for the assignment.}
 
-Download/install the RecordLinkage and tree libraries. You will use the RLdata500 data set in R which you can load into your workspace by (after typing the command library(RecordLinkage)) typing data(RLdata500). Typing ls( ) then shows two objects -- the actual text data RLdata500 and identity.RLdata500, which are the unique identifiers. See help(RLdata500) for additional details. 
+Consider the RLdata500 data set in the RecordLinkage package. Suppose that this data set is too large to work with and we would like to create a sample size of 10 records that is representative of the 500 records in this data set. Let’s investigate how we can do this!
 
+1. Perform an exploratory data analysis of the data set. Illustrate your findings with tables, visualizations and provide commentary of your findings. 
 
-```{r, include = FALSE}
-library(RecordLinkage)
-library(xtable)
-source("calc.pcs.R")
-```
+2. What happens if you randomly sample 10 records from the original data set? Do this a few times and describe what happens? Is this representative of the original data set? Explain and be specific. 
 
+3. Propose something that works better than random sampling and explain why this works better.
 
+4. Propose evaluation metrics, visualizations, etc. to support any of your claims.
 
-Our goal is to build supervised models to predict whether or not pairs of records match. 
+Hint 1: Think about the fact that you have unique identifiers and you know the maximum cluster size here. 
 
-To do so, we need labels (which we have, luckily, using identity.RLdata500) and similarity metrics for the 124,750 pairs of records.
+Hint 2: Post a question if you’re getting stuck. This is a hard but very important problem. Do your best to work through this on your own. 
 
-
-
-
-1. (5 points) Create a matrix with 124,750 rows and 8 columns. The rows correspond to pairs of records. Columns correspond to the similarity metric for the different fields for the pair of records. For example, the first row would be for the record pair (1,2); the second row for (1,3), etc. The first column is for fname c1, the second for fname c2, etc. The last column is a binary indicator of whether or not that pair of records matches (1 = yes; 0 = no).
-
-
-
-Fill in the first seven columns of your matrix with the Jaro-Winkler scores for each field; the last column should indicate match/non-match. In this problem, treat all fields as text strings, even the birthdate information.
-
-The JW score requires character strings; you may need to use as.character( ) on the field values. Also, if one or both of the strings is NA, JW = NA.
-
-One coding suggestion would be to first create a 500 x 500 matrix of JW scores for each field and then build the larger matrix by extracting the upper triangular part of the matrices for each field.
-
-
-
-2. (5 points) Use your matrix to fit a logistic regression model predicting whether or not the pairs of records are a match using all fields except fname c2, lname c2 as predictor variables. Which fields were significant predictors of being a match? Does anything surprise you? Can you think of why this might have happened by digging more into the data set and thinking about if the model is appropriate for this data set. 
-
-
-3. (2 points) In the above, we chose to treat the numeric birthday variables as text (reasonable assumption). What if instead of using a JW score, we just used exact matching on birth year, month, and day? How would that change our results from 2)? 
 
 
