@@ -162,22 +162,11 @@ calc, shadows, plotmarks}
 \newcommand{\bX}{\mathbf{X}}
 \newcommand{\bY}{\mathbf{Y}}
 
-\title[Data Cleaning Pipeline]
-{Data Cleaning Pipeline}
+\title[Prelimanaries]
+{Preliminaries}
 \author[Rebecca C. Steorts, beka@stat.duke.edu]{Rebecca C. Steorts} 
 
-\institute{\normalsize Associate Professor, Department of Statistical Science, affiliated faculty in Computer Science, Biostatistics and Bioinformatics, the information initiative at Duke (iiD) and \\the Social Science Research Institute (SSRI) \\ Duke University and U.S. Census Bureau\\ \vspace*{1em}
 
-This work is partially supported by NSF CAREER Award 1652431. The views are of the author and not any agency, etc.
-
-%\begin{figure}[htbp]
-%\begin{center}
-%\includegraphics{pics/banner}
-%%\caption{default}
-%\label{default}
-%\end{center}
-%\end{figure}
-}
 %\date{August 13, 2019}
 
 
@@ -190,366 +179,447 @@ This work is partially supported by NSF CAREER Award 1652431. The views are of t
 
 
 \frame{
-\frametitle{Goals} 
-
-\begin{enumerate}
-\item Enumerating a census. 
-\item Enumerating those that have died in a conflict (such as Syria).
-\item Predicting those in poverty in small regions from survey data. 
-\item Predicting results of elections from voter registration data. 
-\item Predicting housing/rental prices from Zillow data. 
-\end{enumerate}
-
-\vspace*{1em}
-
-Each task may contain duplicated information, which is problematic for the underlying task at hand. 
-
-}
-
-\frame{
 %\frametitle{Motivation} 
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=\textwidth]{data-pipeline-picture.001}
+\includegraphics[scale=0.3]{figures/complex-data}
+
 %\caption{default}
-\label{default}
+%\label{default}
 \end{center}
 \end{figure}
+
+
+}
+
+\frame{
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.3]{figures/complex-data-top}
+%\caption{default}
+%\label{default}
+\end{center}
+\end{figure}
+
+What do these datasets have in common?
+\vspace*{1em}
+\begin{itemize}
+\item There is duplication in the data. 
+\item The amount of duplication is typically small. 
+\item Before we can apply inferential or prediction methods, any duplicate records must be removed.
+\end{itemize}
+
+}
+
+\frame{
+\frametitle{Data Cleaning Pipeline}
+
+
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.33]{finalFigures/pipeline}
+%\caption{default}
+%\label{default}
+\end{center}
+\end{figure}
+
 
 }
 
 \frame{
 
-\begin{enumerate}
-\item The most important information in the pipeline is known as the profile or the record. 
+\Large
+\center
+
+Entity resolution (ER) is the process of merging together noisy (structured) databases to remove duplicate entities, often in the absence of a unique identifier.
+
+}
+
+
+\frame{
+
+\Large
+\center
+
+Other names for entity resolution:  \\
+
 \vspace*{1em}
 
-\item Each profile or record is a collection of attributes/fields about a person, organization, or object. 
-
-\vspace*{1em}
-
-\item Commonly collected attributes about people are name, address, phone number, gender, among other types of information.
-
-\end{enumerate}
-}
-
-
-\frame{
-%\frametitle{Motivation} 
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=\textwidth]{database1}
-\includegraphics[width=\textwidth]{database1-entities}
-%\includegraphics[width=0.6\textwidth]{database2}
-%\caption{An example of noisy, structured data source:  the input data source (DS) and 
-% the corresponding true entities. }
-\label{default}
-\end{center}
-\end{figure}
-
-%Let $e_i$ denote entity $i.$ 
-%
-%$e_1 = \{D1, D2\}, e_2 = \{D3, D4\}, e_3 = \{D5\}, e_4 = \{D6\}, e_5 = \{D7, D8, D9, D10\}.$
+record linkage, deduplication, duplicate detection, data matching, data integration, data cleansing.
 
 }
-
-\frame{
-%\frametitle{Motivation} 
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{schema}
-%\caption{An example of noisy, structured data source: (a) the input data source (DS) and 
-%(b) the corresponding true entities. Citation: Papadakis et. al (2021).
-%}
-\label{default}
-\end{center}
-\end{figure}
-
-}
-
-\frame{
-
-\begin{enumerate}
-\item It is important that we align attributes when our schemata are disparate. 
-\item The goal is to create alignments of attributes based upon the following:
-\begin{enumerate}
-\item Similarity 
-\item Structure
-\item Attributes Present
-\end{enumerate}
-\end{enumerate}
-\vspace*{1em}
-
-Formally, this is known as identifying ``semantically equivalent attributes'', such as first name, first, and name. 
-\vspace*{1em}
-
-[Bernstein et al., 2011, Madhavan et al., 2001]. 
-
-}
-
-\frame{
-
-\begin{enumerate}
-\item This stage leverages the attribute values from the records/profiles. 
-\item Schema knowledge is used (if available). 
-\item The goal is to learn attribute mappings between the data sources.
-\item The goal is to also find ``transformations, correspondences, or rules between the attributes."  [Tejada et al., 2002, Yan et al., 2001]. 
-\item Common transformations are used, such as: ``Dr." to ``Drive" or ``3rd" to ``third" [Active Atlas, Tejada et al., 2002].
-\end{enumerate}
-
-}
-
-
-\frame{
-%\frametitle{Motivation} 
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=\textwidth]{databases-two}
-%\includegraphics[width=0.5\textwidth]{database2}
-%\includegraphics[width=0.5\textwidth]{database2-entities}
-\caption{An example two databases: (a) the input databases and 
-(b) the corresponding entities. 
-}
-\label{default}
-\end{center}
-\end{figure}
-
-}
-
-\frame{
-%\frametitle{Motivation} 
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=\textwidth]{databases-two}
-%\includegraphics[width=0.5\textwidth]{database2}
-%\includegraphics[width=0.5\textwidth]{database2-entities}
-\caption{An example two databases: (a) the input databases and 
-(b) the corresponding entities. 
-}
-\label{default}
-\end{center}
-\end{figure}
-
-Alignment rules: first and last/name; sex and gender.
-
-}
-
-
-
-\frame{
-
-\begin{enumerate}
-\item It is important that the schema are coded for all databases in the same way.
-\item The naming structured should be well organized and documented in a relational database. 
-\item More information can be found in Papadakis et. al (2021) for more information and other illustrations.
-\end{enumerate}
-
-}
-
-\frame{
-%\frametitle{Motivation} 
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{blocking}
-%\caption{An example of noisy, structured data source: (a) the input data source (DS) and 
-%(b) the corresponding true entities. Citation: Papadakis et. al (2021).
-%}
-\label{default}
-\end{center}
-\end{figure}
-
-}
-
-\frame{
-
-\begin{enumerate}
-\item Blocking operates in a schema-aware fashion, assuming that the input data adheres to a known schema or to aligned schemata. 
-\item Based on this assumption and respective domain knowledge, the most suitable attributes are used for extracting one or more representative signatures from each profile. 
-\item These signatures are called blocking keys and are composed of (combinations of) parts of values from the most informative attributes. 
-\item Assuming that these keys reflect the overall similarity of profile pairs, profiles with identical or similar keys are placed into the same block to be compared 
-in the entity resolution stage.
-\end{enumerate}
-
-
-}
-
-
-\frame{
-
-\begin{enumerate}
-\item Standard Blocking (SB) [Fellegi and Sunter, 1969] requires an expert to manually define a part or a transformation of one or more attribute values as the single blocking key of each profile. 
-\item Every profile is then placed in the block corresponding to its blocking key. 
-\item To increase its robustness, a multi-pass functionality is applied in practice, i.e., SB is combined with several different definitions of blocking keys.
-\end{enumerate}
-
-
-}
-
-\frame{
-
-\begin{enumerate}
-\item One common type of blocking is using q-grams [Christen, 2012b, Papadakis et al., 2015].
-\item This converts SB keys into sub-sequences of q characters (q-grams) and defines a block for every distinct q-gram.
-\end{enumerate}
-
-There are multiple extensions to these in the computer science and database management literature.
-
-}
-
-\frame{
-
-How might we define a blocking criteria for these data sources?
-
-}
-
-\frame{
-
-Define the blocking key the concatenation of the following three pieces of information: 
-\begin{enumerate}
-\item  (i) \{“Name,” Last2Characters\}, 
-\item (ii) \{“Address,” Last2Characters\}, 
-\item and (iii) \{“Gender,” FirstCharacter\}.
-\end{enumerate}
-
-}
-
-\frame{
-%\frametitle{Motivation} 
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=\textwidth]{blocking-criteria}
-\caption{
-(a) the input data source with bolded information used in blocking keys, (b) the blocking keys via SB, (c) the blocking keys of 4-grams blocking, and (d) the blocks of 4-grams blocking.
-}
-\label{default}
-\end{center}
-\end{figure}
-
-}
-
 
 %\frame{
+%\frametitle{Data Cleaning Pipeline}
 %
-%Define the blocking key the concatenation of the following three pieces of information: 
-%\begin{enumerate}
-%\item  (i) \{“Name,” Last2Characters\}, 
-%\item (ii) \{“Areas of Interest,” First3Characters\}, 
-%\item and (iii) \{“Citations,” FirstCharacter\}.
-%\end{enumerate}
 %
-%}
-
-%\frame{
-%%\frametitle{Motivation} 
 %
 %\begin{figure}[htbp]
 %\begin{center}
-%\includegraphics[width=0.8\textwidth]{figure3-3}
-%\caption{
-%(a) the input DS with highlighted the information used in blocking keys, (b) the blocking keys via SB, (c) the blocking keys of 4-grams Blocking, and (d) the blocks of 4-grams Blocking.
-%}
-%\label{default}
+%\includegraphics[scale=0.33]{finalFigures/pipeline}
+%%\caption{default}
+%%\label{default}
 %\end{center}
 %\end{figure}
+%
+%\center
+%This talk focuses on blocking and entity resolution. 
+%
+%}
+
+%\frame{
+%\begin{figure}[htbp]
+%\begin{center}
+%\includegraphics[scale=0.3]{finalFigures/block}
+%%\caption{default}
+%%\label{default}
+%\end{center}
+%\end{figure}
+%
+%\begin{center}
+%\Large
+%\emph{Blocking is the task of placing similar records into partitions in order to reduce the computational burden of the entity resolution task.}
+%\end{center}
+%}
+
+
+
+%\frame{
+%\begin{figure}[htbp]
+%\begin{center}
+%\includegraphics[scale=0.3]{figures/complex-data-top}
+%%\caption{default}
+%%\label{default}
+%\end{center}
+%\end{figure}
+%
+%\begin{center}
+%\Large
+%\emph{Entity resolution (record linkage or de-duplication) is the task of removing 
+%duplicate entities from large noisy data sets, often in the absence of a unique identifier.}
+%% (in the absence of a unique identifier). 
+%\end{center}
+%}
+
+%\frame{
+%\frametitle{Recent Work on Blocking}
+%
+%\begin{enumerate}
+%\item Steorts+ (2014) proposed locality sensitive hashing (LSH) methods for blocking and provided comparisons to existing methods in the statistical machine learning literature. 
+%\item Sadosky+ (2015) showed that most blocking methods are ill suited for human rights data. 
+%\item Shrivastava and Steorts (2018) demonstrated the success of LSH on a case study provided by the Human Rights Data Analysis Group (HRDAG) to the Syrian conflict. 
+%\item Edmorado and Steorts (2020) proposed the first approach of the Fellegi and Sunter method for probabilistic blocking that can feed into any entity resolution task. \end{enumerate}
+%
+%}
+
+
+
+
+
+
+
+\frame{
+
+\begin{center}
+\Large
+Foundations and Terminology
+\end{center}
+
+}
+
+\frame{
+\frametitle{A graph with no edges}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.35]{pictures-new/graph-no-edges}
+%\caption{default}
+%\label{default}
+\end{center}
+\end{figure}
+
+
+
+}
+
+\frame{
+\frametitle{The entity resolution graph}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.35]{pictures-new/graph}
+%\caption{default}
+%\label{default}
+\end{center}
+\end{figure}
+
+
+
+}
+
+\frame{
+\frametitle{Entities are Real People (Objects, Businesses, Etc.)}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.35]{pictures-new/node-two}
+%\caption{default}
+%\label{default}
+\end{center}
+\end{figure}
+
+
+
+}
+
+%\frame{
+%\frametitle{Goal of Entity Resolution}
+%
+%\begin{figure}[htbp]
+%\begin{center}
+%\includegraphics[width=0.6\textwidth]{pictures-new/output-er}
+%%\caption{default}
+%%\label{default}
+%\end{center}
+%\end{figure}
+%
+%%To find the most representative records after ER, one must perform canonicalization (data fusion or merging). 
 %
 %}
 
 \frame{
-
-There are many other ways that blocking criteria can be defined and many options are reviewed in Papadakis et. al (2021).
-
-}
-
-\frame{
-%\frametitle{Motivation} 
+\frametitle{Goal of Entity Resolution}
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{entity-resolution}
-%\caption{An example of noisy, structured data source: (a) the input data source (DS) and 
-%(b) the corresponding true entities. Citation: Papadakis et. al (2021).
-%}
-\label{default}
+\includegraphics[width=0.6\textwidth]{pictures-new/microcluster}
+%\caption{default}
+%\label{default}
 \end{center}
 \end{figure}
+
+%To find the most representative records after ER, one must perform canonicalization (data fusion or merging). 
 
 }
 
 \frame{
-%\frametitle{Motivation} 
+\frametitle{Goal of Entity Resolution}
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=\textwidth]{er-methods}
-\caption{Citation: Papadakis et. al (2021).
-}
-\label{default}
+\includegraphics[width=0.6\textwidth]{pictures-new/microcluster}
+%\caption{default}
+%\label{default}
 \end{center}
 \end{figure}
 
+To find the most representative records after ER, one must perform canonicalization (data fusion or merging). 
+
 }
 
-
 \frame{
-%\frametitle{Motivation} 
+
+\Large
+\center
+
+In this talk, I will focus on the entity resolution task of the data cleaning pipeline. 
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{canonical}
-%\caption{An example of noisy, structured data source: (a) the input data source (DS) and 
-%(b) the corresponding true entities. Citation: Papadakis et. al (2021).
-%}
-\label{default}
+\includegraphics[width=0.9\textwidth]{finalFigures/pipeline}
+%\caption{default}
+%\label{default}
 \end{center}
 \end{figure}
 
-}
+%\vspace*{7em}
 
-\frame{
+\normalsize
 
-In summary, after all the stages the output is an integrated data set with unique identifiers that can be used in statistical analyses.
+[Christen (2012), Christophides+ (2021), Papadakis+ (2021), Binette and Steorts (2022)]
 
 
-}
-
-\frame{
-
-\begin{enumerate}
-\item How can we work together to enable that these systems work well?
-\item How should these system be implemented? (scala, java, queries that work with scala/java)
-\item Should we avoid scripting languages such as python or R? 
-\item How do we get students/collaborators involved in the building of complex pipelines described? 
-\item Are there limiting resources at play?
-\end{enumerate}
 
 
 }
+
+
+
+
 
 \frame{
 \center
-Thank you! \\
-Questions?\\
-Contact: beka@stat.duke.edu, rebecca.carter.steorts@census.gov\\
-\vspace*{1em}
-\url{https://github.com/resteorts/record-linkage-tutorial}
+\Large
 
-\vspace*{1em}
-\url{https://www.science.org/doi/10.1126/sciadv.abi8021}
-
-\vspace*{1em}
-\url{https://github.com/cleanzr}
-
-\vspace*{1em}
-Thank you to Anup Mathur, Krista Park, Kristen Olsen, and Jenny Thompson for conversations or feedback that led to this presentation. 
+Challenges
 
 }
+
+\frame{
+\frametitle{Challenges of Entity Resolution}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.35]{finalFigures/pain-points}
+%\caption{default}
+%\label{default}
+\end{center}
+\end{figure}
+
+}
+
+\frame{
+\frametitle{Evaluation Metrics}
+\Large 
+
+How do we assess the effectiveness of entity resolution methods, where some ground truth is known? 
+
+
+}
+
+
+\frame{
+\frametitle{Confusion Matrix}
+
+\begin{itemize}
+\item No = Non-Match
+\item Yes = Match
+\end{itemize}
+
+ \begin{table}[htbp]
+\caption{Confusion Matrix}
+\label{tab:confusion-matrix}
+\centering
+\renewcommand\arraystretch{1.2}
+\begin{tabular}{|c|c|c|c|}\hline
+\multirow{2}{*}{N= Total Records}
+    & \multicolumn{3}{c|}{Actual Linkage}    \\
+    \cline{2-4}
+    &   & No & Yes                      \\
+  \hline
+\multirow{2}{*}{Predicted Linkage}
+    &   No  &   true neg. (TN)   & false neg. (FN)       \\
+  \cline{2-4}
+    &   Yes &  false pos.  (FP)  &  true pos. (TP)       \\
+    \hline
+\end{tabular}
+    \end{table}
+    
+
+}
+
+
+\frame{
+\frametitle{Confusion Matrix}
+
+
+ \begin{table}[htbp]
+\caption{Confusion Matrix}
+\label{tab:confusion-matrix}
+\centering
+\renewcommand\arraystretch{1.2}
+\begin{tabular}{|c|c|c|c|}\hline
+\multirow{2}{*}{}
+    & \multicolumn{3}{c|}{Predicted Linkage}    \\
+    \cline{2-4}
+    &   & Match & Non-Match                     \\
+  \hline
+\multirow{2}{*}{Actual Linkage}
+    &   Match  &  true pos. (TP)   &   false pos.  (FP)    \\
+  \cline{2-4}
+    &   Non-Match &  false neg. (FN)    &  true neg. (TN)       \\
+    \hline
+\end{tabular}
+    \end{table}
+    
+\vspace*{3em}    
+    
+In the TP, FP, TN, FN terminology:
+\begin{itemize}
+\item ``True”/“False" = prediction is correct/incorrect
+\item   ``Positive”/“Negative" = predicted class is positive/negative
+\end{itemize}  
+
+}
+
+
+\frame{
+\frametitle{Evaluation Metrics}
+
+Accuracy (acc) = $\dfrac{TP + TN}{TP + FP + TN + FN}$
+
+\vspace*{2em}
+
+\begin{itemize}
+\item Commonly used in machine learning problems. 
+\item Useful in situations where the data is balanced, i.e. matches and non-matches are roughly the same.
+\item The number of TN dominates, and leads to a class imbalance issue (and results that are misleading).
+\end{itemize}
+
+\vspace*{2em}
+
+For an example, see page 167 of Christen (2012).
+
+}
+
+\frame{
+\frametitle{Evaluation Metrics}
+
+\begin{itemize}
+\item False positive rate (FPR) = $\dfrac{FP}{FP + FN}$
+\begin{itemize}
+\item Fraction of actual negatives that were predicted to be positive.
+\item Specificity = Precision = 1 - FPR = $\dfrac{TP}{TP + FP}$
+\end{itemize}
+\item True Positive Rate (TPR) =  $\dfrac{TP}{TP + FN}$
+\begin{itemize}
+\item  Fraction of actual positives that were predicted to be positive.
+\item Sensitivity = TPR. 
+\end{itemize}
+\end{itemize}
+
+\vspace*{2em}
+
+\begin{itemize} 
+\item Useful in situations where the data is balanced, i.e. matches and non-matches are roughly the same.
+\item The number of TN dominates, and leads to a class imbalance issue (and results that are misleading).
+\end{itemize}
+
+}
+
+\frame{
+\frametitle{Evaluation Metrics}
+
+$$\text{Precision} = \dfrac{TP}{TP + FP}$$
+
+\vspace*{2em}
+
+Measures how precise a method is in classifying true matches.
+
+$$\text{Recall} = \dfrac{TP}{TP + FN}$$
+
+\vspace*{2em}
+
+Measures how accurately the actual true matching pairs of records are correctly classified as matches. 
+
+
+\vspace*{2em}
+Observe these metrics do not include TN. They do not suffer from a class imbalance issue. 
+
+}
+
+\frame{
+\frametitle{Evaluation Metrics}
+
+$$\text{F-Measure} = \dfrac{2\times \text{Precision} \times \text{Recall}}{ \text{Precision} + \text{Recall}}$$
+
+\begin{itemize}
+\item Harmonic mean of the precision and recall.
+\item Attempts to summarize all aspects of the effectiveness of an entity resolution method.
+\end{itemize}
+
+}
+
+
 
 
 \end{document}
