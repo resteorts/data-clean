@@ -166,9 +166,7 @@ calc, shadows, plotmarks}
 {Data Cleaning Pipeline}
 \author[Rebecca C. Steorts, beka@stat.duke.edu]{Rebecca C. Steorts} 
 
-\institute{\normalsize Associate Professor, Department of Statistical Science, affiliated faculty in Computer Science, Biostatistics and Bioinformatics, the information initiative at Duke (iiD) and \\the Social Science Research Institute (SSRI) \\ Duke University and U.S. Census Bureau\\ \vspace*{1em}
 
-This work is partially supported by NSF CAREER Award 1652431. The views are of the author and not any agency, etc.
 
 %\begin{figure}[htbp]
 %\begin{center}
@@ -177,7 +175,7 @@ This work is partially supported by NSF CAREER Award 1652431. The views are of t
 %\label{default}
 %\end{center}
 %\end{figure}
-}
+
 %\date{August 13, 2019}
 
 
@@ -187,6 +185,23 @@ This work is partially supported by NSF CAREER Award 1652431. The views are of t
 \begin{frame}
 \titlepage
 \end{frame}
+
+
+\frame{
+\frametitle{Objectives}
+
+\begin{itemize}
+\item Cover some basic pipeline approaches from the database literature. 
+\item Understanding how they integrate with one another.
+\item Understand pros and cons about the approaches. 
+\item These methods are a basic starting point for moving forward with more complex methods. 
+\item Due to their simplicity, they are used in many production or industrial pipelines. Let's try and understand why that would be the case by the end of the lecture. 
+\end{itemize}
+
+
+
+
+}
 
 
 \frame{
@@ -394,13 +409,36 @@ in the entity resolution stage.
 \frame{
 
 \begin{enumerate}
-\item One common type of blocking is using q-grams [Christen, 2012b, Papadakis et al., 2015].
+\item One common type of blocking is using q-grams (or shingling) [Christen, 2012b, Papadakis et al., 2015].
 \item This converts SB keys into sub-sequences of q characters (q-grams) and defines a block for every distinct q-gram.
 \end{enumerate}
 
 There are multiple extensions to these in the computer science and database management literature.
 
 }
+
+\frame{
+
+
+\begin{enumerate}
+\item A record can be thought of as a string of characters.
+\item A q-gram (or shingle) is a substring (or word) of length $q$ found within the record. 
+\item We are interested in a set of k-grams that appear one or more times in the record.
+\end{enumerate}
+
+}
+
+\frame{
+
+Observe that in the manner of this approach, one finds the standard blocking (SB) key and then proceeds with another blocking approach or pass. 
+
+\vspace*{1em}
+
+In summary, the blocking stage is made into many blocking passes, iteratively. 
+
+}
+
+
 
 \frame{
 
@@ -465,6 +503,10 @@ Define the blocking key the concatenation of the following three pieces of infor
 
 There are many other ways that blocking criteria can be defined and many options are reviewed in Papadakis et. al (2021).
 
+\vspace*{1em}
+
+We have just gone through an iterative approach that is simple to code up. What might be limitations of this approach in practice?
+
 }
 
 \frame{
@@ -519,24 +561,24 @@ In summary, after all the stages the output is an integrated data set with uniqu
 
 }
 
-\frame{
-
-\begin{enumerate}
-\item How can we work together to enable that these systems work well?
-\item How should these system be implemented? (scala, java, queries that work with scala/java)
-\item Should we avoid scripting languages such as python or R? 
-\item How do we get students/collaborators involved in the building of complex pipelines described? 
-\item Are there limiting resources at play?
-\end{enumerate}
-
-
-}
+%\frame{
+%
+%\begin{enumerate}
+%\item How can we work together to enable that these systems work well?
+%\item How should these system be implemented? (scala, java, queries that work with scala/java)
+%\item Should we avoid scripting languages such as python or R? 
+%\item How do we get students/collaborators involved in the building of complex pipelines described? 
+%\item Are there limiting resources at play?
+%\end{enumerate}
+%
+%
+%}
 
 \frame{
 \center
 Thank you! \\
 Questions?\\
-Contact: beka@stat.duke.edu, rebecca.carter.steorts@census.gov\\
+Contact: beka@stat.duke.edu\\
 \vspace*{1em}
 \url{https://github.com/resteorts/record-linkage-tutorial}
 
