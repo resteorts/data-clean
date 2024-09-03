@@ -10,6 +10,12 @@ output:
 font-size: 8px
 ---
 
+Reminders
+===
+
+- Homework 0 is due today at 5 PM EDT
+- Homework 1 is ready to start! 
+
 Recap
 ===
 
@@ -32,7 +38,7 @@ Traditional blocking
 Evaluation metrics
 ===
 
-Review the following evaluation metrics and why we use these:
+Explain the following evaluation metrics and why we use these:
 
 - Reduction ratio
 - Precision 
@@ -42,7 +48,7 @@ Review the following evaluation metrics and why we use these:
 Reading
 ===
 
-- Binette and Steorts (2022)
+- Binette and Steorts (2020)
 - Steorts, Ventura, Sadinle, Fienberg (2014)
 - Murray (2016)
 - Christen (2012), Chapter 4
@@ -167,7 +173,12 @@ under the estimate, which we refer to as true negatives (TN).
 
 # The confusion matrix
 
-Make sure that you're able to write down the confusion matrix as we have previously defined. 
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{finalFigures/confusion}
+    \caption{Data cleaning pipeline.}
+    \end{center}
+\end{figure}
 
 
 # Pairwise evaluation metrics
@@ -248,15 +259,16 @@ head(recordsPerBlock)
 
 Observe that the block sizes vary. 
 
-```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.width=3.5}
+```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.width=5}
 # Block sizes can vary 
-plot(recordsPerBlock, cex.axis=0.6, xlab="", ylab="")
+plot(recordsPerBlock, 
+     cex.axis=0.6, xlab="", ylab="")
 ```
 
 
 # RLdata500 (Continued)
 
-What is the overall dimension reduction from the original space to the reduced space induced by blocking? 
+What is the overall dimension reduction form the original space to the reduced space induced by blocking? 
 
 # RLdata500 (Continued)
 
@@ -297,7 +309,7 @@ reduction.ratio(last_init)
 
 # Reduction Ratio
 
-In summary, we have reduced the comparison space by roughly by 88 percent. 
+In summary, we have reduced the comparison space by roughly 88 percent. 
 
 # Evaluation metrics
 
@@ -350,14 +362,6 @@ precision(last_init, identity.RLdata500) ==
   recall(identity.RLdata500, last_init)
 ```
 \normalsize
-
-# Interpretation 
-
-- The recall says that 100 percent of the true matching record pairs are correctly classified as matches. 
-
-- The precision says that 0.34 percent of record pairs that are classified as matches correspond to true matches, while the rest correspond to false matches. 
-
-In summary, we would not want to use this for an entity resolution algorithm. Why is this?
 
 # Italian Survey on Household and Wealth (SHIW)
 
