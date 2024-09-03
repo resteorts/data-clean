@@ -30,7 +30,6 @@ Code should be commented. See the Google style guide for questions regarding com
 a.) What are the total number of brute-forte comparison needed to make all-to-all record comparisons? 
 b.) Repeat this for 100 records, 1000 records, 10,000 records. 
 c.) What do you observe about the number of comparisons that need to be made? 
-
 3. Consider the following record linkage data set with 1,000,0000 total records that are matched between two databases. Assume that 500,000 are true matches. Assume a classified (or method) finds 600,000 record pairs as matches, and of these 400,000 correspond as true matches. The number of TP + FP + TN + FN  = 50,000,000. 
 
 
@@ -40,14 +39,3 @@ c. (1 point) Calculate the precision.
 d. (1 point) Calculate the recall. 
 e. (1 point) Calculate the f-measure. 
 f. (1 point) Comment on the reliability of the precision, recall, and f-measure for this problem. 
-
-4. We will revisit the Italian Survey on Household and Wealth (SHIW) from class, which 
-is a sample survey 383 households conducted by the Bank of Italy every two years (2008 and 2010).
-The data set is anonymized to remove first and last name (and other sensitive information). 
-
-a. (0 points) Please load the data set in the way that we did in class and block based upon gender. 
-b. (1 point) Plot the size of the blocks and comment on how many their are and their relative size. 
-c. (1 point) Calculate the reduction ratio and interpret its meaning. 
-d. (2 points) Calculate the precision and recall. Interpret the meaning of each. 
-e. (1 point) Would this be a reasonable approach for blocking. Explain. 
-f. (1 point) Would blocking on gender be recommended for entity resolution. Explain. 
