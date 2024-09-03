@@ -71,10 +71,6 @@ if (!require("pacman")) {
   library(pacman)
 } 
 p_load(RecordLinkage, blink, italy, tidyverse, assert)
-#library(RecordLinkage)
-#library(blink)
-#library(italy)
-#library(assert)
 data(italy08)
 data(italy10)
 data(RLdata500)
