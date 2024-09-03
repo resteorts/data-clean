@@ -1,4 +1,3 @@
-base
 DBI
 RSQLite
 bit
@@ -14,3 +13,4 @@ usethis
 devtools
 cora
 ggplot2
+pacman
