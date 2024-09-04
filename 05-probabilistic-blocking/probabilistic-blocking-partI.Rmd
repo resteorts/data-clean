@@ -34,7 +34,7 @@ if (!require("pacman")) {
 p_load(RecordLinkage,blink,knitr,cora,ggplot2,textreuse,tokenizers)
 ```
 
-# ```{r, echo=TRUE, message=FALSE, warning=FALSE}
+# ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 # library(RecordLinkage)
 # library(blink)
 # library(knitr)

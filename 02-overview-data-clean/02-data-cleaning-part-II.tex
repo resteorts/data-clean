@@ -492,11 +492,11 @@ How do we assess the effectiveness of entity resolution methods, where some grou
 \renewcommand\arraystretch{1.2}
 \begin{tabular}{|c|c|c|c|}\hline
 \multirow{2}{*}{N= Total Records}
-    & \multicolumn{3}{c|}{Actual Linkage}    \\
+    & \multicolumn{3}{c|}{Actual}    \\
     \cline{2-4}
     &   & No & Yes                      \\
   \hline
-\multirow{2}{*}{Predicted Linkage}
+\multirow{2}{*}{Predicted}
     &   No  &   true neg. (TN)   & false neg. (FN)       \\
   \cline{2-4}
     &   Yes &  false pos.  (FP)  &  true pos. (TP)       \\
@@ -504,42 +504,47 @@ How do we assess the effectiveness of entity resolution methods, where some grou
 \end{tabular}
     \end{table}
     
-
-}
-
-
-\frame{
-\frametitle{Confusion Matrix}
-
-
- \begin{table}[htbp]
-\caption{Confusion Matrix}
-\label{tab:confusion-matrix}
-\centering
-\renewcommand\arraystretch{1.2}
-\begin{tabular}{|c|c|c|c|}\hline
-\multirow{2}{*}{}
-    & \multicolumn{3}{c|}{Predicted Linkage}    \\
-    \cline{2-4}
-    &   & Match & Non-Match                     \\
-  \hline
-\multirow{2}{*}{Actual Linkage}
-    &   Match  &  true pos. (TP)   &   false pos.  (FP)    \\
-  \cline{2-4}
-    &   Non-Match &  false neg. (FN)    &  true neg. (TN)       \\
-    \hline
-\end{tabular}
-    \end{table}
-    
-\vspace*{3em}    
-    
 In the TP, FP, TN, FN terminology:
 \begin{itemize}
-\item ``True”/“False" = prediction is correct/incorrect
+\item ``True”/“False" = \textcolor{purple}{prediction} is correct/incorrect
 \item   ``Positive”/“Negative" = predicted class is positive/negative
-\end{itemize}  
+\end{itemize} 
 
 }
+
+
+%\frame{
+%\frametitle{Confusion Matrix}
+%
+%
+% \begin{table}[htbp]
+%\caption{Confusion Matrix}
+%\label{tab:confusion-matrix}
+%\centering
+%\renewcommand\arraystretch{1.2}
+%\begin{tabular}{|c|c|c|c|}\hline
+%\multirow{2}{*}{}
+%    & \multicolumn{3}{c|}{Predicted Linkage}    \\
+%    \cline{2-4}
+%    &   & Match & Non-Match                     \\
+%  \hline
+%\multirow{2}{*}{Actual Linkage}
+%    &   Match  &  true pos. (TP)   &   false pos.  (FP)    \\
+%  \cline{2-4}
+%    &   Non-Match &  false neg. (FN)    &  true neg. (TN)       \\
+%    \hline
+%\end{tabular}
+%    \end{table}
+%    
+%\vspace*{3em}    
+%    
+%In the TP, FP, TN, FN terminology:
+%\begin{itemize}
+%\item ``True”/“False" = \textcolor{purple}{actual linkage} is correct/incorrect
+%\item   ``Positive”/“Negative" = predicted class is positive/negative
+%\end{itemize}  
+%
+%}
 
 
 \frame{
@@ -618,6 +623,20 @@ $$\text{F-Measure} = \dfrac{2\times \text{Precision} \times \text{Recall}}{ \tex
 \end{itemize}
 
 }
+
+\frame{
+\frametitle{Summary}
+
+\begin{itemize}
+\item What is entity resolution (and other names for it)?
+\item What are challenges of entity resolution? 
+\item Know the components of a confusion matrix. 
+\item What are the evaluation metrics used for entity resolution (and ones that we do not consider)? Be sure to know why! 
+\end{itemize}
+
+}
+
+
 
 
 
