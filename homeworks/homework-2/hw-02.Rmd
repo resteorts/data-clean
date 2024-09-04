@@ -31,7 +31,7 @@ a.) What are the total number of brute-forte comparison needed to make all-to-al
 b.) Repeat this for 100 records, 1000 records, 10,000 records. 
 c.) What do you observe about the number of comparisons that need to be made? 
 
-3. (9 points) Consider the following record linkage data set with 1,000,0000 total records that are matched between two databases. Assume that 500,000 are true matches. Assume a classified (or method) finds 600,000 record pairs as matches, and of these 400,000 correspond as true matches. The number of TP + FP + TN + FN  = 50,000,000. 
+3. (9 points) Consider the following record linkage data set with 1,000,000 total records that are matched between two databases. Assume that 500,000 are true matches. Assume a classified (or method) finds 600,000 record pairs as matches, and of these 400,000 correspond as true matches. The number of TP + FP + TN + FN  = 50,000,000. 
 
 
 a. (4 points) Given the information above, find the following information in the confusion matrix: TP, FP, TN, and FN. 
