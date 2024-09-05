@@ -26,13 +26,21 @@ Agenda
 Load R packages
 ===
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
-library(RecordLinkage)
-library(blink)
-library(knitr)
-library(cora)
-library(ggplot2)
+```{r}
+if (!require("pacman")) {
+  install.packages("pacman")
+  library(pacman)
+} 
+p_load(RecordLinkage,blink,knitr,cora,ggplot2,textreuse,tokenizers)
 ```
+
+# ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# library(RecordLinkage)
+# library(blink)
+# library(knitr)
+# library(cora)
+# library(ggplot2)
+# ```
 
 Data Cleaning Pipeline
 ===

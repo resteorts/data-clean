@@ -38,6 +38,7 @@ library(cora)
 library(ggplot2)
 # install_github("resteorts/cora")
 data(cora) # load the cora data set
+data(cora_gold) # contains the cora unique identifiers
 ```
 
 
@@ -547,6 +548,59 @@ blocks <- data.frame(id = V(g)$id, # record id
                      block = clust$membership) # block number  
 head(blocks)
 ```
+
+# Precision
+
+```{r}
+precision <- function(block.labels, IDs) {
+  ct = xtabs(~block.labels+IDs)
+  
+  # Number of true positives
+  TP = sum(choose(ct, 2))
+  
+  # Number of positives = TP + FP
+  P = sum(choose(rowSums(ct), 2)) 
+  
+  return(TP/P)
+}
+```
+
+# Pairwise Recall
+
+
+```{r}
+recall <- function(block.labels, IDs) {
+  ct = xtabs(~IDs+block.labels)
+  
+  # Number of true positives
+  TP = sum(choose(ct, 2))
+  
+  # Number of true links = TP + FN
+  TL = sum(choose(rowSums(ct), 2))
+  
+  return(TP/TL)
+}
+```
+
+# Calculation
+```{r}
+head(blocks$block)
+head(blocks$id)
+recall(block.labels = blocks$block, IDs  = blocks$id)
+precision(block.labels = blocks$block, IDs  = blocks$id) 
+library(clevr)
+pred_labels = rbind(blocks$id,blocks$block)
+true_labels = rbind(cora_gold$id1, cora_gold$id2)
+```
+
+# More Calculation
+```{r}
+dim(pred_labels)
+dim(true_labels)
+#precision_pairs(true_labels, pred_labels)
+```
+
+
 
 # Your turn
 

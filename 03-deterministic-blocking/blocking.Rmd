@@ -1,0 +1,445 @@
+
+---
+title: "Module 3: Deterministic Blocking"
+author: "Rebecca C. Steorts"
+institute: joint with Olivier Binette
+output: 
+     beamer_presentation:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
+---
+
+Recap
+===
+
+Define blocking and relate it to the figure below. 
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{finalFigures/block.png}
+    \caption{Left: All to all record comparison. Right: Example of resulting blocking partitions. }
+    \end{center}
+\end{figure}
+
+Traditional blocking 
+===
+
+- What is traditional blocking? 
+- Consider the RLdata500 data set. What is a good blocking attribute to use? How can you validate this? 
+- What is probabilistic blocking? 
+
+Evaluation metrics
+===
+
+Review the following evaluation metrics and why we use these:
+
+- Reduction ratio
+- Precision 
+- Recall
+- Fscore
+
+Reading
+===
+
+- Binette and Steorts (2022)
+- Steorts, Ventura, Sadinle, Fienberg (2014)
+- Murray (2016)
+- Christen (2012), Chapter 4
+
+Agenda
+===
+
+- Data Cleaning Pipeline
+- Blocking
+- Traditional Blocking
+- Probabilistic Blocking
+- Evaluation Metrics
+- Examples
+
+Load R packages and data
+===
+
+```{r, echo=TRUE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width=4, 
+                      fig.height=3, 
+                      fig.align="center")
+
+if (!require("pacman")) {
+  install.packages("pacman")
+  library(pacman)
+} 
+p_load(RecordLinkage, blink, italy, tidyverse, assert)
+data(italy08)
+data(italy10)
+data(RLdata500)
+```
+
+Data Cleaning Pipeline
+===
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{finalFigures/pipeline}
+    \caption{Data cleaning pipeline.}
+    \end{center}
+\end{figure}
+
+Blocking
+===
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{finalFigures/block.png}
+    \caption{Left: All to all record comparison. Right: Example of resulting blocking partitions. }
+    \end{center}
+\end{figure}
+
+
+Blocking
+===
+
+- Blocking places similar records into partitions/blocks.
+
+- ER (typically) is only performed within each block. 
+
+Traditional Blocking
+===
+
+- A deterministic (fixed) partition is formed based upon the data. 
+- A partition is created by treating certain fields that are thought to be nearly error-free as fixed.
+
+Example: Blocking on date of birth year. 
+
+Traditional Blocking
+===
+
+- Benefits:  simple, easy to understand, and fast to implement. 
+- Downsides: the blocks are treated as error free, which is not usually accurate and can lead to errors in the ER task that cannot be accounted for. 
+
+
+
+Probabilistic Blocking 
+===
+
+- A probability model is used to cluster the data into blocks/partitions. 
+
+Example: Fellegi-Sunter (1969), or Locality Sensitive Hashing  
+
+Under both blocking approaches, record pairs that do not meet the blocking criteria are automatically classified as non-matches.
+
+# Evaluation Metrics
+
+Evaluation metrics are important for ER as they help us evaluate our proposed methodology (as long as some notion of ground truth exists). 
+
+The three that we will focus on in this module are:
+
+- reduction ratio
+- precision
+- recall
+- f-measure
+
+# Reduction Ratio
+
+The reduction ratio (RR) measures the relative reduction of the comparison space from the de-duplication or hashing technique. 
+
+\vspace*{1em}
+
+See Christen (2012), Steorts, Ventura, Sadinle, Fienberg (2014) for a formal definition. 
+
+# Pairwise Precision and Recall
+
+Let's now turn to formally defining the pairwise precision and recall. 
+
+# The confusion matrix
+
+
+\begin{enumerate}
+\item  Pairs of data can be linked in both the handmatched
+training data (which we refer to as ``truth") and under the estimated
+linked data. We refer to this situation as true positives (TP). 
+\item Pairs of data can be linked under the truth but not linked under the estimate, which
+are called false negatives (FN). 
+\item Pairs of data can be not linked under the truth but linked under the estimate, which are called false positives (FP). 
+\item Pairs of data can be not linked under the truth and also not linked
+under the estimate, which we refer to as true negatives (TN).
+\end{enumerate}
+
+# The confusion matrix
+
+Make sure that you're able to write down the confusion matrix as we have previously defined. 
+
+
+# Pairwise evaluation metrics
+
+$$\text{Recall} = \frac{TP}{TP + FN} = 1 - \text{FNR}.$$
+
+$$\text{Precision} = \frac{TP}{TP + FP} = 1 - \text{FDR}.$$
+
+$$\text{F-measure} = 2 \times \frac{(precision \times recall)}{(precision + recall)}.$$
+
+
+# Recall
+
+- For blocking, it is critical the recall be as close a possible to 1. 
+
+\vspace*{1em}
+
+- To think about why, what does it mean if we have a blocking criterion where our recall is 0.5? 
+
+\vspace*{1em}
+
+See Shrivastava and Steorts (2018) and Chen, Shrivastava, Steorts (2018) for further regarding about blocking criterion using human rights data. 
+
+# Example: RLdata500
+
+Let's return to the RLdata500 data set, where we will block by last name initial. 
+
+Our goal are the following:
+
+- visualize the blocks
+- compute the evaluation metrics introduced
+
+# Example: RLdata500
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+head(RLdata500)
+```
+
+# Example: Traditional blocking
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.45\textwidth]{FinalFigures/noblocking_plot.pdf}
+    \includegraphics[width=0.45\textwidth]{FinalFigures/blocking_plot.pdf}
+    \caption{All-to-all record comparisons (left) versus partitioning records into blocks by lastname initial and comparing records only within each partition (right).}
+    \end{center}
+\end{figure}
+
+
+
+# RLdata500 (Continued)
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+# Total number of all to all record comparisons
+choose(500,2)
+```
+
+# RLdata500 (Continued)
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+# Block by last name initial  
+last_init <- substr(RLdata500[,"lname_c1"], 1, 1)
+head(last_init)
+
+# Total number of blocks
+length(unique(last_init))
+```
+
+# RLdata500 (Continued)
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+# Total number of records per block
+recordsPerBlock <- table(last_init)
+head(recordsPerBlock)
+```
+
+# RLdata500 (Continued)
+
+Observe that the block sizes vary. 
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE, fig.width=3.5}
+# Block sizes can vary 
+plot(recordsPerBlock, cex.axis=0.6, xlab="", ylab="")
+```
+
+
+# RLdata500 (Continued)
+
+What is the overall dimension reduction from the original space to the reduced space induced by blocking? 
+
+# RLdata500 (Continued)
+
+Recall the total number of all-to-all record comparisons made was:
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+choose(500, 2)
+```
+
+Using blocking, we have reduced the compison space to the following:
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+sum(choose(recordsPerBlock, 2))
+```
+
+# How do we calculate the reduction ratio (RR)?
+
+The reduction ratio is
+$$
+  \text{RR} = \text{\% comparisons eliminated by blocking.}
+$$
+
+```{r}
+(choose(500, 2) - sum(choose(recordsPerBlock, 2))) / 
+choose(500, 2)
+```
+
+# How do we calculate the RR (via a function)?
+
+```{r}
+reduction.ratio <- function(block.labels) {
+  n_all_comp = choose(length(block.labels), 2)
+  n_block_comp = sum(choose(table(block.labels), 2))
+
+  (n_all_comp - n_block_comp) / n_all_comp
+}
+
+reduction.ratio(last_init)
+```
+
+# Reduction Ratio
+
+In summary, we have reduced the comparison space by roughly by 88 percent. 
+
+# Evaluation metrics
+
+Let's now code up the evaluation metrics for pairwise precision and recall.  
+
+
+# Pairwise Precision
+
+\small
+```{r}
+precision <- function(block.labels, IDs) {
+  ct = xtabs(~block.labels+IDs)
+  
+  # Number of true positives
+  TP = sum(choose(ct, 2))
+  
+  # Number of positives = TP + FP
+  P = sum(choose(rowSums(ct), 2)) 
+  
+  return(TP/P)
+}
+```
+\normalfont
+
+# Pairwise Recall
+
+\small
+```{r}
+recall <- function(block.labels, IDs) {
+  ct = xtabs(~IDs+block.labels)
+  
+  # Number of true positives
+  TP = sum(choose(ct, 2))
+  
+  # Number of true links = TP + FN
+  TL = sum(choose(rowSums(ct), 2))
+  
+  return(TP/TL)
+}
+```
+\normalsize
+
+# Pairwise Precision and Recall
+
+\small
+```{r}
+precision(last_init, identity.RLdata500)
+recall(last_init, identity.RLdata500)
+precision(last_init, identity.RLdata500) == 
+  recall(identity.RLdata500, last_init)
+```
+\normalsize
+
+# Interpretation 
+
+- The recall says that 100 percent of the true matching record pairs are correctly classified as matches. 
+
+- The precision says that 0.34 percent of record pairs that are classified as matches correspond to true matches, while the rest correspond to false matches. 
+
+In summary, we would not want to use this for an entity resolution algorithm. Why is this?
+
+# Italian Survey on Household and Wealth (SHIW)
+
+- We will now explore a case study to the Italian Survey on Household and Wealth (SHIW)
+- The SHIW is a sample survey 383 households conducted by the Bank of Italy every two years (2008 and 2010).
+- The data set is anonymized to remove first and last name (and other sensitive information). 
+
+# SHIW
+
+The following attribute information is available: 
+\footnotesize
+\begin{itemize}
+\item PARENT (parental status)
+\item GENDER
+\item ANASC (year of birth)
+\item NASCREG (working status)
+\item CIT (employment status)
+\item ACOM4C (branch of activity)
+\item STUDIO (town size)
+\item Q (quality of life status)
+\item QUAL (whether or not Italian national)
+\item SETT (highest educational level obtained)
+\item IREG (region of italy)
+\end{itemize}
+
+# Explore Data
+
+\tiny
+```{r}
+head(italy08) # first year of SHIW
+```
+
+# Explore Data
+
+\tiny
+```{r}
+head(italy10) # second year of SHIW
+```
+
+# Reformat Data
+
+\footnotesize
+```{r}
+id08 <- italy08$id
+id10 <- italy10$id
+id <- c(italy08$id, italy10$id) # combine the id
+italy08 <- italy08[-c(1)] # remove the id
+italy10 <- italy10[-c(1)] # remove the id 
+italy <- rbind(italy08, italy10)
+head(italy)
+```
+
+
+
+# Your turn (see homework 2)
+
+- Construct a blocking criterion for the SHIW data set
+- Provide code to construct the blocks
+- Are your blocks well balanced?
+- What is the reduction ratio? 
+- What is the pairwise recall and precision?
+- Would you recommend your blocking criterion for an ER task? Why or why not. 
+
+
+# Your turn solution
+
+Let's block on gender.
+
+```{r}
+# block by gender 
+blockByGender <- italy$SEX
+recordsPerBlock <- table(blockByGender)
+head(recordsPerBlock)
+```
+
+
+
+# Summary
+
+- Blocking is a method that puts similar records into blocks or bins. 
+- What are some examples of blocking methods. See if you can think of a few. 
+- Main metrics for blocking are recall and reduction ratio. 
+- Balance between size of blocks and number of blocks. 
+
