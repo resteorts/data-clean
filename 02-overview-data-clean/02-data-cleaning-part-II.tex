@@ -477,31 +477,19 @@ How do we assess the effectiveness of entity resolution methods, where some grou
 }
 
 \frame{
-\frametitle{True Positive}
+\frametitle{True Positive (True Matches)}
 
 
-True Positive (TP): The model correctly predicted a positive match (the actual outcome was positive).
+True Positive (TP): These are records that are classified as matches and are true matches. 
 
 \vspace*{1em} These are pairs of records that refer to the same person (entity). 
 
 }
 
 \frame{
-\frametitle{False Positive}
+\frametitle{True Negatives (True Non-Matches)}
 
-
-False Positive (TP): The model incorrectly predicted a positive match (the actual outcome was positive).
-
-\vspace*{1em} 
-
-The model made a wrong decision with the record pairs and falsely declared them to be matches. 
-
-}
-
-\frame{
-\frametitle{True Negatives}
-
-These record pairs are classified as non-matches, but they are true matches. 
+True Negative (TN): These record pairs are classified as non-matches, they are true non-matches.
 
 \vspace*{1em} 
 
@@ -510,9 +498,25 @@ The two records refer to two different entities.
 }
 
 \frame{
-\frametitle{False Negatives}
+\frametitle{False Positive (False Matches)}
 
-These record pairs are classified as non-matches, however they are true matches.
+
+False Positive (FP): These are record pairs that have been classified as matches, but they are not true matches. 
+
+%The model incorrectly predicted a positive match (the actual outcome was positive).
+
+\vspace*{1em} 
+
+The model made a wrong decision with the record pairs and falsely declared them to be matches. 
+
+}
+
+
+
+\frame{
+\frametitle{False Negatives (False Non-Matches)}
+
+These are record pairs that have been classified as non-matches, but they are actually true matches. 
 
 \vspace*{1em} 
 
@@ -587,8 +591,8 @@ The two record pairs refer to the same entity, but the method made a mistake.
     \end{table}
     
 \begin{itemize}
-\item False Positive (FN): The model incorrectly predicted that the record pairs are a true match. 
-\item False Negative (FP): The model incorrectly predicted that the record pairs are a non-match. 
+\item False Positive (FP): The model incorrectly predicted that the record pairs are a true match. 
+\item False Negative (FN): The model incorrectly predicted that the record pairs are a non-match. 
 \end{itemize} 
 
 }

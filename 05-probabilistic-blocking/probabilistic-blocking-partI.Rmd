@@ -26,21 +26,20 @@ Agenda
 Load R packages
 ===
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width=4, 
+                      fig.height=3, 
+                      fig.align="center")
+
 if (!require("pacman")) {
   install.packages("pacman")
   library(pacman)
 } 
-p_load(RecordLinkage,blink,knitr,cora,ggplot2,textreuse,tokenizers)
+p_load(RecordLinkage,blink,knitr,cora,ggplot2,
+       textreuse,tokenizers)
 ```
 
-# ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-# library(RecordLinkage)
-# library(blink)
-# library(knitr)
-# library(cora)
-# library(ggplot2)
-# ```
 
 Data Cleaning Pipeline
 ===
@@ -178,10 +177,10 @@ We can use the following functions to create $k$-shingles and calculate Jaccard 
 \vline
 
 ```{r helpful-functions, eval=FALSE, echo=TRUE}
-# get k-shingles
-tokenize_character_shingles(x, n)
+# get n-shingles for a string x
+tokenize_character_shingles(x, k)
 
-# calculate jaccard similarity for two sets
+# calculate jaccard similarity for two sets set1, set2
 jaccard_similarity(a, b) 
 ```
 
@@ -233,7 +232,7 @@ dat <- cbind(dat, cora[, c("title", "authors", "journal")])
 
 # Your turn (partial solution)
 
-**Finish the rest of the exercise with a partner, which can be found after the summar**
+**Finish the rest of the exercise with a partner, which can be found after the summary**
 
 
 # Summary
@@ -293,18 +292,19 @@ ggplot(jaccard) +
   xlab("Record id") + ylab("Record id")
 ```
 
-# Your turn (solution, cont'd)
+# Jaccard similarity plot
 
-```{r your-turn2-plot-again, fig.cap="Jaccard similarity for each pair of records. Light blue indicates the two records are more similar and dark blue indicates less similar.", echo=FALSE}
-# plot the jaccard similarities for each pair of records
-ggplot(jaccard) +
-  geom_raster(aes(x = record1, y = record2, 
-                  fill=similarity)) +
-  theme(aspect.ratio = 1) +
-  scale_fill_gradient("Jaccard similarity") +
-  xlab("Record id") + ylab("Record id") +
-  theme(plot.margin = margin(5,.8,5,.8, "cm"))
-```
+- Are many records similar according to the Jaccard similarity plot (visually)?  
+- What is problematic in using shingingling and the Jaccard similarity (or any sim. score) as a type of blocking?
+- We could improve upon this by thresholding the sim. score. 
+- Do you find any problems with using a threshold? 
+- Next, we will consider locality sensitive hashing. 
+
+# Takeaways
+
+- Shingling
+- Jaccard similarity
+- Understanding why these are not practically useful when considering large data sets. 
 
 
 
