@@ -51,3 +51,28 @@ c. (1 point) Calculate the reduction ratio and interpret its meaning.
 d. (2 points) Calculate the precision and recall. Interpret the meaning of each. 
 e. (1 point) Would this be a reasonable approach for blocking. Explain. 
 f. (1 point) Would blocking on gender be recommended for entity resolution. Explain. 
+
+\newpage
+
+```{r}
+
+
+```{r, echo=TRUE, message=FALSE}
+library(italy)
+library(assert)
+data(italy08)
+data(italy10)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width=4, 
+                      fig.height=3, 
+                      fig.align="center")
+head(italy08)
+head(italy10)
+id08 <- italy08$id
+id10 <- italy10$id
+id <- c(italy08$id, italy10$id) # combine the id
+italy08 <- italy08[-c(1)] # remove the id
+italy10 <- italy10[-c(1)] # remove the id 
+italy <- rbind(italy08, italy10)
+head(italy)
+```
