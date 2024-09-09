@@ -375,8 +375,9 @@ colnames(sig_mat) <- colnames(char_mat) #column names
 
 ```{r minhash-2, cache=TRUE}
 # inspect results
-kable(sig_mat[1:10, 1:5])
+kable(sig_mat[1:10, 5:10])
 ```
+
 
 
 # Jaccard similarity approximation
@@ -430,9 +431,16 @@ We only check *candidate pairs* for similarity
 
 # Banding and buckets
 
+```{r}
+print(xtable::xtable(sig_mat[10:20, 1:5]), 
+      hline.after = c(-1,0,5,10), comment=F)
+```
+
+# Banding and buckets
+
 ```{r banding, results='asis'}
 # view the signature matrix
-print(xtable::xtable(sig_mat[1:10, 1:5]), 
+print(xtable::xtable(sig_mat[1:10, 5:10]), 
       hline.after = c(-1,0,5,10), comment=F)
 ```
 
