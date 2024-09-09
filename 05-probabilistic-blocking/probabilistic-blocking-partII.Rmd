@@ -193,12 +193,6 @@ Thus, we will **hash shingles** because it takes up less memory.
 \textbf{The entire pairwise comparison still took the same amount of time ($\approx `r round(time/(60), 2)`$ minutes) for both approaches, so keep in mind we have not improved this aspect of our approach, but we will improve upon this later!}
 
 
-
-
-
-
-
-
 ```{r, echo = FALSE}
 # return if an item is in a list
 item_in_list <- function(item, list) {
@@ -235,7 +229,7 @@ We can think of the fact that we have transformed the input (original data) into
 # Characteristic matrix (continued)
 ```{r characteristic-2, cache=TRUE}
 # inspect results
-kable(char_mat[10:15, 1:5])
+kable(char_mat[1:10, 1:5])
 ```
 
 # Similarity preserving summaries of sets

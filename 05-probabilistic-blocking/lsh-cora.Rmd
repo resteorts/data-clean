@@ -157,6 +157,7 @@ lsh_jaccard <- lsh_compare(candidates, corpus,
 head(buckets)
 dim(buckets)
 length(unique(buckets))
+head(lsh_jaccard)
 ```
 
 We now plot the Jaccard similarities that are candidate pairs (under LSH)
