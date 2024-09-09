@@ -310,6 +310,7 @@ Let's now code up the evaluation metrics for pairwise precision and recall.
 \small
 ```{r}
 precision <- function(block.labels, IDs) {
+  # confusion matrix is a contingency table 
   ct = xtabs(~block.labels+IDs)
   
   # Number of true positives
@@ -328,6 +329,7 @@ precision <- function(block.labels, IDs) {
 \small
 ```{r}
 recall <- function(block.labels, IDs) {
+  # confusion matrix is a contingency table 
   ct = xtabs(~IDs+block.labels)
   
   # Number of true positives
