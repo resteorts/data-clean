@@ -282,7 +282,7 @@ This took took $`r round(time, 2)`$ seconds $\approx `r round(time/(60), 2)`$ mi
 
 # Your turn (solution, cont'd)
 
-```{r your-turn2-plot, fig.cap="Jaccard similarity for each pair of records. Light blue indicates the two records are more similar and dark blue indicates less similar."}
+```{r your-turn2-plot, fig.cap="Jaccard similarity for each pair of records. Light blue indicates the two records are more similar and dark blue indicates less similar.", echo=FALSE}
 # plot the jaccard similarities for each pair of records
 ggplot(jaccard) +
   geom_raster(aes(x = record1, y = record2, 
@@ -295,10 +295,8 @@ ggplot(jaccard) +
 # Jaccard similarity plot
 
 - Are many records similar according to the Jaccard similarity plot (visually)?  
-- What is problematic in using shingingling and the Jaccard similarity (or any sim. score) as a type of blocking?
-- We could improve upon this by thresholding the sim. score. 
-- Do you find any problems with using a threshold? 
-- Next, we will consider locality sensitive hashing. 
+- What is problematic in using shingling and the Jaccard similarity (or any sim. score) as a type of blocking?
+- Next time, we will consider locality sensitive hashing. 
 
 # Takeaways
 
