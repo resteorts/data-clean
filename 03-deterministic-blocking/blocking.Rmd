@@ -349,8 +349,8 @@ recall <- function(block.labels, IDs) {
 ```{r}
 precision(last_init, identity.RLdata500)
 recall(last_init, identity.RLdata500)
-precision(last_init, identity.RLdata500) == 
-  recall(identity.RLdata500, last_init)
+# precision(last_init, identity.RLdata500) == 
+#   recall(identity.RLdata500, last_init)
 ```
 \normalsize
 
@@ -406,7 +406,7 @@ head(italy10) # second year of SHIW
 ```{r}
 id08 <- italy08$id
 id10 <- italy10$id
-id <- c(italy08$id, italy10$id) # combine the id
+id <- c(italy08$id, italy10$id) # combine the unique ids
 italy08 <- italy08[-c(1)] # remove the id
 italy10 <- italy10[-c(1)] # remove the id 
 italy <- rbind(italy08, italy10)
