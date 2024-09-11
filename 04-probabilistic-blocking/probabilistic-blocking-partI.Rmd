@@ -79,10 +79,16 @@ How do we define *similar*?
 
 
 
-We will work with the  *Jaccard similarity*:
+Consider the  *Jaccard similarity*:
 $$
-Jac(S, T) = \frac{\mid S \cap T\mid}{\mid S \cup T \mid}.
+Jac(S, T) = \frac{\mid S \cap T\mid}{\mid S \cup T \mid},
 $$
+where 
+
+$$\mid S \cap T\mid =  \;\; \text{the number of members shared between sets} \;\; S,T$$ and 
+$$\mid S \cup T \mid = \;\; \text{the total number of members in both sets} \;\; S,T.$$
+
+# Jaccard similarity
 
 \begin{figure}[h]
 \centering
@@ -178,9 +184,9 @@ We can use the following functions to create $k$-shingles and calculate Jaccard 
 
 ```{r helpful-functions, eval=FALSE, echo=TRUE}
 # get n-shingles for a string x
-tokenize_character_shingles(x, k)
+tokenize_character_shingles(x, n)
 
-# calculate jaccard similarity for two sets set1, set2
+# calculate jaccard similarity for two sets a,b
 jaccard_similarity(a, b) 
 ```
 
@@ -194,6 +200,7 @@ token.1 <-
 token.2 <- 
   tokenize_character_shingles("MICHAELMEYER", n=2)
 # compute jaccard similarity 
+# use unlist() to flatten the list into a character vector
 jaccard_similarity(unlist(token.1),unlist(token.2))
 ```
 
