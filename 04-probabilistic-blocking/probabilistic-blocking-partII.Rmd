@@ -1,6 +1,6 @@
 
 ---
-title: "Module 5: Probabilistic Blocking, Part II"
+title: "Module 4: Probabilistic Blocking, Part II"
 author: "Rebecca C. Steorts"
 output: 
      beamer_presentation:
@@ -316,27 +316,27 @@ We look down each column of the signature matrix, and compare it to any other co
 \vfill
 The number of agreements over the total number of combinations is an approximation to Jaccard measure
 
-\vfill
 
-# Proof
 
-Assume that $\pi$ is a random permutation. Then
-$$\text{Pr} \{ \min[\pi(A)] = \min[\pi(B)] \} = 
-\frac{|A \cap B   |           }{  |A \cup B|      }.$$
+<!-- # Proof -->
 
-\textbf{Proof}:
-Suppose $X$ is a record (set of shingles). Let $y \in X$ be a shingle.
-$\text{Pr} [ \pi(y) = \min \pi( X)  ] = 1/|X|.$\footnote{It's equally likely that any $y \in X$ is mapped to the min element.} 
+<!-- Assume that $\pi$ is a random permutation. Then -->
+<!-- $$\text{Pr} \{ \min[\pi(A)] = \min[\pi(B)] \} =  -->
+<!-- \frac{|A \cap B   |           }{  |A \cup B|      }.$$ -->
 
-Let $y$ be such that $\pi(y) = \min (\pi(A \cap B)).$ Then
-\begin{itemize}
-\item $\pi(y) = \min (\pi(A)) $ if $y \in A$ OR
-\item $\pi(y) = \min (\pi(B)) $ if $y \in B.$
-\end{itemize}
-The probability that both are true is $Pr(y \in A \cap B).$
-This implies that 
-$$\text{Pr} \{ \min(\pi(A)) = \min(\pi(B)) \} = 
-\frac{|A \cap B   |           }{  |A \cup B|      }.$$
+<!-- \textbf{Proof}: -->
+<!-- Suppose $X$ is a record (set of shingles). Let $y \in X$ be a shingle. -->
+<!-- $\text{Pr} [ \pi(y) = \min \pi( X)  ] = 1/|X|.$\footnote{It's equally likely that any $y \in X$ is mapped to the min element.}  -->
+
+<!-- Let $y$ be such that $\pi(y) = \min (\pi(A \cap B)).$ Then -->
+<!-- \begin{itemize} -->
+<!-- \item $\pi(y) = \min (\pi(A)) $ if $y \in A$ OR -->
+<!-- \item $\pi(y) = \min (\pi(B)) $ if $y \in B.$ -->
+<!-- \end{itemize} -->
+<!-- The probability that both are true is $Pr(y \in A \cap B).$ -->
+<!-- This implies that  -->
+<!-- $$\text{Pr} \{ \min(\pi(A)) = \min(\pi(B)) \} =  -->
+<!-- \frac{|A \cap B   |           }{  |A \cup B|      }.$$ -->
 
 
 # Signature Matrix
@@ -423,32 +423,32 @@ We want to hash items several times such that similar items are more likely to b
   
 We only check *candidate pairs* for similarity
 
-# Banding and buckets
+<!-- # Banding and buckets -->
 
-```{r}
-print(xtable::xtable(sig_mat[10:20, 1:5]), 
-      hline.after = c(-1,0,5,10), comment=F)
-```
+<!-- ```{r} -->
+<!-- print(xtable::xtable(sig_mat[10:20, 1:5]),  -->
+<!--       hline.after = c(-1,0,5,10), comment=F) -->
+<!-- ``` -->
 
-# Banding and buckets
+<!-- # Banding and buckets -->
 
-```{r banding, results='asis'}
-# view the signature matrix
-print(xtable::xtable(sig_mat[1:10, 5:10]), 
-      hline.after = c(-1,0,5,10), comment=F)
-```
+<!-- ```{r banding, results='asis'} -->
+<!-- # view the signature matrix -->
+<!-- print(xtable::xtable(sig_mat[1:10, 5:10]),  -->
+<!--       hline.after = c(-1,0,5,10), comment=F) -->
+<!-- ``` -->
 
-<!-- # Tuning -->
+# Tuning
 
-<!-- ## How to choose $k$ -->
+## How to choose $k$
 
-<!-- How large $k$ should be depends on how long our data strings are -->
+How large $k$ should be depends on how long our data strings are
 
-<!-- The important thing is $k$ should be picked large enough such that the probability of any given shingle is *low* -->
+The important thing is $k$ should be picked large enough such that the probability of any given shingle is *low*
 
-<!-- ## How to choose $b$ -->
+## How to choose $b$
 
-<!-- $b$ must divide $m$ evenly such that there are the same number of rows $r$ in each band  -->
+$b$ must divide $m$ evenly such that there are the same number of rows $r$ in each band
 
 
 
@@ -462,7 +462,7 @@ $$
 
 \normalsize
 
-```{r inclusion-probs, fig.cap=paste0("Probability that a pair of documents with a Jaccard similarity $s$ will be marked as potential matches for various bin sizes $b$ for $s = .25, .75$ for the number of permutations we did, $m = ", m, "$."), fig.height=3, echo=FALSE}
+```{r inclusion-probs, fig.cap=paste0("Probability that a pair of documents with a Jaccard similarity $s$ will be marked as potential matches for various bin sizes $b$ for $s = .25, .75$ for the number of permutations we did, $m = ", m, "$."), fig.height=3, echo=FALSE, warning=FALSE}
 # library to get divisors of m
 library(numbers) 
 
@@ -487,7 +487,7 @@ For $b = 90$, a pair of records with Jaccard similarity $.25$ will have a `r sca
 There an easy way to do LSH using the built in functions in the `textreuse` package via the functions `minhash_generator` and `lsh` (so we don't have to perform it by hand): 
 
 
-```{r show-package-lsh, echo=TRUE, cache=TRUE}
+```{r show-package-lsh, echo=TRUE, cache=TRUE, warning=FALSE}
 # choose appropriate num of bands
 b <- 90
 
@@ -498,7 +498,7 @@ minhash <- minhash_generator(n = m, seed = 02082018)
 # "Easy" LSH in R (Continued)
 
 \small
-```{r show-package-lsh-1, echo=TRUE, cache=TRUE}
+```{r show-package-lsh-1, echo=TRUE, cache=TRUE, warning=FALSE}
 # build the corpus using textreuse
 docs <- apply(dat, 1, function(x) paste(x[-1], collapse = " ")) # get strings
 names(docs) <- dat$id # add id as names in vector
@@ -513,7 +513,7 @@ corpus <- TextReuseCorpus(text = docs, # dataset
 
 # "Easy" LSH in R (Continued)
 
-```{r show-package-lsh-2, echo=TRUE, cache=TRUE}
+```{r show-package-lsh-2, echo=TRUE, cache=TRUE, warning=FALSE}
 
 # perform lsh to get buckets
 buckets <- lsh(corpus, bands = b, progress = FALSE)
@@ -528,108 +528,54 @@ lsh_jaccard <- lsh_compare(candidates, corpus,
 
 # "Easy" LSH in R (cont'd)
 
-```{r, lsh-plot,echo=FALSE}
+```{r, lsh-plot, echo=FALSE, warning=FALSE}
 # plot jaccard similarities that are candidates
 qplot(lsh_jaccard$score)
 ```
 
-# Putting it all together
+<!-- # Putting it all together -->
 
-The last thing we need is to go from candidate pairs to blocks
-
-
-```{r, echo=TRUE}
-library(igraph) #graph package
-# think of each record as a node
-# there is an edge between nodes if they are candidates
-```
-
-# Putting it all together
-\small
-```{r, echo=TRUE, cache=TRUE}
-g <- make_empty_graph(n, directed = FALSE) # empty graph
-g <- add_edges(g, is.vector((candidates[, 1:2]))) # candidate edges
-g <- set_vertex_attr(g, "id", value = dat$id) # add id
-
-# get custers, these are the blocks
-clust <- components(g, "weak") # get clusters
-blocks <- data.frame(id = V(g)$id, # record id
-                     block = clust$membership) # block number  
-head(blocks)
-```
-
-# Precision
-
-```{r}
-precision <- function(block.labels, IDs) {
-  ct = xtabs(~block.labels+IDs)
-  
-  # Number of true positives
-  TP = sum(choose(ct, 2))
-  
-  # Number of positives = TP + FP
-  P = sum(choose(rowSums(ct), 2)) 
-  
-  return(TP/P)
-}
-```
-
-# Pairwise Recall
+<!-- The last thing we need is to go from candidate pairs to blocks -->
 
 
-```{r}
-recall <- function(block.labels, IDs) {
-  ct = xtabs(~IDs+block.labels)
-  
-  # Number of true positives
-  TP = sum(choose(ct, 2))
-  
-  # Number of true links = TP + FN
-  TL = sum(choose(rowSums(ct), 2))
-  
-  return(TP/TL)
-}
-```
+<!-- ```{r, echo=TRUE} -->
+<!-- library(igraph) #graph package -->
+<!-- # think of each record as a node -->
+<!-- # there is an edge between nodes if they are candidates -->
+<!-- ``` -->
 
-# Calculation
-```{r}
-head(blocks$id)
-tail(blocks$id)
-```
+<!-- # Putting it all together -->
+<!-- \small -->
+<!-- ```{r, echo=TRUE, cache=TRUE} -->
+<!-- g <- make_empty_graph(n, directed = FALSE) # empty graph -->
+<!-- g <- add_edges(g, is.vector((candidates[, 1:2]))) # candidate edges -->
+<!-- g <- set_vertex_attr(g, "id", value = dat$id) # add id -->
 
-# Calculation
-```{r}
-head(blocks$block)
-tail(blocks$block)
-```
+<!-- # get custers, these are the blocks -->
+<!-- clust <- components(g, "weak") # get clusters -->
+<!-- blocks <- data.frame(id = V(g)$id, # record id -->
+<!--                      block = clust$membership) # block number   -->
+<!-- head(blocks) -->
+<!-- ``` -->
 
-# Calculation
-```{r}
 
-recall(block.labels = blocks$block, IDs  = blocks$id)
-precision(block.labels = blocks$block, IDs  = blocks$id) 
-library(clevr)
-pred_labels = rbind(blocks$id,blocks$block)
-true_labels = rbind(cora_gold$id1, cora_gold$id2)
-```
+<!-- # Your turn -->
 
-# More Calculation
-```{r}
-dim(pred_labels)
-dim(true_labels)
-#precision_pairs(true_labels, pred_labels)
-```
+<!-- 1. Play around with the package above to find the blocks. -->
+<!-- 2. Write code (or use existing code) to find the precision, recall.  -->
+<!-- 3. Write code to find the reduction ratio as well.  -->
+<!-- 4. Report your findings.   -->
 
 
 
 # Your turn
 
-Using the `fname_c1` and `lname_c1` columns in the `RecordLinkage::RL500` dataset, 
+Using the `fname_c1` and `lname_c1` columns in the `RecordLinkage::RL500` dataset,
 
 1. Use LSH to get candidate pairs for the dataset
   - What $k$ to use for shingling?
   - What $b$ to use for bucket size?
-  
+
 2. Append the blocks to the original dataset as a new column, `block`
 
 # Even faster?
