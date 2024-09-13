@@ -229,7 +229,7 @@ We can think of the fact that we have transformed the input (original data) into
 # Characteristic matrix (continued)
 ```{r characteristic-2, cache=TRUE}
 # inspect results
-kable(char_mat[1:10, 1:5])
+kable(char_mat[1:10, 5:10])
 ```
 
 # Similarity preserving summaries of sets
@@ -262,9 +262,11 @@ Let's apply a permutation to the charateristic matrix:
     \includegraphics[width=0.6\textwidth]{figures/permuted-matrix}
     % Source: Original work by RCS
   \end{center}
-  \caption{Consider applying The $\pi$ vector to the input (charateristic matrix) which provides the permuted matrix.}
+  \caption{Consider applying the $\pi$ vector to the input (charateristic matrix) which provides the permuted matrix.}
   \label{figure:permute}
 \end{figure}	
+
+The columns are records. The rows are shingled records. 
 
 **Why are we performing this permutation?**
 
@@ -376,7 +378,7 @@ kable(sig_mat[1:10, 5:10])
 
 # Jaccard similarity approximation
 \small
-```{r jaccard-sig, fig.height=4, cache=TRUE}
+```{r jaccard-sig, fig.height=4, cache=TRUE, echo=FALSE, warning=FALSE}
 # add jaccard similarity approximated from the minhash to compare
 # number of agreements over the total number of combinations
 hashed_jaccard$similarity_minhash <- 
@@ -390,21 +392,21 @@ qplot(hashed_jaccard$similarity_minhash - hashed_jaccard$similarity) +
   xlab("Difference between Jaccard similarity and minhash approximation")
 ```
 
-# Jaccard similarity approximation
+<!-- # Jaccard similarity approximation -->
 
-```{r jaccard-sig-again, fig.height=4, cache=TRUE, echo=FALSE, warning=FALSE}
-# add jaccard similarity approximated from the minhash to compare
-# number of agreements over the total number of combinations
-hashed_jaccard$similarity_minhash <- 
-  apply(hashed_jaccard, 1, function(row) {
-  sum(sig_mat[, row[["record1"]]] == 
-        sig_mat[, row[["record2"]]])/nrow(sig_mat)
-})
+<!-- ```{r jaccard-sig-again, fig.height=4, cache=TRUE, echo=FALSE, warning=FALSE} -->
+<!-- # add jaccard similarity approximated from the minhash to compare -->
+<!-- # number of agreements over the total number of combinations -->
+<!-- hashed_jaccard$similarity_minhash <-  -->
+<!--   apply(hashed_jaccard, 1, function(row) { -->
+<!--   sum(sig_mat[, row[["record1"]]] ==  -->
+<!--         sig_mat[, row[["record2"]]])/nrow(sig_mat) -->
+<!-- }) -->
 
-# how far off is this approximation? plot differences
-qplot(hashed_jaccard$similarity_minhash - hashed_jaccard$similarity) +
-  xlab("Difference between Jaccard similarity and minhash approximation") 
-```
+<!-- # how far off is this approximation? plot differences -->
+<!-- qplot(hashed_jaccard$similarity_minhash - hashed_jaccard$similarity) + -->
+<!--   xlab("Difference between Jaccard similarity and minhash approximation")  -->
+<!-- ``` -->
 
 Used minhashing to get an approximation to the Jaccard similarity, which helps by allowing us to store less data (hashing) and avoid storing sparse data (signature matrix)
 
@@ -423,20 +425,20 @@ We want to hash items several times such that similar items are more likely to b
   
 We only check *candidate pairs* for similarity
 
-<!-- # Banding and buckets -->
+# Banding and buckets
 
-<!-- ```{r} -->
-<!-- print(xtable::xtable(sig_mat[10:20, 1:5]),  -->
-<!--       hline.after = c(-1,0,5,10), comment=F) -->
-<!-- ``` -->
+```{r}
+print(xtable::xtable(sig_mat[10:20, 1:5]),
+      hline.after = c(-1,0,5,10), comment=F)
+```
 
-<!-- # Banding and buckets -->
+# Banding and buckets
 
-<!-- ```{r banding, results='asis'} -->
-<!-- # view the signature matrix -->
-<!-- print(xtable::xtable(sig_mat[1:10, 5:10]),  -->
-<!--       hline.after = c(-1,0,5,10), comment=F) -->
-<!-- ``` -->
+```{r banding, results='asis'}
+# view the signature matrix
+print(xtable::xtable(sig_mat[1:10, 5:10]),
+      hline.after = c(-1,0,5,10), comment=F)
+```
 
 # Tuning
 
@@ -568,25 +570,9 @@ qplot(lsh_jaccard$score)
 
 # Your turn
 
-1. Identify all pairs of blocks. 
-2. Find the reduction ratio. 
-3. Write code to find the precision and recall of the blocks. 
-4. Make sure this is reproducible.  
-
-Hint: Why can't you use existing code.
+Let's look at a problem together. 
 
 
-
-
-<!-- # Your turn -->
-
-<!-- Using the `fname_c1` and `lname_c1` columns in the `RecordLinkage::RL500` dataset, -->
-
-<!-- 1. Use LSH to get candidate pairs for the dataset -->
-<!--   - What $k$ to use for shingling? -->
-<!--   - What $b$ to use for bucket size? -->
-
-<!-- 2. Append the blocks to the original dataset as a new column, `block` -->
 
 # Even faster?
 
