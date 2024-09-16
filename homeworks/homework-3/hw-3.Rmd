@@ -120,6 +120,7 @@ qplot(lsh_jaccard$score)
 
 5. 
 
-i. Are the resulting blocks from LSH non-overlapping or overlapping? 
-ii. Describe some advantages and disadvantages of using LSH. 
+i. Describe what the blocks look like from this method? 
+ii. Are the blocks non-overlapping or overlapping? 
+iii. Describe some advantages and disadvantages of the LSH method that you see from using it practically. 
 
