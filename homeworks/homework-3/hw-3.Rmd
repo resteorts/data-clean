@@ -120,7 +120,9 @@ qplot(lsh_jaccard$score)
 
 5. 
 
-i. Describe what the blocks look like from this method? 
-ii. Are the blocks non-overlapping or overlapping? 
+i. Describe what the blocks look like from this method? Hint: Try looking at a histogram of the number of records in each bucket. 
+
+ii. Are the blocks non-overlapping or overlapping? Hint: Part (i) should help you determine an answer to this. 
+
 iii. Describe some advantages and disadvantages of the LSH method that you see from using it practically. 
 
