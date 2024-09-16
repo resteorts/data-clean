@@ -114,6 +114,8 @@ qplot(lsh_jaccard$score)
 
 2. Find the pairwise precision and recall under locality sensitive hashing. There are two places where we have ground truth. Note that cora_gold contains record pairs that are true matches; cora_gold_update contains a unique identifer alternatively. You will need to write your own code for this. 
 
+Hint: the lsh_jaccard contains our pairwise predictions and cora_gold contains the pairwise truth. How can you compare the pairs in lsh_jaccard and the pairs in cora_gold to find the number of true positives first? Then, how can you extend this to find the other components of precision and recall? There are multiple ways to approach this problem, but examining the data pairwise may be the most intuitive.
+
 3. We can further reduce the problem by filtering out candidate pairs of records below a threshold $t$ that are unlikely to be matches. For example, assume $t = 0.8.$ Filter out all record pairs below the threshold of $0.8.$ We will call this locality sensitive hashing with filtering/thresholding. 
 
 4. Under lsh with t = 0.8, re-compute the precision, recall, and reduction ratio. 
