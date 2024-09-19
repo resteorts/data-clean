@@ -188,6 +188,9 @@ The function `epiClassify` allows the user to specify a threshold.
 ```{r}
 result <- epiClassify(rpairs, 0.55)
 summary(result)
+head(result$prediction)
+table(result$prediction)
+head(identity.RLdata500)
 ```
 
 ## Objects of `result`
@@ -206,7 +209,7 @@ We can look at many objects of `result` which include
 
 Find the the precision, recall, and f-measure (with and without blocking). 
 
- 
+
 
 
 
