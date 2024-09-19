@@ -1,8 +1,6 @@
-
 ---
 title: "Module 6: Fellegi-Sunter Method Applied to RLdata500"
 author: "Rebecca C. Steorts"
-institute: 
 output: 
      beamer_presentation:
       includes: 
@@ -10,26 +8,28 @@ output:
 font-size: 8px
 ---
 
-## Agenda 
 
-- Let's consider the RLdata500 data set and apply Fellegi Sunter to it
-- We will first use the RecordLinkage package 
-- Then we will look at a wrapper function that makes this a bit easier. 
+ 
 
 
 ## Load packages
 
+Let's load packages. 
+
 ```{r, message=FALSE}
 library(RecordLinkage)
-#library(ffbase)
 ```
+
+
 
 ## RLdata500
 
+Let's consider the RLdata500 data set. 
+
 ```{r}
 data(RLdata500)
-head(RLdata500)
-head(identity.RLdata500)
+#head(RLdata500)
+#head(identity.RLdata500)
 ```
 
 ## Comparison Vectors
@@ -187,7 +187,7 @@ The function `epiClassify` allows the user to specify a threshold.
 \tiny
 ```{r}
 result <- epiClassify(rpairs, 0.55)
-#summary(result)
+summary(result)
 ```
 
 ## Objects of `result`
@@ -202,48 +202,56 @@ We can look at many objects of `result` which include
 - prediction
 - threshold
 
-## Evaluation Metrics
+## On your own
 
-\footnotesize
+Find the the precision, recall, and f-measure (with and without blocking). 
 
-```{r}
-fileDir <- "datasets/"
-file.name <- "RLdata10000.csv"
-filesDf <- read.csv(paste0(fileDir,file.name), na.strings=c("NA"), 
-                     stringsAsFactors = FALSE, colClasses = "character")
+ 
 
-# ------------------------------- Configuration ------------------------------ #
-linkingFields    <- c("fname_c1", "lname_c1", "by", "bm", "bd")
-strLinkingFields <- c("fname_c1", "lname_c1")
-blockPasses      <- list(c("by"), c("bm", "bd"))
-recIdField       <- "rec_id"
-entIdField       <- "ent_id"
-strDist          <- "levenshtein"
-strCutoff        <- 0.70
-dataName         <- "RLdata10000"
-threshold        <- -10.0
-sampleSize       <- c(5, 50) # This give 100 data points
-```
 
-## Evaluation Metrics
 
-\footnotesize
-```{r, message=FALSE, warning=FALSE}
-library(ff)
-library(ffbase)
-source("fs-code/runFS.R")
-runFS(filesDf, linkingFields, strLinkingFields, recIdField, entIdField, blockPasses, 
-      strDist, strCutoff, dataName, threshold)
-```
+<!-- ## Evaluation Metrics -->
 
-## Evaluation Metrics
+<!-- \footnotesize -->
 
-\footnotesize
-```{r, message=FALSE, warning=FALSE}
-source("fs-code/evaluationMetrics.R")
-source("fs-code/evaluate.R")
-evaluate(filesDf, linkingFields, strLinkingFields, recIdField, 
-         entIdField, blockPasses, strDist, strCutoff, dataName, 
-         threshold, sampleSize)
+<!-- ```{r} -->
+<!-- fileDir <- "datasets/" -->
+<!-- file.name <- "RLdata10000.csv" -->
+<!-- filesDf <- read.csv(paste0(fileDir,file.name), na.strings=c("NA"),  -->
+<!--                      stringsAsFactors = FALSE, colClasses = "character") -->
 
-```
+<!-- # ------------------------------- Configuration ------------------------------ # -->
+<!-- linkingFields    <- c("fname_c1", "lname_c1", "by", "bm", "bd") -->
+<!-- strLinkingFields <- c("fname_c1", "lname_c1") -->
+<!-- blockPasses      <- list(c("by"), c("bm", "bd")) -->
+<!-- recIdField       <- "rec_id" -->
+<!-- entIdField       <- "ent_id" -->
+<!-- strDist          <- "levenshtein" -->
+<!-- strCutoff        <- 0.70 -->
+<!-- dataName         <- "RLdata10000" -->
+<!-- threshold        <- -10.0 -->
+<!-- sampleSize       <- c(5, 50) # This give 100 data points -->
+<!-- ``` -->
+
+<!-- ## Evaluation Metrics -->
+
+<!-- \footnotesize -->
+<!-- ```{r, message=FALSE, warning=FALSE} -->
+<!-- library(ff) -->
+<!-- library(ffbase) # https://github.com/edwindj/ffbase -->
+<!-- source("fs-code/runFS.R") -->
+<!-- runFS(filesDf, linkingFields, strLinkingFields, recIdField, entIdField, blockPasses,  -->
+<!--       strDist, strCutoff, dataName, threshold) -->
+<!-- ``` -->
+
+<!-- ## Evaluation Metrics -->
+
+<!-- \footnotesize -->
+<!-- ```{r, message=FALSE, warning=FALSE} -->
+<!-- source("fs-code/evaluationMetrics.R") -->
+<!-- source("fs-code/evaluate.R") -->
+<!-- evaluate(filesDf, linkingFields, strLinkingFields, recIdField,  -->
+<!--          entIdField, blockPasses, strDist, strCutoff, dataName,  -->
+<!--          threshold, sampleSize) -->
+
+<!-- ``` -->
