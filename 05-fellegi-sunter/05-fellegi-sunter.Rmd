@@ -1,6 +1,6 @@
 
 ---
-title: "Module 6: Fellegi-Sunter Method"
+title: "Module 5: Fellegi-Sunter Method"
 author: "Rebecca C. Steorts"
 institute: joint with Olivier Binette
 output: 
@@ -31,9 +31,6 @@ knitr::opts_chunk$set(echo = TRUE,
 library(RecordLinkage)
 library(blink)
 library(phonics)
-source("../../code/runFS.R")
-source("../../code/evaluationMetrics.R")
-source("../../code/evaluate.R")
 ```
 
 ## Background
@@ -452,7 +449,7 @@ Abusing notation, the idea is to consider the equations:
     \end{align*}
     which are $2^k - 1$ equations for $2k + 1$ variables; there can be a solution when $k \geq 3$.
     
-To solve for $m(\gamma_i)$ and $u(\gamma_i),$ the EM algorithm is used.   
+To solve for $m(\gamma_i)$ and $u(\gamma_i),$ the EM algorithm is used.\footnote{The EM algorithm iteratively solves for the unknown $m$ and $u$ parameters, where it finds a local maximum for the likelihood.}  
     
     
 ## Final Question

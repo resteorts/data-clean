@@ -50,18 +50,20 @@ How do we build record pairs of comparison vectors?
 
 
 ```{r}
-# create comparison vectors
-rpairs <- compare.dedup(RLdata500, 
-                        identity = identity.RLdata500)
+# create comparison vectors (everything is binary)
+#rpairs <- compare.dedup(RLdata500, 
+                        #identity = identity.RLdata500)
+rpairs <- RLBigDataDedup(RLdata500, identity = identity.RLdata500)
 ```
 
 ## Comparison Vectors 
 
 \footnotesize
 ```{r}
-# inspect comparison vectors
+# inspect 1st five rows of the comparison vectors
 rpairs$pairs[1:5,]
 ```
+
 
 ## Blocking
 
@@ -79,9 +81,9 @@ We will consider a blocking pattern where two records must agree in either the *
 
 ```{r}
 # blocking and comparison vectors
-rpairs <- compare.dedup(RLdata500, 
+rpairs <- compare.dedup(RLdata10000, 
                         blockfld = list(1,5:7),
-                        identity = identity.RLdata500)
+                        identity = identity.RLdata10000)
 ```
 
 ## Blocking and Comparison Vectors
