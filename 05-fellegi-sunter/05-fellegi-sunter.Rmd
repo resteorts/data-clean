@@ -484,3 +484,28 @@ To explore this more in depth, see Binette and Steorts (2020) to see connections
 - What did Fellegi and Sunter (1969) propose (two methods) ?
 - How would you summarize the main ideas of this lecture and summarize it to a friend? 
 
+## Supplement
+
+In the supplement, I provide the math that is the basis this problem, which is important to the paper and extensions moving forward. 
+
+Following notation in Kundinger et. al (2024). 
+
+## Notation
+
+Suppose we have two data sets $A$ and $B$ with $n_1$ and $n_2$ records, respectively. 
+\vfill
+Each records have $F$ fields of information. 
+\vfill
+We represent the biparite matching by $Z = (Z_1, \ldots, Z_{n_2}),$ where 
+\vfill
+
+- $Z_j = i$ for $i \in [n_1]$ if record $j \in B$ matches record $i \in A$ and
+- $Z_j = n_1 + j$ if record $j$ in $B$ does not match any record in $A.$
+
+## Comparison Data
+
+Let $$\gamma_{ij} = (\gamma_{ij}^1, \ldots, \gamma_{ij}^F)$$, where 
+$\gamma_{ij}^f$ is the comparison of record $i,j$ for field $f.$
+
+Collect all comparison vectors into the matrix 
+$$\Gamma = \{ \gamma_{ij} \}_{i=1,j=1}^{n_1,n_2}.$$
