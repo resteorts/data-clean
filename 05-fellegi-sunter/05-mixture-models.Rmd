@@ -9,6 +9,52 @@ output:
 font-size: 8px
 ---
 
+Announcements
+===
+
+- Exam I, Take Home Exam
+- Release Date: Tuesday, October 1 at 10 AM. 
+- Due Date: Monday October 7th at 5 PM.
+
+Announcements
+===
+
+- Come to Class on Friday to ask any questions you might have regarding the examination
+- Coverage of material is the following: Modules 1 -- 4 and homework 1 -- 3. 
+
+Announcements
+===
+
+- Class schedule next week:
+
+- Friday, September 27th: Bring any questions regarding exam format or questions you have in general before the exam is released. 
+- The TA's will not be able to discuss exam format, etc. 
+
+- Monday: Review session on Monday, October 1st with Athena. 
+
+- Wednesday (Oct. 3) or Friday (Oct 5): Would you like for me to be available in person or via zoom during class time to answer any questions regarding the examination? 
+
+- There will not be lecture materials on Wednesday (Oct. 3) or Friday (Oct 5) to provide you with additional time to complete the exam or ask clarifying questions. 
+
+Instructions on Exam
+===
+
+- This is a taken home examination to be completed individually.
+- This exam is open note, open book, and class resources (please cite as you go).
+-  The exam is closed to talking to students (or anyone else except your instructor or teaching assistants
+in the course). We will only answer clarification questions and not anything about course material for
+the exam.
+-  You may not search Google, use ChatGPT, or other resources to aide in answering the questions. You
+may utilize any suggested books or resources listed for the course materials.
+- You may not talk to anyone about the exam until the grades are released to the entire class.
+- Clarification questions will be addressed and should be asked to the instructor (and teaching assistants
+privately on Canvas).
+-  No group postings should be made regarding the exam or exam related material.
+- Your submission must be to Gradescope and to Canvas (in the same format) as the homework.
+- Please make sure your name is attached and by submitting you agree to the abide by all rules of the
+assignment and the Duke Community Standard.
+
+
 Agenda
 ===
 
