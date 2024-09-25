@@ -656,6 +656,19 @@ Gaussian mixtures.
 
 - The `mixtools` considers classic parametric densities, mixtures of regressions, and some non-parametric mixtures. 
 
+Exercise
+===
+
+Suppose that $X \sim N(\mu_1, \sigma_1^2)$ and $Y \sim N(\mu_2, \sigma_2^2)$ independently.
+
+1. What is the distribution of $aX + bY$? 
+
+Solution: Due to independence, $$Z \sim N(a\mu_1, + b\mu_2, a^2\sigma_1^2 +b^2 \sigma_2^2).$$
+
+2. Suppose that $X \sim N(\mu_1, \sigma_1^2)$ and $Y \sim N(\mu_2, \sigma_2^2)$ (and the observations are dependent). 
+
+Is the distribution of $aX + bY$ still Normal? No, not necessarily due to the dependence of the random variables.\footnote{In the case of a Gaussian mixture model, a random variable sampled from a Gaussian mixture model can be thought of as a two stage process. First, randomly sample a component (e.g., male or female). Second, then we sample our observation from the normal distribution that corresponds to the component sampled in step one.}
+
  
 
 
