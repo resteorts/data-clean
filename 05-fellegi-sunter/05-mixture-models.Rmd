@@ -103,13 +103,12 @@ Application areas
 
 - Clustering temperatures to identify weather patterns, grouping individuals based on height and weight similarities.
 - Clustering customers based on satisfaction levels (ordinal) or grouping individuals based on gender (categorical).
-- Clustering stock price movements to identify similar trends, grouping temperature readings based on seasonal patterns.
 - Clustering GPS coordinates to identify spatial patterns, grouping locations on a map based on features.
+- Clustering users in a social network or data based based on their connections (edge structure), grouping academic papers based on citation patterns.
 
 Application areas
 ===
 
-- Clustering users in a social network or data based based on their connections (edge structure), grouping academic papers based on citation patterns.
 - Clustering articles based on topics, grouping emails by subject matter.
 - Clustering photographs by content, grouping medical images based on visual features.
 - Clustering music tracks by genre, grouping speech recordings by language.
@@ -139,8 +138,8 @@ Motivation
 Model 
 ===
 
-- Paperback distribution: $N(9,1)$
-- Hardback distribution: $N(20,2)$
+- Paperback distribution: $N(9, 1)$
+- Hardback distribution: $N(20, 1)$
 - Assume that there's a there is a 50\% chance of choosing a paperback and 50\% of choosing hardback.
 
 
@@ -192,9 +191,9 @@ Motivation
 
 Now assume our data are the heights of students at University X.
 
-Assume the height of a randomly chosen male is normally distributed with a mean equal to $5'9$ and a standard deviation of $2.5$ inches.
+Assume the height of a randomly chosen male is normally distributed with a mean equal to $N(69, 2.5^2),$ with units in inches. 
 
-Assume the height of a randomly chosen female is $N(5'4, 2.5)$. 
+Assume the height of a randomly chosen female is $N(64, 2.5^2)$. 
 
 Assume that 75\% of the population is female and 25\% is male. 
 
@@ -306,6 +305,7 @@ The likelihood is
                        & = \prod_{i=1}^n \Big[ (1-\pi)\N(x_i\mid \mu_0,\lambda^{-1}) + \pi\N(x_i\mid \mu_1,\lambda^{-1}) \Big].
 \end{align*}
 
+
 Likelihood
 ===
 
@@ -381,7 +381,7 @@ Let $\pi_k$ be called **mixture proportions** or **mixture weights**, which repr
 The mixture proportions are non-negative and they sum to one, $\sum_{k=1}^K \pi_k = 1$. 
 \vfill
 
-We call $P(X_i \mid Z_i=k)$ the **mixture component**, and it represents the distribution of $X_i$ assuming it came from component $k$. 
+Observe that $P(X_i \mid Z_i=k)$ represents the distribution of $X_i$ assuming it came from component $k$. 
 
 Law of Total Probability
 ===
