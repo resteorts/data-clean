@@ -337,14 +337,38 @@ Define an equivalent model that includes latent ``allocation'' variables $Z_1,\l
 These indicate which mixture component each data point
 comes from--that is, $Z_i$ indicates whether subject $i$ is from component 1 or 2.
 \begin{align}
- & X_i \mid \mu, Z \sim\N(\mu_{Z_i},\lambda^{-1}) \text{ independently for } i=1,\ldots,n.\\
+ & X_i \mid \mu, Z \sim\N(\mu_{Z_i},\lambda^{-1}) i=1,\ldots,n.\\
  & Z_1,\ldots,Z_n \mid \mu,\pi\,\stackrel{iid}{\sim}\,\Bernoulli(\pi)
 \end{align}
 
 How can we check that the latent allocation model is equivalent to our original model? 
 (Exercise to complete outside of class). 
 
+Checking for understanding
+===
 
+Then the two-component Normal mixture model is:
+\begin{align}
+  & X_1,\ldots, X_n \mid \mu,\pi\ \sim F(\mu,\pi)
+\end{align}
+where $F(\mu,\pi)$ is the distribution with p.d.f. 
+$$ f(x|\mu,\textcolor{blue}{\pi}) = (1-\textcolor{blue}{\pi})\N(x\mid \mu_0,\lambda^{-1}) + \textcolor{blue}{\pi}
+\N(x\mid \mu_1,\lambda^{-1}).$$
+
+
+
+
+Written as a two-stage process:
+
+\begin{align}
+ & X_i \mid \mu, Z \sim\N(\mu_{Z_i},\lambda^{-1}) i=1,\ldots,n.\\
+ & Z_1,\ldots,Z_n \mid \mu,\pi\,\stackrel{iid}{\sim}\,\Bernoulli(\pi)
+\end{align}
+
+Checking for understanding
+===
+
+Given the two equivalent models above, how would you simulate data from a two component mixture model? 
 
 <!-- Equivalence of both models  -->
 <!-- === -->
@@ -364,6 +388,15 @@ How can we check that the latent allocation model is equivalent to our original 
 <!-- \end{align} -->
 <!-- and thus it induces the same distribution on $(x_{1:n},\mu,\pi)$. The latent model is considerably easier to work with mathematically!  -->
 
+How do we extend to any number of components (clusters) $k$
+===
+
+1. Set general notation
+2. Write out the extended mixture model
+3. Write out the latent variable model 
+4. Write this out for a Gaussian setting 
+
+
 Extension to k-components
 ===
 
@@ -382,6 +415,63 @@ The mixture proportions are non-negative and they sum to one, $\sum_{k=1}^K \pi_
 \vfill
 
 Observe that $P(X_i \mid Z_i=k)$ represents the distribution of $X_i$ assuming it came from component $k$. 
+
+Extension
+===
+
+Then the two-component Normal mixture model is:
+\begin{align}
+  & X_1,\ldots, X_n \mid \mu,\pi\ \sim F(\mu,\pi)
+\end{align}
+where $F(\mu,\pi)$ is the distribution with p.d.f. 
+$$ f(x|\mu,\textcolor{blue}{\pi}) = \sum_{k=1}^K \pi_k N(\mu_k, \lambda^{-1}).$$
+
+
+
+
+Written as a two-stage process:
+for $i=1,\ldots,n$:
+\begin{align}
+ & X_i \mid \mu, Z_i \sim\N(\mu_{Z_i},\lambda^{-1}) \\
+& P(Z_i = k) = \pi_k
+\end{align}
+
+Example
+===
+
+Let's look at a three component mixture model. 
+
+Suppose we assume that 
+$\mu = (-10, 0, 10)$ and $\sigma^2 = 1.$ Assume each mixture weight is equally likely.
+
+```{r}
+set.seed(1234)
+n <- 100
+mu <- c(-10, 0, 10)
+# sample Z first 
+Z <- sample(1:3, size=n, replace=TRUE)
+# conditional on Z, sample the normal update
+X <- rnorm(n, mean=mu[Z], sd=1)
+hist(X, breaks=20)
+```
+
+Example
+===
+
+```{r, echo=FALSE}
+n <- 100
+mu <- c(-10, 0, 10)
+# sample Z first 
+Z <- sample(1:3, size=n, replace=TRUE)
+# conditional on Z, sample the normal update
+X <- rnorm(n, mean=mu[Z], sd=1)
+hist(X, breaks=20)
+```
+
+Extension Beyond Gaussians
+===
+
+How can we extend this to any distribution beyond Gaussian?
 
 Law of Total Probability
 ===
