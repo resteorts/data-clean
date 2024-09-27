@@ -329,10 +329,11 @@ precision <- function(block.labels, IDs) {
 \small
 ```{r}
 recall <- function(block.labels, IDs) {
-  # confusion matrix is a contingency table 
+  # confusion matrix is a sparse table 
   ct = xtabs(~IDs+block.labels)
   
   # Number of true positives
+  # choose() function calculates the number of sets with n elements that can be chosen from a set with k elements.
   TP = sum(choose(ct, 2))
   
   # Number of true links = TP + FN
@@ -340,6 +341,7 @@ recall <- function(block.labels, IDs) {
   
   return(TP/TL)
 }
+
 ```
 \normalsize
 
