@@ -1,0 +1,684 @@
+
+---
+title: "Clustering, Mixture Models, and the EM Algorithm"
+author: "Rebecca C. Steorts"
+output: 
+     beamer_presentation:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
+---
+
+Announcements
+===
+
+- Exam I, Take Home Exam
+- Release Date: Tuesday, October 1 at 10 AM. 
+- Due Date: Monday October 7th at 5 PM.
+
+Announcements
+===
+
+- Come to Class on Friday to ask any questions you might have regarding the examination
+- Coverage of material is the following: Modules 1 -- 4 and homework 1 -- 3. 
+
+Announcements
+===
+
+- Class schedule next week:
+
+- Friday, September 27th: Bring any questions regarding exam format or questions you have in general before the exam is released. 
+- The TA's will not be able to discuss exam format, etc. 
+
+- Monday: Review session on Monday, October 1st with Athena. 
+
+- Wednesday (Oct. 3) or Friday (Oct 5): Would you like for me to be available in person or via zoom during class time to answer any questions regarding the examination? 
+
+- There will not be lecture materials on Wednesday (Oct. 3) or Friday (Oct 5) to provide you with additional time to complete the exam or ask clarifying questions. 
+
+Agenda
+===
+
+- Clustering
+- Two Component Mixture Model
+- Latent Variable 
+- EM Algorithm
+
+Clustering
+===
+
+Clustering is an **unsupervised method** that divides up data
+into groups (clusters), so that points in any one group 
+are more ``similar'' to each other than to points 
+outside the group
+
+Clustering methods (that we have covered)
+===
+
+- Fuzzy clustering (such as deterministic entity resolution or blocking)
+- Overlapping clustering (such as locality sensitive hashing)
+- Fellegi Sunter method (technically a mixture model, stay tuned)
+ 
+Clustering methods (that we have not covered)
+===
+
+- Mixture models
+- K-means
+- Hierarchical clustering
+- Others
+
+Application areas
+===
+
+- Clustering temperatures to identify weather patterns, grouping individuals based on height and weight similarities.
+- Clustering customers based on satisfaction levels (ordinal) or grouping individuals based on gender (categorical).
+- Clustering GPS coordinates to identify spatial patterns, grouping locations on a map based on features.
+- Clustering users in a social network or data based based on their connections (edge structure), grouping academic papers based on citation patterns.
+
+<!-- Application areas -->
+<!-- === -->
+
+<!-- - Clustering articles based on topics, grouping emails by subject matter. -->
+<!-- - Clustering photographs by content, grouping medical images based on visual features. -->
+<!-- - Clustering music tracks by genre, grouping speech recordings by language. -->
+<!-- - Clustering surveillance footage to identify similar activities, grouping video clips by visual similarities. -->
+
+
+
+History
+===
+
+- First proposed by Karl Pearson (1984) and analyzed on crab data. 
+- Applications: "agriculture, astronomy, bioinformatics, biology, economics, engineering, genetics, imaging, marketing, medicine, neuroscience, psychiatry, and psychology, among many other fields in the biological, physical, and social sciences". McLachlan et. al (2019). 
+- One of the methods in machine learning is **topic modeling**, which identifies "topics" in collections of documents/webpages. 
+- Topic modeling relies on mixtures models. 
+
+Motivation
+===
+
+- Suppose we want to simulate the price of a randomly chosen book. 
+
+- Paperbacks are often cheaper than hardbacks, so let's model them separately. 
+
+- Model the price of a book as a mixture model.
+
+- There will be two components (or clusters) in our model -- one for paperbacks and one for hardbacks. 
+
+Model 
+===
+
+- Paperback distribution: $N(9, 1)$
+- Hardback distribution: $N(20, 1)$
+- Assume that there's a there is a 50\% chance of choosing a paperback and 50\% of choosing hardback.
+
+
+Motivation
+===
+
+```{r, echo=FALSE}
+numSamples <- 5000
+prices      <- numeric(numSamples)
+for(i in seq_len(numSamples)) {
+  # draw latent component
+  z.i <- rbinom(1,1,0.5)
+  # two conditions for each normal distribution based upon the latent component
+  if(z.i == 0) prices[i] <- rnorm(1, mean = 9, sd = 1)
+  else prices[i] <- rnorm(1, mean = 20, sd = 1)
+}
+hist(prices)
+```
+
+Motivation
+===
+
+- Are the prices of books unimodal or bimodal? 
+- Suppose you would want to predict the price of a book. Would its distribution be Normal or something else based on the the histogram. 
+ 
+Motivation
+===
+
+
+```{r, echo=FALSE}
+mu.pb   <- 9
+sd.pb   <- 1
+mu.hb   <- 20
+sd.hb   <- 1
+
+sample.pts <- seq(5, 25, by=0.1)
+density_pb   <- dnorm(sample.pts, mean=mu.pb, sd=sd.pb)
+density_hb <- dnorm(sample.pts, mean=mu.hb, sd=sd.hb)
+
+plot(sample.pts, density_pb, col='red', type='l', xlab="Price ($)", ylab="Density", lty=2)
+lines(sample.pts, density_hb, col='blue', type='l', lty=2)
+lines(sample.pts, 0.5*density_hb + 0.5*density_pb, col='black', type='l', lwd=2)
+
+legend('topright', c('paperback', 'hardback', 'all books'), col=c('red', 'blue', 'black'), lty=c(2,2,1), lwd=c(1,1,2), cex=0.7)
+```
+
+Motivation
+===
+
+Now assume our data are the heights of students at university. 
+
+Male height: $N(69, 2.5^2),$ with units in inches. 
+
+Female height: $N(64, 2.5^2)$.
+
+Assume that 75\% of the population is female and 25\% is male. 
+
+Motivation
+===
+
+```{r, echo= FALSE}
+numSamples <- 5000
+heights      <- numeric(numSamples)
+for(i in seq_len(numSamples)) {
+  z.i <- rbinom(1,1,0.75)
+  if(z.i == 0) heights[i] <- rnorm(1, mean = 69, sd = 2.5)
+  else heights[i] <- rnorm(1, mean = 64, sd = 2.5)
+}
+hist(heights)
+```
+ 
+ 
+Motivation
+===
+
+The histogram is now unimodal. 
+
+Are heights normally distributed (assuming this model)? Let's invesitgate! 
+
+Motivation
+===
+
+```{r, echo=FALSE}
+mu.male   <- 69
+sd.male   <- 2.5
+mu.female <- 64
+sd.female <- 2.5
+
+sample.pts     <- seq(55, 80, by=0.1)
+density_male   <- dnorm(sample.pts, mean=mu.male, sd=sd.male)
+density_female <- dnorm(sample.pts, mean=mu.female, sd=sd.female)
+
+plot(sample.pts, density_male, col='red', type='l', xlab="Height (inches)", ylab="Density", lty=2)
+lines(sample.pts, density_female, col='blue', type='l', lty=2)
+lines(sample.pts, .75*density_female + .25*density_male, col='black', type='l', lwd=2)
+
+legend('topright', c('male', 'female', 'population'), col=c('red', 'blue', 'black'), lty=c(2,2,1), lwd=c(1,1,2), cex=0.7)
+```
+
+Motivation
+===
+
+The Gaussian mixture model is unimodal because there is so much overlap between the two densities. 
+
+In this example, observe that the population density is not symmetric, and therefore not normally distributed. 
+
+
+
+Goal
+===
+
+The goal of this module is to introduce **mixture models**, which are commonly used in applications in classical and modern machine learning.
+
+<!-- We will do this using a **latent variable**. -->
+
+<!-- Background  -->
+<!-- === -->
+
+<!-- A **latent variable** is the true version of the state of a random variable that is unknown and not directly observed.\footnote{We will not delve into the properties of latent variables in this course.} -->
+
+Mixture models can be viewed as probabilistic clustering
+===
+
+- Mixture models put similar data points into "clusters".
+
+- This is appealing as we can potentially compare different probabilistic
+clustering methods by how well they predict (under cross-validation). We will not explore this in this particular lecture. 
+
+- This contrasts other methods such as k-means and hierarchical clustering as they produce clusters (and not predictions), so it's difficult to test if they are correct/incorrect.\footnote{Explore looking at these on your own and see if you can determine their limitations practically, compared to other machine learning models.} 
+
+
+
+
+
+Two-component mixture model
+===
+Assume that both mixture components have the same precision,  $\lambda = 1/\sigma^2$, which is fixed and known. 
+\vfill
+Let $\pi$ be the mixture proportion for the first component. 
+\vfill
+
+Then the two-component Normal mixture model is:
+\begin{align}
+  & X_1,\ldots, X_n \mid \mu,\pi\ \sim F(\mu,\pi)
+\end{align}
+where $F(\mu,\pi)$ is the distribution with p.d.f. 
+$$ f(x|\mu,\textcolor{blue}{\pi}) = (1-\textcolor{blue}{\pi})\N(x\mid \mu_0,\lambda^{-1}) + \textcolor{blue}{\pi}
+\N(x\mid \mu_1,\lambda^{-1}).$$
+
+
+<!-- In the two-component mixture model, it assumes each observation is generated from one of two -->
+<!--  mixture components, where $\pi$ is the mixture proportion for the first component and $1-\pi$ is the mixture proportion for the second component. -->
+
+
+
+
+
+Likelihood
+===
+The likelihood is
+\begin{align*}
+    p(x_{1:n}|\mu,\pi) &= \prod_{i=1}^n f(x_i|\mu,\pi) \\
+                       & = \prod_{i=1}^n \Big[ (1-\pi)\N(x_i\mid \mu_0,\lambda^{-1}) + \pi\N(x_i\mid \mu_1,\lambda^{-1}) \Big].
+\end{align*}
+
+
+Likelihood
+===
+
+\textcolor{blue}{What do you notice about the likelihood function?}
+
+\begin{align*}
+    p(x_{1:n}|\mu,\pi) &= \prod_{i=1}^n f(x_i|\mu,\pi) \\
+                       & = \prod_{i=1}^n \Big[ (1-\pi)\N(x_i\mid \mu_0,\lambda^{-1}) + \pi\N(x_i\mid \mu_1,\lambda^{-1}) \Big].
+\end{align*}
+
+
+Likelihood
+===
+The **likelihood** is very complicated function of $\mu$ and $\pi$. 
+
+\vspace*{1em}
+
+This makes working with it directly to find the MLE (or other estimates) difficult.
+
+\vspace*{1em}
+
+Thus, we will rewrite the likelihood using a two-stage approach. 
+
+Two-stage approach
+===
+
+Let $Z_i$ indicate whether subject $i$ is from component 1 or 2.
+\begin{align}
+ & Z_1,\ldots,Z_n \,\stackrel{iid}{\sim}\,\Bernoulli(\pi) \\
+ & X_i \mid  Z \sim\N(\mu_{Z_i},\lambda^{-1}) \quad i=1,\ldots,n. 
+\end{align}
+
+Checking for understanding
+===
+
+Then the two-component Normal mixture model is:
+\begin{align}
+  & X_1,\ldots, X_n \mid \mu,\pi\ \sim F(\mu,\pi)
+\end{align}
+where $F(\mu,\pi)$ is the distribution with p.d.f. 
+$$ f(x|\mu,\textcolor{blue}{\pi}) = (1-\textcolor{blue}{\pi})\N(x\mid \mu_0,\lambda^{-1}) + \textcolor{blue}{\pi}
+\N(x\mid \mu_1,\lambda^{-1}).$$
+
+
+
+
+Written as a two-stage process:
+
+\begin{align}
+ &Z_1,\ldots,Z_n \mid \mu,\pi\,\stackrel{iid}{\sim}\,\Bernoulli(\pi)\\
+ & X_i \mid \mu, Z \sim\N(\mu_{Z_i},\lambda^{-1}) i=1,\ldots,n.
+\end{align}
+
+Checking for understanding
+===
+
+Given the two equivalent models above, how would you simulate data from a two component mixture model? 
+
+<!-- Equivalence of both models  -->
+<!-- === -->
+<!-- Recall -->
+<!-- \begin{align*} -->
+<!--  & X_i \mid \mu, Z \sim\N(\mu_{Z_i},\lambda^{-1}) \text{ independently for } i=1,\ldots,n.\\ -->
+<!--      & Z_1,\ldots,Z_n|\mu,\pi\,\stackrel{iid}{\sim}\,\Bernoulli(\pi) -->
+<!-- \end{align*} -->
+
+<!-- This is equivalent to the model above, since -->
+<!-- \begin{align} -->
+<!--     &p(x_i|\mu,\pi) \\ -->
+<!--     &= p(x_i|Z_i=0,\mu,\pi)\Pr(Z_i=0|\mu,\pi) -->
+<!--                     + p(x_i|Z_i=1,\mu,\pi)\Pr(Z_i=1|\mu,\pi) \\ -->
+<!--             &= (1-\pi)\N(x_i|\mu_0,\lambda^{-1}) + \pi\N(x_i|\mu_1,\lambda^{-1})\\ -->
+<!--             &= f(x_i|\mu,\pi), -->
+<!-- \end{align} -->
+<!-- and thus it induces the same distribution on $(x_{1:n},\mu,\pi)$. The latent model is considerably easier to work with mathematically!  -->
+
+
+
+
+Extension to k-components
+===
+
+Assume we observe $X_1,\ldots,X_n$ and that each $X_i$ is sampled from one of $K$ **mixture components**.  
+
+Associated with each random variable $X_i$ is a label called $Z_i \in \{1,\ldots,K\}$ which indicates which component $X_i$ came from. 
+
+
+Notation
+===
+
+Let $\pi_k$ be called **mixture proportions** or **mixture weights**, which represent the probability that $X_i$ belongs to the $k$-th mixture component. 
+\vfill
+
+The mixture proportions are non-negative and they sum to one, $\sum_{k=1}^K \pi_k = 1$. 
+\vfill
+
+Observe that $P(X_i \mid Z_i=k)$ represents the distribution of $X_i$ assuming it came from component $k$. 
+
+Extension
+===
+
+Then the two-component Normal mixture model is:
+\begin{align}
+  & X_1,\ldots, X_n \mid \mu,\pi\ \sim F(\mu,\pi)
+\end{align}
+where $F(\mu,\pi)$ is the distribution with p.d.f. 
+$$ f(x|\mu,\textcolor{blue}{\pi}) = \sum_{k=1}^K \pi_k N(\mu_k, \lambda^{-1}).$$
+
+
+
+
+Written as a two-stage process:
+for $i=1,\ldots,n$:
+\begin{align}
+& P(Z_i = k) = \pi_k \\
+& X_i \mid \mu, Z_i \sim\N(\mu_{Z_i},\lambda^{-1}) 
+\end{align}
+
+Example
+===
+
+Let's look at a three component mixture model. 
+
+Suppose we assume that 
+$\mu = (-10, 0, 10)$ and $\sigma^2 = 1.$ Assume each mixture weight is equally likely.
+
+```{r}
+set.seed(1234)
+n <- 100
+mu <- c(-10, 0, 10)
+# sample Z first 
+Z <- sample(1:3, size=n, replace=TRUE)
+# conditional on Z, sample the normal update
+X <- rnorm(n, mean=mu[Z], sd=1)
+hist(X, breaks=20)
+```
+
+Example
+===
+
+```{r, echo=FALSE}
+n <- 100
+mu <- c(-10, 0, 10)
+# sample Z first 
+Z <- sample(1:3, size=n, replace=TRUE)
+# conditional on Z, sample the normal update
+X <- rnorm(n, mean=mu[Z], sd=1)
+hist(X, breaks=20)
+```
+
+
+Estimation
+===
+
+Now assume we are in the Gaussian mixture model setting where the $k$-th component is $N(\mu_k, \sigma^2)$ and the mixture proportions are $\pi_k$. 
+
+How can we estimate $\{\mu_k,\sigma^2, \pi_k\}$ from the observed data $X_1,\ldots,X_n$? 
+
+Solution: EM Algorithm. 
+
+
+Conditional and marginal distributions
+===
+
+Recall that the conditional distribution $X_i|Z_i = k \sim N(\mu_k, \sigma_k^2),$ where $\pi_k = P(Z_i = k).$
+
+The marginal distribution of $X_i$ is:
+\begin{align}
+P(X_i = x) &= \sum_{k=1}^K P(Z_i = k) P(X_i=x | Z_i = k) \\
+&= \sum_{k=1}^K \pi_k N(x \mid \mu_k, \sigma_k^2)
+\end{align}
+
+Note: \textcolor{red}{$\sigma^2_k = \sigma^2$} moving forward.
+
+Joint distribution
+===
+
+The joint probability of observations $X_1,\ldots,X_n$ is 
+
+$$P(X_1=x_1,\ldots,X_n=x_n) = \prod_{i=1}^n \sum_{k=1}^K \pi_k N(x_i \mid \mu_k, \sigma_k^2)$$
+
+Exercise
+===
+
+Show that 
+
+\begin{align}
+&\log P(X_1, \ldots, X_n \mid \mu_1, \ldots, \mu_K) \\
+&= \log \prod_{i=1}^n P(x_i \mid \mu_1, \ldots, \mu_K) \\
+&= \sum_{i=1}^n \log [
+\sum_{k=1}^K P(x_i \mid \pi_k, \mu_1, \ldots, \mu_K) \pi_k
+]
+\end{align}
+
+
+Background
+===
+
+Recall that 
+
+$$\frac{\partial \log f(x)}{\partial dx} = \frac{1}{f(x)}\frac{\partial f(x)}{\partial dx}.$$
+
+Exercise
+===
+
+Show that 
+
+\begin{align}
+&\frac{\partial \log P(X_1, \ldots, X_n \mid \mu_1, \ldots, \mu_K)}{\partial  \mu_k} \\
+&= \sum_{i=1}^n P(\pi_k \mid x_i, \mu_1, \ldots, \mu_K) \frac{(x_i - \mu_k)}{\sigma}
+\end{align}
+
+This implies that 
+
+$$\mu_k = \frac{\sum_{i=1}^n P(\pi_k \mid x_i, \mu_1, \ldots, \mu_K) x_i}
+{\sum_{i=1}^n P(\pi_k \mid x_i, \mu_1, \ldots, \mu_K)},$$
+which is a non-linear equation of the $\mu_k$'s.
+
+Intuition of EM
+===
+
+$$\mu_k = \frac{\sum_{i=1}^n P(\pi_k \mid x_i, \mu_1, \ldots, \mu_K) x_i}
+{\sum_{i=1}^n P(\pi_k \mid x_i, \mu_1, \ldots, \mu_K)},$$
+
+- E-step: If for each $x_i$ we knew that for each $\pi_k$ the prob. that $\mu_k$  was in component 
+$\pi_k$ is $P(\pi_k \mid x_i, \mu_1, \ldots, \mu_K).$ Then we could compute $\mu_k.$
+
+- M-step: If we knew each $\mu_k$, then we could compute $P(\pi_k \mid x_i, \mu_1, \ldots, \mu_K)$ for each $\mu_k$ and $x_i$
+
+EM Algorithm
+===
+
+Initalize all the unknown parameters. On iteration $t$, let the estimates be
+$\lambda^{(t)} = \{\mu_1^{(t)}, \ldots, \mu_k^{(t)} \}$
+
+1. E-Step: 
+
+\begin{align}
+P(\pi_k \mid x_i, \lambda^{(t)}) 
+&=
+\frac{P(\pi_k \mid x_i, \lambda^{(t)}) x_i}
+{P(\pi_k \mid x_i, \lambda^{(t)})}
+\end{align}
+
+2. M-Step:
+
+\begin{align}
+\mu_k^{(t+1)} &= \frac{\sum_{i=1}^n P(\pi_k \mid x_i,  \lambda^{(t)}) x_i}
+{\sum_{i=1}^n P(\pi_k \mid x_i,  \lambda^{(t)})}
+\end{align}
+
+
+
+<!-- and $p_k^{(t+1)} = \frac{\sum_{i=1}^n P(\pi_k \mid x_i,  \lambda^{(t))}{n}$ -->
+
+
+
+Exercise
+===
+Assume our mixture components are fully specified Gaussian distributions with $K=2$ components:
+
+\begin{align}
+X_i \mid Z_i = 0 &\sim N(5, 1.5) \\
+X_i \mid Z_i = 1 &\sim N(10, 2)
+\end{align}
+
+Let the true mixture proportions be $P(Z_i = 0) = 0.25$ and $P(Z_i = 1) = 0.75$, respectively. 
+
+Exercise
+===
+
+1. Simulate data from the mixture model on the previous slide, which should produce the following histogram. 
+
+```{r, echo= FALSE}
+# set mu and sigma
+mu.true    = c(5, 10)
+sigma.true = c(1.5, 2)
+
+# Calculate Z
+Z = rbinom(500, 1, 0.75)
+
+# sample values from the mixture model 
+X <- rnorm(10000, mean=mu.true[Z+1], sd=sigma.true[Z+1])
+hist(X,breaks=15)
+```
+
+Exercise
+
+2. Write a function to compute the log-likelihood of incomplete data (assuming the parameters are known). 
+
+```{r, echo = FALSE}
+# code from Matt Bonakdarpour
+# todo: re-write this 
+compute.log.lik <- function(L, w) {
+  L[,1] = L[,1]*w[1]
+  L[,2] = L[,2]*w[2]
+  return(sum(log(rowSums(L))))
+}
+
+L = matrix(NA, nrow=length(X), ncol= 2)
+L[, 1] = dnorm(X, mean=mu.true[1], sd = sigma.true[1])
+L[, 2] = dnorm(X, mean=mu.true[2], sd = sigma.true[2])
+```
+
+```{r, echo = FALSE}
+# code from Matt Bonakdarpour
+# todo: improve the code and move over 
+# to package functionality
+mixture.EM <- function(w.init, L) {
+  
+  w.curr <- w.init
+  
+  # store log-likehoods for each iteration
+  log_liks <- c()
+  ll       <- compute.log.lik(L, w.curr)
+  log_liks <- c(log_liks, ll)
+  delta.ll <- 1
+  
+  while(delta.ll > 1e-5) {
+    w.curr   <- EM.iter(w.curr, L)
+    ll       <- compute.log.lik(L, w.curr)
+    log_liks <- c(log_liks, ll)
+    delta.ll <- log_liks[length(log_liks)]  - log_liks[length(log_liks)-1]
+  }
+  return(list(w.curr, log_liks))
+}
+
+EM.iter <- function(w.curr, L, ...) {
+  
+  # E-step: compute E_{Z|X,w0}[I(Z_i = k)]
+  z_ik <- L
+  for(i in seq_len(ncol(L))) {
+    z_ik[,i] <- w.curr[i]*z_ik[,i]
+  }
+  z_ik     <- z_ik / rowSums(z_ik)
+  
+  # M-step
+  w.next   <- colSums(z_ik)/sum(z_ik)
+  return(w.next)
+}
+```
+
+The log-likelihood for the incomplete data ($X$) is as follows
+
+$$l(\theta) = \sum_{i=1}^n \log \left(
+\sum_{k=1}^2
+\pi_k N(x_i \mid \mu_k, \sigma_k^2)
+\right).$$
+
+Exercise
+===
+Compute the likelihood $P(X_i|Z_i=0)$
+and $P(X_i|Z_i=1)$ and store these in a matrix $L.$
+ 
+Exercise
+===
+
+Implement the E and M step in a function called `emIteration`. Then evaluate the EM and verify that your estimates are 0.29 and 0.71, respectively. 
+
+Plot the incomplete log-likelihood versus the iteration. What do you observe regarding its behavior. 
+
+Perform EM
+===
+
+```{r}
+#perform EM
+ee <- mixture.EM(w.init=c(0.5,0.5), L)
+print(paste("Estimate = (", round(ee[[1]][1],2), ",", 
+            round(ee[[1]][2],2), ")", sep=""))
+```
+
+Plot
+===
+
+```{r, echo = FALSE}
+plot(ee[[2]], ylab='incomplete log-likelihood', xlab='iteration')
+```
+
+The log-likelihood is strictly increasing, meaning that we have reached a local maxima. 
+
+
+R packages for mixture models
+===
+
+- The `mclust` package (http://www.stat.washington.edu/mclust/) is standard for
+Gaussian mixtures. 
+
+- The `mixtools` considers classic parametric densities, mixtures of regressions, and some non-parametric mixtures. 
+
+Exercise
+===
+
+Suppose that $X \sim N(\mu_1, \sigma_1^2)$ and $Y \sim N(\mu_2, \sigma_2^2)$ independently.
+
+1. What is the distribution of $aX + bY$? 
+
+Solution: Due to independence, $$Z \sim N(a\mu_1, + b\mu_2, a^2\sigma_1^2 +b^2 \sigma_2^2).$$
+
+2. Suppose that $X \sim N(\mu_1, \sigma_1^2)$ and $Y \sim N(\mu_2, \sigma_2^2)$ (and the observations are dependent). 
+
+Is the distribution of $aX + bY$ still Normal? No, not necessarily due to the dependence of the random variables.\footnote{In the case of a Gaussian mixture model, a random variable sampled from a Gaussian mixture model can be thought of as a two stage process. First, randomly sample a component (e.g., male or female). Second, then we sample our observation from the normal distribution that corresponds to the component sampled in step one.}
+
+ 
+
+
+
+

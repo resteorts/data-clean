@@ -1,0 +1,345 @@
+
+---
+title: "Case Study of Mixture Models"
+author: "Rebecca C. Steorts"
+output: 
+     beamer_presentation:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
+---
+
+```{r}
+set.seed(1234)
+library(mixtools)
+knitr::opts_chunk$set(fig.width = 8,
+                      fig.asp = 0.618, 
+                      fig.retina = 3, 
+                      out.width = "90%",
+                      fig.align = "center")
+```
+
+Agenda
+===
+
+Case Study on Mixture Models
+
+This has been adapted from ``Advanced Data Analysis
+from an Elementary Point of View`` Chapter 19 by Cosma Shalizi (publicly available online). 
+
+
+Data
+===
+
+Consider daily records of precipitation at Snoqualmie Falls, Washington from 1948 to the end of 1983. \footnote{The data set can be found at https://sites.stat.washington.edu/peter/stoch.mod.data.html}.
+
+Data
+===
+
+- Each row of each data file is a different year; each column records, for that day of the year, the day’s precipitation (rain or snow), in units of 1/100 inch. 
+
+- Due to leap-days, there are 366 columns, where the last column has an NA value for three out of four years.
+
+
+Rainy days and such
+===
+
+Consider the distribution of the amount of precipitation on the wet days, such as rain, snow, hail, etc.
+
+Goal: What is the distribution of the amount of precipitation on the wet days? 
+
+```{r}
+# skip the first line, a header
+snoqualmie <- scan("http://www.stat.washington.edu/peter/book.data/set1", skip=1)
+snoq <- snoqualmie[snoqualmie > 0]
+```
+
+Explore the data
+===
+
+Let's perform an exploratory data analysis of the data to understand it a bit, where we consider a histogram and then consider a kernel density estimator. 
+
+Kernel density estimation is a statistical tool that attempts to estimate the true shape of a distribution by smoothing out the existing data. Let's look at an example for this application.
+
+EDA
+===
+
+
+
+```{r, echo = FALSE}
+hist(snoq, breaks=101, col="grey", border="grey", freq=FALSE,
+     xlab="Precipitation (1/100 inch)", 
+     main="Precipitation in Snoqualmie Falls")
+lines(density(snoq),lty="dashed")
+```
+
+KDE
+===
+
+What is problematic regarding the kernel density estimator? 
+
+Hint: Look at the x-axis very carefully. 
+
+Mixture models
+===
+
+Could we consider a two-component mixture model? Explain why or why not. 
+
+Two component mixture model
+===
+
+\normalsize
+```{r, message = FALSE}
+snoq.k2 <- normalmixEM(snoq,k=2,maxit=100,epsilon=0.01)
+summary(snoq.k2)
+```
+
+Interpret the output of the package. 
+
+
+```{r, echo = FALSE}
+# code from https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/ADAfaEPoV.pdf
+#chapter 19
+plot.gaussian.clusters <- function(mixture, cluster.number) {
+curve(mixture$lambda[cluster.number] *
+dnorm(x,mean=mixture$mu[cluster.number],
+sd=mixture$sigma[cluster.number]), add=TRUE)
+}
+```
+
+Two component mixture model
+===
+
+```{r, echo = FALSE}
+hist(snoq, breaks=101, col="grey", border="grey", freq=FALSE,
+     xlab="Precipitation (1/100 inch)", 
+     main="Precipitation in Snoqualmie Falls")
+lines(density(snoq),lty=2)
+invisible(sapply(1:2,plot.gaussian.clusters,mixture=snoq.k2))
+```
+
+Two component mixture model
+===
+
+Visually, how is the fit? 
+
+Can we be more rigorous?
+===
+
+Let's assess the two-component mixture model more rigorously using a calibration plot. 
+
+Plots the empirical CDF versus theoretical CDF. 
+
+Specifically, for each distinct value of precipitation $x$, we plot the fraction of days predicted by the mixture model to $\leq x$ precipitation on the horizontal axis, versus the actual fraction of days $\leq x.$\footnote{If you'd like to see more mathematical rigor behind why this works, see Chapter 19!}
+
+Calibration Plot
+===
+
+```{r, echo = FALSE}
+pnormmix <- function(x,mixture) {
+lambda <- mixture$lambda
+k <- length(lambda)
+pnorm.from.mix <- function(x,cluster) {
+lambda[cluster]*pnorm(x,mean=mixture$mu[cluster],
+sd=mixture$sigma[cluster])
+}
+pnorms <- sapply(1:k,pnorm.from.mix,x=x)
+return(rowSums(pnorms))
+}
+```
+
+```{r, echo = FALSE}
+distinct.snoq <- sort(unique(snoq))
+tcdfs <- pnormmix(distinct.snoq, mixture=snoq.k2)
+ecdfs <- ecdf(snoq)(distinct.snoq)
+plot(tcdfs,ecdfs,xlab="Theoretical CDF",ylab="Empirical CDF",xlim=c(0,1),
+ylim=c(0,1))
+abline(0,1)
+```
+
+We would like to see that our observations are typically pretty well centered on the straight line. 
+
+Instead, they are pretty noisy, which matches our visual intuition as well. 
+
+What about more clusters?
+===
+
+- We could use more clusters? Thoughts on what we could try next? 
+
+Next steps
+===
+
+We will try looking at more clusters and selecting these using cross validation. 
+
+Cross Validation
+===
+
+Cross validation (CV) evaluates the model performance on unseen data. 
+
+We split given data into folds or subsets, where we:
+
+1. use one of the folds as a validation set and the remaining folds to train our model. 
+2. We repeat the process many times, each time using a different fold as the validation set. 
+3. We then average the results from each validation set to 
+produce a more robust estimate of the model’s performance. 
+
+We do this to try and avoid over-fitting. For more information about CV, see this post (https://www.geeksforgeeks.org/cross-validation-machine-learning/) for different types of CV.
+
+Selecting the Number of Clusters by Cross-Validation
+===
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+# Probability density corresponding to a Gaussian mixture model
+# Inputs: location for evaluating the pdf (x)
+# mixture-model object (mixture)
+# whether or not output should be logged (log)
+# Output: the (possibly logged) PDF at the point(s) x
+dnormalmix <- function(x,mixture,log=FALSE) {
+lambda <- mixture$lambda
+k <- length(lambda)
+# Calculate share of likelihood for all data for one cluster
+like.cluster <- function(x,cluster) {
+lambda[cluster]*dnorm(x,mean=mixture$mu[cluster],
+sd=mixture$sigma[cluster])
+}
+# Create array with likelihood shares from all clusters over all data
+likes <- sapply(1:k,like.cluster,x=x)
+# Add up contributions from clusters
+d <- rowSums(likes)
+if (log) {
+d <- log(d)
+}
+return(d)
+}
+```
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+# Evaluate the loglikelihood of a mixture model at a vector of points
+# Inputs: vector of data points (x)
+# mixture model object (mixture)
+# Output: sum of log probability densities over the points in x
+loglike.normalmix <- function(x,mixture) {
+loglike <- dnormalmix(x,mixture,log=TRUE)
+return(sum(loglike))
+}
+
+# verify that the code works correctly
+# loglike.normalmix(snoq,mixture=snoq.k2)
+```
+
+For illustrative purposes, we will do a random split of the data for cross validation. 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+n <- length(snoq)
+data.points <- 1:n
+data.points <- sample(data.points) # Permute randomly
+train <- data.points[1:floor(n/2)] # First random half is training
+test <- data.points[-(1:floor(n/2))] # 2nd random half is testing
+candidate.cluster.numbers <- 2:10
+loglikes <- vector(length=1+length(candidate.cluster.numbers))
+# k=1 needs special handling
+mu<-mean(snoq[train]) # MLE of mean
+sigma <- sd(snoq[train])*sqrt((n-1)/n) # MLE of standard deviation
+loglikes[1] <- sum(dnorm(snoq[test],mu,sigma,log=TRUE))
+for (k in candidate.cluster.numbers) {
+mixture <- normalmixEM(snoq[train],k=k,maxit=400,epsilon=1e-2)
+loglikes[k] <- loglike.normalmix(snoq[test],mixture=mixture)
+}
+# loglikes
+```
+
+Mixture Model
+===
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+snoq.k9 <- normalmixEM(snoq,k=9,maxit=400,epsilon=1e-2)
+hist(snoq, breaks=101, col="grey", border="grey", freq=FALSE,
+     xlab="Precipitation (1/100 inch)", 
+     main="Precipitation in Snoqualmie Falls")
+lines(density(snoq),lty=2)
+invisible(sapply(1:9,plot.gaussian.clusters,mixture=snoq.k9))
+```
+
+Calibration Plot
+===
+
+```{r, echo = FALSE, message = FALSE}
+distinct.snoq <- sort(unique(snoq))
+tcdfs <- pnormmix(distinct.snoq,mixture=snoq.k9)
+ecdfs <- ecdf(snoq)(distinct.snoq)
+plot(tcdfs,ecdfs,xlab="Theoretical CDF",ylab="Empirical CDF",xlim=c(0,1),
+ylim=c(0,1))
+abline(0,1)
+```
+
+Log-Likelihood
+===
+
+```{r, echo = FALSE, message = FALSE}
+plot(x=1:10, y=loglikes, xlab="Number of mixture clusters",
+ylab="Log-likelihood on testing data")
+```
+
+Digging Deeper
+===
+
+Are there really nine types of rainy or wet days? 
+
+Two ways forward:
+
+1. Statistical. 
+2. Substantive: Checking, digging into the data at hand or relying on what we know about weather. 
+
+Statistical
+===
+
+Suppose we care about only caring about describing the distribution of the data and predicting future precipitation. 
+
+If this is **all** we care about, then it doesn't matter whether the nine-cluster mixture is true. 
+
+Cross validation did not choose the model because there are truely nine types of wet days. 
+It picked this model based on the best trade-off between estimated bias and variance. 
+
+Substantive
+===
+
+For this particular problem, nine types of wet days seems strange, but perhaps one could check with a weather expert if this was crucial to their research. 
+
+Digging into the data doesn't lead to anything revealing or helpful. 
+
+Alternatives 
+===
+
+Instead of cross validation, we could select the number of clusters using a hypothesis test (or a likelihood ratio test). 
+
+The LRT has an approximate chi-squared distribution. Given that we are using the EM algorithm, this is not ideal. 
+
+One alternative is using a parametric bootstrap, which simulates data and estimates the sampling distribution of the parameter estimates.
+
+This uses the `boot.comp` function in the `mixtools` package. 
+
+Alternatives 
+===
+
+Consider the type-II generalized Pareto distribution, where 
+$$p(x) \propto (1 + x/\sigma)^{-\theta - 1}.$$ Specifically, this can be written as a two-step process as follows:
+
+1. $X \mid Z \mid Exp(\sigma/Z),$ $p(X \mid Z) = \sigma e^{-\sigma x}.$
+2. $Z \mid \Gamma(shape = \theta, rate = 1).$
+
+See Arnold (1983), Macquire et al. (1952). 
+
+Assignment
+===
+
+Investigate a mixture of exponentials for the Snoqualmie Falls data set and report your findings. 
+
+
+
+
+
+
+
+
+
+
