@@ -1,0 +1,33 @@
+
+---
+title: "Exercise on Mixture Models"
+author: "STA 325 (exercise from BMLR)"
+output: 
+     pdf_document
+font-size: 8px
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(gridExtra)
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+```
+
+
+
+1. __Mixture of two normal distributions__ 
+
+Sometimes, a value may be best modeled by a mixture of two normal distributions. We would have 5 parameters in this case--- $\mu_1, \sigma_1, \mu_2, \sigma_2, \alpha$, where $0 < \alpha < 1$ is a mixing parameter determining the probability that an observation comes from the first distribution. We would then have $f(y) = \alpha\ f_1(y) + (1-\alpha)\ f_2(y)$ (where $f_i(y)$ is the pdf of the normal distribution with $\mu_i, \sigma_i$). 
+
+One phenomenon which could be modeled this way would be the waiting times between eruptions of Old Faithful geyser in Yellowstone National Park. The data can be accessed in R through `faithful`, and a histogram of wait times can be found the figure below. The MLEs of our 5 parameters would be the combination of values that produces the maximum probability of our observed data.  We will need to approximate the MLE's using the EM algorithm.  Find a combination of $\mu_1, \sigma_1, \mu_2, \sigma_2, \alpha$ for this distribution such that the logged likelihood is above -1050. (The command `dnorm(x, mean, sd)`, which outputs $f(y)$ assuming $Y \sim \textrm{N}(\mu, \sigma)$, will be helpful in calculating likelihoods.) 
+
+```{r, faithful, fig.align="center",out.width="60%",fig.cap= 'Waiting time between eruptions of Old Faithful.', echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(data = faithful, aes(x = waiting, y = ..density..)) +
+  geom_histogram(binwidth = 5, color = "black", 
+                 fill = "white") +
+  labs(x = "Wait time in minutes", y = "Frequency")
+```
+
+Hint: Use the `normalmixEM()` from the `packagemixtools` package to estimate the MLE's.  
+
