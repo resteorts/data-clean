@@ -1,0 +1,135 @@
+
+---
+title: "Gaussian Mixture Models"
+author: "Rebecca C. Steorts"
+output: 
+     pdf_document:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
+---
+
+\section{Gaussian Mixture Models}
+
+Assume that $K$ mixture components, where $\mu_k$ and $\Sigma_k$ are the mean and covariance matrix of the $k$-component. 
+
+Let $\pi_k > 0$ be mixture weights, which represents how much each component contributes to the final distribution. Note that $\sum_{k=1}^K \pi_k = 1.$
+
+Then $$p(x) = \sum_{k=1}^K \pi_k N(x \mid \mu_k, \Sigma_k)$$ is called a Gaussian mixture model. 
+
+\subsection{Marginal and Joint Distributions}
+
+Consider the joint distribution 
+$$p(x,z) = p(z) p(x \mid z)$$
+where $z$ is a discrete random variable between $1$ and $K.$
+
+Let $\pi_k = P(z=k).$
+
+Assume the conditional distributions are Gaussian:
+
+$$p(x \mid z = k) = N(x \mid \mu_k, \Sigma_k).$$
+Then the marginal of distribution of $x$ is 
+
+$$p(x) = \sum_{k=1}^K \pi_k N(x \mid \mu_k, \Sigma_k).$$
+
+\subsection{Parameter Estimation}
+
+The parameters of the model are $\theta = \{\pi_k, \mu_k, \Sigma_k \}_{k=1}^K$.
+
+Let's consider the unrealistic case where we know the labels, $z.$
+
+Define $\mathcal{D}^\prime = \{x_n, z_n\}_{n=1}^N$ and $\mathcal{D} = \{x_n \}_{n=1}^N$ which represents the complete data and incomplete data. 
+
+How can we learn our parameters? Given $\mathcal{D}^\prime$, the maximum likelihood estimation of $\theta$ is given by 
+
+$$\theta = \arg \max \sum_n \log p(x_n, z_n).$$
+
+\subsection{Parameter Estimation for Complete Data}
+
+The complete likelihood is decomposable across labels:
+
+\begin{align}
+\sum_n \log p(x_n, z_n) 
+&= \sum_n \log p(z_n) p(x_n \mid z_n) \\
+&= \sum_k \sum_{n: z_n=k} \log p(z_n)p(x_n \mid z_n),
+\end{align}
+where we have grouped the data by the cluster labels z.
+
+Let $r_{nk}$ be a binary variable that indiates whether $z_n = k$.
+
+Then it follows that
+
+\begin{align}
+\sum_n \log p(x_n, z_n) 
+&= \sum_n \sum_k r_{nk} \log p(z=k) p(x_n \mid z = k) \\
+&= \sum_n \sum_k r_{nk} \left[\log \pi_k + \log N(x_n \mid \mu_k, \Sigma_k)\right] \\
+\end{align}
+
+The MLE can be shown to be the following:
+
+\begin{align}
+\pi_k = \frac{\sum_n r_{nk}}{\sum_{k^\prime} r_{nk^\prime}}
+\end{align}
+
+\begin{align}
+\mu_k = \frac{1}{\sum_n r_{nk}} \sum_n r_{nk} x_n
+\end{align}
+
+\begin{align}
+\Sigma_k = \frac{1}{\sum_n r_{nk}} \sum_n r_{nk} (x_n - \mu_k)(x_n - \mu_k)^T
+\end{align}
+
+\subsection{Parameter Estimation for Incomplete Data}
+
+In this situation, we have observed and unobserved data, which is called an incomplete setting. 
+
+The observed data is $\mathcal{D} = \{x_n \}_{n=1}^N$ and the unobserved or hidden data is $\{z_n\}.$
+
+Our goal is to find the MLE of $\theta$ where
+
+\begin{align}
+\theta &= \arg \max \sum_n \log P(\mathcal{D}) \\
+&= \arg \max \sum_n \log p(x_n) \\
+&= \arg \max \sum_n \log \sum_{z_n} p(x_n, z_n).
+\end{align}
+
+This objective function is called the incomplete log-likelhood, where there is no simple way to optimize it.
+
+The EM algorithm provides a way to iteratively optimize this type of function. 
+
+\subsubsection{E-step}
+
+The E-step guesses values of $z_n$ using existing values of $\theta = \{\pi_k, \mu_k, \Sigma_k \}_{k=1}^K$ How does this work? 
+
+When $z_n$ is not given, we can guess these using Bayes' rule in the following way:
+
+\begin{align}
+p(z_n = k \mid x_n) &=
+\frac{
+p(x_n \mid z_n = k) p(z_n = k)
+}
+{p(x_n)} \\
+&= 
+\frac{p(x_n \mid z_n = k) p(z_n = k)}
+{
+\sum_{k^{\prime} =1}^K p(x_n \mid z_n = k) p(z_n = k)
+} \\
+&= \frac{N(x_n \mid \mu_k, \Sigma_k) \pi_k}
+{
+\sum_{k^{\prime} =1}^K
+N(x_n \mid \mu_k, \Sigma_k) \pi_k
+}
+\end{align}
+
+Re-define $r_{nk} = p(z_n = k \mid x_n).$ Recall previously it was binary, however, now it is a soft assignment of $x_n$ to the $k$th component. So, each $x_n$ is assigned to a component fractionally according to $p(z_n = k \mid x_n).$
+
+\subsubsection{M-step}
+
+If we solve for the MLE for $\theta$ give the soft $r_{nk}$ assignment, we get the same expressions as before. (Remember, we are cheating by using $\theta$ to compute $r_{nk}.$)
+
+\subsection{EM Algorithm}
+
+0. Initialize $\theta$
+1. E-step: Set $r_{nk} = p(z_n = k \mid x_n)$ with the current values of $\theta$
+2. M-step: Update $\theta$ using $r_{nk}$ using MLE
+3. Go back to step 1 until convergence. 

@@ -493,7 +493,7 @@ We know the following:
 
 -   Observations $x_{1:n}$.
 -   K total classes
--   $P(Z = i) = \pi_k$ (for $i=1,\ldots, K$)
+-   $P(Z_i = k) = \pi_k$ (for $i=1,\ldots, K$)
 -   Common variance $\sigma^2.$
 
 We do not know $\mu_1, \ldots, \mu_K$ and want to learn these. 
@@ -504,11 +504,13 @@ This is a very unrealistic setting, however, it hopefully provides intuition reg
 
 # EM Algorithm
 
+$\propto$ will drop any constants (and I will make sure to include them back in later). Common trick in Bayesian statistics. 
+
 ```{=tex}
 \begin{align}
 & p(x_1, \ldots, x_n \mid \mu_1, \ldots, \mu_K) \\
 & = \prod_{i=1}^n p(x_i \mid \mu_1, \ldots, \mu_K) \; \text{independent data}  \\
-& = \prod_{i=1}^n \sum_{k=1}^K p(x_i, z_i = k \mid \mu_1, \ldots, \mu_K) \; \text{marg. over class}\\
+& = \prod_{i=1}^n \sum_{k=1}^K p(x_i, z_i = k \mid \mu_1, \ldots, \mu_K) \; \text{marg. over labels}\\
 & = \prod_{i=1}^n \sum_{k=1}^K p(x_i \mid z_i = k, \mu_1, \ldots, \mu_K) p(z_i = k) \\
 & \propto \prod_{i=1}^n \sum_{k=1}^K \exp(-\frac{1}{2\sigma^2} (x_i - \mu_k)^2) \pi_k
 \end{align}
@@ -540,6 +542,8 @@ Q(\theta^{(t)} \mid  \theta^{(t-1)}) &=
 \end{align}
 ```
 
+This is equivalent to assigning clusters to each data point in a soft-way (clusters can overlap). 
+
 # M-step
 
 \begin{align}
@@ -556,23 +560,26 @@ Q(\theta^{(t)} \mid  \theta^{(t-1)}) &=
 
 
 Recall that in the E-step, we calculated 
-$R_{ik}^{(t-1)} = P(z_i = k \mid x_i, \theta^{(t-1)})$
+$R_{ik}^{(t-1)} = P(z_i = k \mid x_i, \theta^{(t-1)})$\
+
+
 
 M-step
 ===
 
 At each iteration $t$, maximize $Q$ in term of $\theta^{(t)}.$
 
-$$Q(\mu_k^{(t)} \mid \theta^{(t-1)}) \propto \sum_{i=1}^n R_{ik}^{(t-1)} 
-\exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2), \implies$$
+\begin{align}
+Q(\mu_k^{(t)} \mid \theta^{(t-1)}) &\propto \sum_{i=1}^n R_{ik}^{(t-1)} 
+\exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2), \implies \\
+\frac{\partial Q(\mu_k^{(t)} \mid \theta^{(t-1)})}{\partial \mu_k^{(t)}} &= 
+\sum_{i=1}^n R_{ik}^{(t-1)} (x_i - \mu_k^{(t)})) = 0 \implies
+\end{align}
 
-$$\frac{\partial Q(\mu_k^{(t)} \mid \theta^{(t-1)})}{\partial \mu_k^{(t)}} = 
-\sum_{i=1}^n R_{ik}^{(t-1)} (x_i - \mu_k^{(t)})) = 0 \implies$$
-
-$$\textcolor{blue}{\mu_k^{(t)} = \sum_{i=1}^n w_i x_i}
+$$\textcolor{blue}{\mu_k^{(t)} = \sum_{i=1}^n w_i x_i} \quad \text{where}
 $$
 
-where $$
+$$
 w_i = \dfrac{
 R_{ik}^{t-1}
 }{
@@ -589,7 +596,7 @@ P(z_i = k \mid x_i, \theta^{(t-1)})
 $$
 
 
-<!-- If you have seen k-means clustering, this is equivalent to assigning clusters to each data point using k-means in a soft way, meaning the clusters can overlap.  -->
+This is equivalent to updating the cluster centers. 
 
 Summarize EM Algorithm
 ===
@@ -726,9 +733,9 @@ Is the distribution of $aX + bY$ still Normal? No, not necessarily due
 to the dependence of the random
 variables.\footnote{In the case of a Gaussian mixture model, a random variable sampled from a Gaussian mixture model can be thought of as a two stage process. First, randomly sample a component (e.g., male or female). Second, then we sample our observation from the normal distribution that corresponds to the component sampled in step one.}
 
-Todo
+Other resources
 ===
 
-1. I would like to write down the general case if possible. This might be another module as the notation needs to be multivatiate. 
-2. It would also be nice to highlight and illustrate the connection with k-means. This might be nicer as we assume we know everything. 
-3. Can go beyond Gaussians, but this might be too much. 
+1. Generalization to mixture models
+2. Exercises: 
+ 
