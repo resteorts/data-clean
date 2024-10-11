@@ -1,6 +1,6 @@
 
 ---
-title: "k-means"
+title: "EM algorithm"
 author: "Rebecca C. Steorts"
 output: 
      beamer_presentation:
@@ -83,7 +83,7 @@ Terminate. If none of the data points changed membership in the last iteration, 
 Exercise
 ===
 
-Can you prove or explain the algorithm is guaranteed to terminate? 
+Can you prove or explain why the algorithm is guaranteed to terminate? 
 
 <!-- Solution -->
 <!-- === -->
@@ -106,13 +106,13 @@ Can you prove or explain the algorithm is guaranteed to terminate?
 Seed choice
 ===
 
-Some seeds can result in poor convergence or a sub-optimal clustering. 
+- Some seeds can result in poor convergence or a sub-optimal clustering. 
 
-K-means is know to easily get stuck in a local minima. 
+- K-means is known to easily get stuck in a local minima. 
 
-Important to look at multiple starting points. 
+- Important to look at multiple starting points. 
 
-Recommended to initialize with the results of another method. 
+- Recommended to initialize with the results of another method. 
 
 k-means, more formally
 ===

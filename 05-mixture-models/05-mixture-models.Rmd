@@ -479,6 +479,13 @@ hist(X, breaks=20)
 General way to deal with hidden class labels or clusters. (Can also be
 used for missing data or latent variables).
 
+The E stands for “expectation”, because it gives us the conditional probabilities of different values of Z, and probabilities are expectations of indicator functions. The M stands for "“maximization."
+
+# EM Algorithm
+
+General way to deal with hidden class labels or clusters. (Can also be
+used for missing data or latent variables).
+
 E-step: Fill in the hidden class labels. 
 
 M-step: Apply standard MLE (or other approaches) to complete the data.
@@ -513,7 +520,7 @@ $\propto$ will drop any constants (and I will make sure to include them back in 
 & = \prod_{i=1}^n p(x_i \mid \mu_1, \ldots, \mu_K) \; \text{independent data}  \\
 & = \prod_{i=1}^n \sum_{k=1}^K p(x_i, z_i = k \mid \mu_1, \ldots, \mu_K) \; \text{marg. over labels}\\
 & = \prod_{i=1}^n \sum_{k=1}^K p(x_i \mid z_i = k, \mu_1, \ldots, \mu_K) p(z_i = k) \\
-& \propto \prod_{i=1}^n \sum_{k=1}^K \exp(-\frac{1}{2\sigma^2} (x_i - \mu_k)^2) \pi_k
+& \propto \prod_{i=1}^n \sum_{k=1}^K \exp(-\frac{1}{2\sigma^2} (x_i - \mu_k)^2) \pi_k \;\; \text{dropped normal constants}
 \end{align}
 ```
 # EM Algorithm
@@ -558,7 +565,7 @@ $R_{ik}^{(t-1)} = P(z_i = k \mid x_i, \theta^{(t-1)})$
 &= \sum_{i=1}^n \sum_{k=1}^K \textcolor{purple}{P(z_i = k \mid x_i, \theta^{(t-1)})} \\
 & \quad \times
 [
-\log P(x_i \mid z_i = k, \theta^{(t)}) + \log P(z_i = k \mid \theta^{(t)})
+\log P(x_i \mid z_i = k, \theta^{(t-1)}) + \log P(z_i = k \mid \theta^{(t-1)})
 ] \\
 &= \sum_{i=1}^n \sum_{k=1}^K
 R_{ik}^{(t-1)} [
@@ -576,7 +583,7 @@ At each iteration $t$, maximize $Q$ in term of $\theta^{(t)}.$
 Q(\mu_k^{(t)} \mid \theta^{(t-1)}) &\propto \sum_{i=1}^n R_{ik}^{(t-1)} 
 (-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2), \implies \\
 \frac{\partial Q(\mu_k^{(t)} \mid \theta^{(t-1)})}{\partial \mu_k^{(t)}} &= 
-\sum_{i=1}^n R_{ik}^{(t-1)} (x_i - \mu_k^{(t)})) = 0 \implies
+\sum_{i=1}^n R_{ik}^{(t-1)} (x_i - \mu_k^{(t-1)})) = 0 \implies
 \end{align}
 
 $$\textcolor{blue}{\mu_k^{(t)} = \sum_{i=1}^n w_i x_i} \quad \text{where}
@@ -740,5 +747,5 @@ Other resources
 ===
 
 1. Generalization to mixture models: https://github.com/resteorts/data-clean/blob/main/05-mixture-models/notes.pdf
-2. Exercises: https://github.com/resteorts/data-clean/blob/main/exercises/hw-intro-to-mixture-models.pdf
+2. Exercises: https://github.com/resteorts/data-clean/blob/main/exercises/exercise-intro-to-mixture-models.pdf
  
