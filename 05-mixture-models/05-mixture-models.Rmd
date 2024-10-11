@@ -14,8 +14,9 @@ editor_options:
 # Agenda
 
 -   Clustering
+-   Illustrations
 -   Two Component Mixture Model
--   Latent Variable
+-   Generalized Mixture Model 
 -   EM Algorithm
 
 # Clustering
@@ -546,6 +547,9 @@ This is equivalent to assigning clusters to each data point in a soft-way (clust
 
 # M-step
 
+Recall that in the E-step, we calculated 
+$R_{ik}^{(t-1)} = P(z_i = k \mid x_i, \theta^{(t-1)})$
+
 \begin{align}
 &Q(\theta^{(t)} \mid  \theta^{(t-1)}) \\
 &=
@@ -556,11 +560,14 @@ This is equivalent to assigning clusters to each data point in a soft-way (clust
 [
 \log P(x_i \mid z_i = k, \theta^{(t)}) + \log P(z_i = k \mid \theta^{(t)})
 ] \\
+&= \sum_{i=1}^n \sum_{k=1}^K
+R_{ik}^{(t-1)} [
+-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2) + \log \pi_k
+]
 \end{align}
 
 
-Recall that in the E-step, we calculated 
-$R_{ik}^{(t-1)} = P(z_i = k \mid x_i, \theta^{(t-1)})$\
+
 
 
 
@@ -571,7 +578,7 @@ At each iteration $t$, maximize $Q$ in term of $\theta^{(t)}.$
 
 \begin{align}
 Q(\mu_k^{(t)} \mid \theta^{(t-1)}) &\propto \sum_{i=1}^n R_{ik}^{(t-1)} 
-\exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2), \implies \\
+(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2), \implies \\
 \frac{\partial Q(\mu_k^{(t)} \mid \theta^{(t-1)})}{\partial \mu_k^{(t)}} &= 
 \sum_{i=1}^n R_{ik}^{(t-1)} (x_i - \mu_k^{(t)})) = 0 \implies
 \end{align}
@@ -736,6 +743,6 @@ variables.\footnote{In the case of a Gaussian mixture model, a random variable s
 Other resources
 ===
 
-1. Generalization to mixture models
-2. Exercises: 
+1. Generalization to mixture models: https://github.com/resteorts/data-clean/blob/main/05-mixture-models/notes.pdf
+2. Exercises: https://github.com/resteorts/data-clean/blob/main/exercises/hw-intro-to-mixture-models.pdf
  
