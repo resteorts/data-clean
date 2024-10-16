@@ -27,6 +27,33 @@ such that the sets minimize the within-cluster sum of squares
 
 where $\mu_i$ is the mean of the points in $S_i$.
 
+<!-- Why algorithm -->
+<!-- === -->
+
+<!-- Smaller $W$ is better, so why don't we just directly -->
+<!-- find the clustering $C$ that {\blue minimizes $W$}? -->
+
+<!-- \bigskip -->
+<!-- Problem: doing so requires trying  -->
+<!-- {\blue all possible assignments} of the $n$ points into -->
+<!-- $K$ groups. The number of possible assignments is -->
+<!-- \vspace{-5pt} -->
+<!-- $$A(n,K) = \frac{1}{K!}\sum_{k=1}^K (-1)^{K-k}  -->
+<!-- {K \choose k} k^n -->
+<!-- \vspace{-5pt}$$ -->
+<!-- Note that $A(10,4)=34,105$, and -->
+<!-- $A(25,4) \approx 5 \times 10^{13}$ ... huge -->
+<!-- % Jain and Dubes (1998), ``Algorithms for Clustering Data'' -->
+
+<!-- \bigskip -->
+<!-- Most problems we look at are going to have way  -->
+<!-- more than $n=25$ observations, and potentially more -->
+<!-- than $K=4$ clusters too!  -->
+
+<!-- \bigskip -->
+<!-- So we'll have to settle for an {\blue approximation} -->
+
+
 Example
 ===
 
@@ -85,23 +112,23 @@ Exercise
 
 Can you prove or explain why the algorithm is guaranteed to terminate? 
 
-<!-- Solution -->
-<!-- === -->
+Solution
+===
 
-<!-- Recall our function we want to minimize:  -->
+Recall our function we want to minimize:
 
-<!-- \begin{align} -->
-<!-- \text{argmin}_{S} \sum_{i=1}^K \sum_{x_j \in S_i} (x_j - \mu_i)^2, -->
-<!-- \end{align} -->
+\begin{align}
+\text{argmin}_{S} \sum_{i=1}^K \sum_{x_j \in S_i} (x_j - \mu_i)^2,
+\end{align}
 
-<!-- The function above is always non-negative.  -->
+The function above is always non-negative.
 
-<!-- 1. Assignment: data points are assigned to the nearest centroid, which either keeps  -->
-<!-- the function the same or decreases it. -->
-<!-- 2. Update: The centroids are recalculated as the mean of assigned points, which also results in the function  -->
-<!-- either remaining the same or decreases it.  -->
+1. Assignment: data points are assigned to the nearest centroid, which either keeps
+the function the same or decreases it.
+2. Update: The centroids are recalculated as the mean of assigned points, which also results in the function
+either remaining the same or decreases it.
 
-<!-- Because we a non-increasing function that is bounded below (it cannot go below 0), it must eventually reach a point where it cannot decrease any further. This means that the assignments of points to clusters will no longer change after a finite number of iterations. -->
+Because we a non-increasing function that is bounded below (it cannot go below 0), it must eventually reach a point where it cannot decrease any further. This means that the assignments of points to clusters will no longer change after a finite number of iterations.
 
 Seed choice
 ===

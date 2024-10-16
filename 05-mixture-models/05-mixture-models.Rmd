@@ -748,4 +748,4 @@ Other resources
 
 1. Generalization to mixture models: https://github.com/resteorts/data-clean/blob/main/05-mixture-models/notes.pdf
 2. Exercises: https://github.com/resteorts/data-clean/blob/main/exercises/exercise-intro-to-mixture-models.pdf
- 
+3. Notes: https://github.com/resteorts/data-clean/blob/main/05-mixture-models/notes.pdf

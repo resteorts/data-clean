@@ -14,17 +14,6 @@ knitr::opts_chunk$set(fig.width=5, fig.height=4,
                       cache=TRUE) 
 ```
 
-Getting Sweave Working in R (Datathon project)
-===
-
-1. Open R Studio
-2. Go to RStudio (click Preferences)
-3. Go to Sweave
-4. Weave Rnw files using knitr (not Sweave)
-5. Hit Apply! 
-
-Check: See that you're files are caching. 
-
 Agenda
 ===
 - K-means versus Hierarchical clustering
@@ -32,7 +21,7 @@ Agenda
 - Dendogram (tree)
 - Hierarchical clustering algorithm
 - Single, Complete, and Average linkage
-- Application to genomic (PCA versus Hierarchical clustering)
+
 
 From K-means to Hierarchical clustering 
 ===
@@ -518,8 +507,6 @@ Application on genomic data
 ===
 
 - Unsupervised methods are often used in the analysis of genomic data. 
-
-- PCA and hierarchical clustering are very common tools. We will explore both on a genomic data set. 
 
 - We illustrate these methods on the NCI60 cancer cell line microarray data, which consists of 6,830 gene expression measurements on 64 cancer cell lines. 
 
