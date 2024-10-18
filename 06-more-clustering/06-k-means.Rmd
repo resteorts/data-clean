@@ -27,32 +27,6 @@ such that the sets minimize the within-cluster sum of squares
 
 where $\mu_i$ is the mean of the points in $S_i$.
 
-<!-- Why algorithm -->
-<!-- === -->
-
-<!-- Smaller $W$ is better, so why don't we just directly -->
-<!-- find the clustering $C$ that {\blue minimizes $W$}? -->
-
-<!-- \bigskip -->
-<!-- Problem: doing so requires trying  -->
-<!-- {\blue all possible assignments} of the $n$ points into -->
-<!-- $K$ groups. The number of possible assignments is -->
-<!-- \vspace{-5pt} -->
-<!-- $$A(n,K) = \frac{1}{K!}\sum_{k=1}^K (-1)^{K-k}  -->
-<!-- {K \choose k} k^n -->
-<!-- \vspace{-5pt}$$ -->
-<!-- Note that $A(10,4)=34,105$, and -->
-<!-- $A(25,4) \approx 5 \times 10^{13}$ ... huge -->
-<!-- % Jain and Dubes (1998), ``Algorithms for Clustering Data'' -->
-
-<!-- \bigskip -->
-<!-- Most problems we look at are going to have way  -->
-<!-- more than $n=25$ observations, and potentially more -->
-<!-- than $K=4$ clusters too!  -->
-
-<!-- \bigskip -->
-<!-- So we'll have to settle for an {\blue approximation} -->
-
 
 Example
 ===
@@ -112,23 +86,23 @@ Exercise
 
 Can you prove or explain why the algorithm is guaranteed to terminate? 
 
-Solution
-===
+<!-- Solution -->
+<!-- === -->
 
-Recall our function we want to minimize:
+<!-- Recall our function we want to minimize: -->
 
-\begin{align}
-\text{argmin}_{S} \sum_{i=1}^K \sum_{x_j \in S_i} (x_j - \mu_i)^2,
-\end{align}
+<!-- \begin{align} -->
+<!-- \text{argmin}_{S} \sum_{i=1}^K \sum_{x_j \in S_i} (x_j - \mu_i)^2, -->
+<!-- \end{align} -->
 
-The function above is always non-negative.
+<!-- The function above is always non-negative. -->
 
-1. Assignment: data points are assigned to the nearest centroid, which either keeps
-the function the same or decreases it.
-2. Update: The centroids are recalculated as the mean of assigned points, which also results in the function
-either remaining the same or decreases it.
+<!-- 1. Assignment: data points are assigned to the nearest centroid, which either keeps -->
+<!-- the function the same or decreases it. -->
+<!-- 2. Update: The centroids are recalculated as the mean of assigned points, which also results in the function -->
+<!-- either remaining the same or decreases it. -->
 
-Because we a non-increasing function that is bounded below (it cannot go below 0), it must eventually reach a point where it cannot decrease any further. This means that the assignments of points to clusters will no longer change after a finite number of iterations.
+<!-- Because we a non-increasing function that is bounded below (it cannot go below 0), it must eventually reach a point where it cannot decrease any further. This means that the assignments of points to clusters will no longer change after a finite number of iterations. -->
 
 Seed choice
 ===
@@ -154,7 +128,7 @@ $$C^t(j) \leftarrow \text{argmin}_i (\mu_i^t - x_j)^2$$
 
 2. Re-center. Now, $\mu_i$ is the centroid of the new sets. 
 
-$$\mu_i^{(t+1)} \leftarrow \text{argmin}_{\mu} \sum_{j: C^t(j) = i} (\mu - x_j)^2$$
+$$\mu_i^{(t+1)} \leftarrow \text{argmin}_{\mu} \sum_{j: C^t(j) = i} (\mu_i^{(t)} - x_j)^2$$
 
 What is k-means optimizing?
 ===
@@ -206,3 +180,31 @@ Algorithm:
 2. Fix $C$, Optimize $\mu.$ This is a maximiation step. 
 
 This is a special case of the EM algorithm. 
+
+k-means and GMMs
+===
+Suppose in the case of a GMM, $\Sigma = \sigma^2 I.$
+
+Suppose in the case of a GMM, we allow for a hard assignment. 
+
+This means that $p(z_i = 1) = 1$ if $C(j) = i$ and 0 otherwise. 
+
+k-means and GMMs
+===
+\begin{align}
+&\arg \max_{\theta} \prod_{i=1}^n P(x_j \mid \theta) \\
+&= \arg \max_{\theta} \prod_{i=1}^n \sum_{k=1}^K P(z_i = k) \frac{1}{\sqrt{2 \pi \sigma^2} }
+\exp \{
+\frac{-1}{2\sigma^2}
+||x_i - \mu_k||^2
+\} \\
+&= \arg \max_{\theta} \prod_{i=1}^n \sum_{k=1}^K
+P(z_i = k, x_i \mid \theta)\\
+&= \arg \max_{\theta} \prod_{i=1}^n
+\exp \{
+\frac{-1}{2\sigma^2}
+||x_i - \mu_{C(j)}||^2
+\} \\
+&= \arg \min_{\mu, C} \sum_{i=1}^n ||x_i - \mu_{C(j)}||^2 \\
+&= \arg \min_{\mu, C} F(\mu, C)
+\end{align}

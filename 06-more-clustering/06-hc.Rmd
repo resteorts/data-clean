@@ -503,143 +503,143 @@ Things to consider
 different dendrograms.
 - The algorithm imposes a hierarchical structure on the data, even data for which such structure is not appropriate.
 
-Application on genomic data
-===
+<!-- Application on genomic data -->
+<!-- === -->
 
-- Unsupervised methods are often used in the analysis of genomic data. 
+<!-- - Unsupervised methods are often used in the analysis of genomic data.  -->
 
-- We illustrate these methods on the NCI60 cancer cell line microarray data, which consists of 6,830 gene expression measurements on 64 cancer cell lines. 
+<!-- - We illustrate these methods on the NCI60 cancer cell line microarray data, which consists of 6,830 gene expression measurements on 64 cancer cell lines.  -->
 
-Background on gene expression levels
-===
+<!-- Background on gene expression levels -->
+<!-- === -->
 
-A gene is a stretch of DNA inside the cell that tells the cell how to make a specific protein. 
+<!-- A gene is a stretch of DNA inside the cell that tells the cell how to make a specific protein.  -->
 
-All cells in the body contain the same genes, but they do not always make the same proteins in the same quantities
+<!-- All cells in the body contain the same genes, but they do not always make the same proteins in the same quantities -->
 
-The genes have different expression levels in different cell types, and cells can regulate gene expression levels in response to their environment. 
+<!-- The genes have different expression levels in different cell types, and cells can regulate gene expression levels in response to their environment.  -->
 
-Background on gene expression levels
-===
+<!-- Background on gene expression levels -->
+<!-- === -->
 
-Different types of cells thus have different expression profiles. 
+<!-- Different types of cells thus have different expression profiles.  -->
 
-Many diseases, including cancer, fundamentally involve breakdowns in the regulation of gene expression. 
+<!-- Many diseases, including cancer, fundamentally involve breakdowns in the regulation of gene expression.  -->
 
-The expression profile of cancer cells becomes abnormal, and different kinds of cancers have different expression profiles.\footnote{The exception are red blood cells, which do not contain DNA.}
+<!-- The expression profile of cancer cells becomes abnormal, and different kinds of cancers have different expression profiles.\footnote{The exception are red blood cells, which do not contain DNA.} -->
 
-Gene expression data
-===
+<!-- Gene expression data -->
+<!-- === -->
 
-Our data are gene expression measurements from cells drawn from 64 different tumors (from 64 different patients). 
+<!-- Our data are gene expression measurements from cells drawn from 64 different tumors (from 64 different patients).  -->
 
-In each case, a device called a microarray (or gene chip) measured the expression of each of 6830 distinct genes.
+<!-- In each case, a device called a microarray (or gene chip) measured the expression of each of 6830 distinct genes. -->
 
-Class types of gene expression data
-===
+<!-- Class types of gene expression data -->
+<!-- === -->
 
-The cells mostly come from known cancer types, so there are classes, in addition to the measurements of the expression levels. 
+<!-- The cells mostly come from known cancer types, so there are classes, in addition to the measurements of the expression levels.  -->
 
-The classes are breast, cns (central nervous system), colon, leukemia, melanoma, nsclc (non-small- cell lung cancer), ovarian, prostate, renal, K562A, K562B, MCF7A, MCF7D (those four are laboratory tumor cultures) and unknown.
+<!-- The classes are breast, cns (central nervous system), colon, leukemia, melanoma, nsclc (non-small- cell lung cancer), ovarian, prostate, renal, K562A, K562B, MCF7A, MCF7D (those four are laboratory tumor cultures) and unknown. -->
 
-Application on gene expression data
-===
-```{r}
-library(ElemStatLearn)
-data(nci)
-head(nci)
-# transpose the data for clustering
-nci.t <- t(nci)
-# columns are cancer types
-# rows are the patient 
-```
+<!-- Application on gene expression data -->
+<!-- === -->
+<!-- ```{r} -->
+<!-- library(ElemStatLearn) -->
+<!-- data(nci) -->
+<!-- head(nci) -->
+<!-- # transpose the data for clustering -->
+<!-- nci.t <- t(nci) -->
+<!-- # columns are cancer types -->
+<!-- # rows are the patient  -->
+<!-- ``` -->
 
-Task 1: Hierarchical Clustering to NCI60 Data
-===
+<!-- Task 1: Hierarchical Clustering to NCI60 Data -->
+<!-- === -->
 
-Produce dendrograms using single-link clustering and complete-link clustering, and average link clustering. Make sure the figures are legible. (Try the cex=0.5 option to plot.)
+<!-- Produce dendrograms using single-link clustering and complete-link clustering, and average link clustering. Make sure the figures are legible. (Try the cex=0.5 option to plot.) -->
 
-Remark: hclust needs a matrix of distances, handily produced by the dist function, so let's make sure to remember to use this. 
+<!-- Remark: hclust needs a matrix of distances, handily produced by the dist function, so let's make sure to remember to use this.  -->
 
-Creating distances
-===
-```{r}
-# does euc. dist by default 
-nci.dist <- dist(nci.t)
-head(nci.dist)
-```
+<!-- Creating distances -->
+<!-- === -->
+<!-- ```{r} -->
+<!-- # does euc. dist by default  -->
+<!-- nci.dist <- dist(nci.t) -->
+<!-- head(nci.dist) -->
+<!-- ``` -->
 
-Complete Linkage
-===
-```{r, echo=FALSE}
-plot(hclust(nci.dist, method="complete"), cex=0.5, main="Complete Linkage", xlab="Cells", sub="",ylab="")
-```
+<!-- Complete Linkage -->
+<!-- === -->
+<!-- ```{r, echo=FALSE} -->
+<!-- plot(hclust(nci.dist, method="complete"), cex=0.5, main="Complete Linkage", xlab="Cells", sub="",ylab="") -->
+<!-- ``` -->
 
-Average Linkage
-===
-```{r, echo=FALSE}
-plot(hclust(nci.dist, method="average"), cex=0.5,
-main="Average Linkage", xlab="", sub="",ylab="")
-```
+<!-- Average Linkage -->
+<!-- === -->
+<!-- ```{r, echo=FALSE} -->
+<!-- plot(hclust(nci.dist, method="average"), cex=0.5, -->
+<!-- main="Average Linkage", xlab="", sub="",ylab="") -->
+<!-- ``` -->
 
-Single Linkage
-===
-```{r, echo=FALSE}
-plot(hclust(nci.dist, method="single"), cex=0.5,
-main="Single Linkage", xlab="", sub="",ylab="")
-```
+<!-- Single Linkage -->
+<!-- === -->
+<!-- ```{r, echo=FALSE} -->
+<!-- plot(hclust(nci.dist, method="single"), cex=0.5, -->
+<!-- main="Single Linkage", xlab="", sub="",ylab="") -->
+<!-- ``` -->
 
-Task 2
-===
+<!-- Task 2 -->
+<!-- === -->
 
-Which cell classes seem are best captured by each clustering method?
+<!-- Which cell classes seem are best captured by each clustering method? -->
 
-1. Complete-linkage has nice sub-trees for COLON, LEUKEMIA, MELANOMA, and RENAL. 
-2. Average linkage has similar resuls to complete linkage. 
-3. Single-linkage is good with RENAL and decent with MELANOMA (though confused with BREAST). There are little sub-trees of cells of the same time, like COLON or CNS, but mixed together with others. 
+<!-- 1. Complete-linkage has nice sub-trees for COLON, LEUKEMIA, MELANOMA, and RENAL.  -->
+<!-- 2. Average linkage has similar resuls to complete linkage.  -->
+<!-- 3. Single-linkage is good with RENAL and decent with MELANOMA (though confused with BREAST). There are little sub-trees of cells of the same time, like COLON or CNS, but mixed together with others.  -->
 
-Complete and average linkage versus single linkage
-===
+<!-- Complete and average linkage versus single linkage -->
+<!-- === -->
 
-- Typically, single linkage will tend to yield trailing clusters: very large clusters onto which individual observations attach one-by-one.
-- On the other hand, complete and average linkage tend to yield more balanced, attractive clusters
-- For this reason, complete and average linkage are generally preferred to single linkage.
+<!-- - Typically, single linkage will tend to yield trailing clusters: very large clusters onto which individual observations attach one-by-one. -->
+<!-- - On the other hand, complete and average linkage tend to yield more balanced, attractive clusters -->
+<!-- - For this reason, complete and average linkage are generally preferred to single linkage. -->
 
-Task 3: Height and sum of the within-cluster sums of squares relationship
-===
+<!-- Task 3: Height and sum of the within-cluster sums of squares relationship -->
+<!-- === -->
 
-The hclust command returns an object whose height attribute is the sum of the within-cluster sums of squares. How many clusters does this suggest we should use, according to complete linkage?
+<!-- The hclust command returns an object whose height attribute is the sum of the within-cluster sums of squares. How many clusters does this suggest we should use, according to complete linkage? -->
 
-Height and sum of the within-cluster sums of squares relationship
-===
+<!-- Height and sum of the within-cluster sums of squares relationship -->
+<!-- === -->
 
-```{r}
-nci.complete = hclust(nci.dist, method="complete")
-length(nci.complete$height)
-nci.complete$height[1]
-```
+<!-- ```{r} -->
+<!-- nci.complete = hclust(nci.dist, method="complete") -->
+<!-- length(nci.complete$height) -->
+<!-- nci.complete$height[1] -->
+<!-- ``` -->
 
-There are 63 “heights”, corresponding to the 63 joinings, i.e., not in- cluding the height (sum-of-squares) of zero when we have 64 clusters,
-one for each data point. Since the merging costs are differences, we want to add an initial 0 to the sequence.
+<!-- There are 63 “heights”, corresponding to the 63 joinings, i.e., not in- cluding the height (sum-of-squares) of zero when we have 64 clusters, -->
+<!-- one for each data point. Since the merging costs are differences, we want to add an initial 0 to the sequence. -->
 
-Optimal number of clusters
-===
-```{r, echo=FALSE, fig.width=4, fig.height=3}
-# takes the difference between 
-#successive components in a vector
-merging.costs <- diff(c(0,nci.complete$height))
-plot(64:2,merging.costs, xlab="Clusters remaining",ylab="Merging cost"
-     ,type="l")
-```
+<!-- Optimal number of clusters -->
+<!-- === -->
+<!-- ```{r, echo=FALSE, fig.width=4, fig.height=3} -->
+<!-- # takes the difference between  -->
+<!-- #successive components in a vector -->
+<!-- merging.costs <- diff(c(0,nci.complete$height)) -->
+<!-- plot(64:2,merging.costs, xlab="Clusters remaining",ylab="Merging cost" -->
+<!--      ,type="l") -->
+<!-- ``` -->
 
-The heuristic is to stop joining clusters when the cost of doing so goes up a lot.  
+<!-- The heuristic is to stop joining clusters when the cost of doing so goes up a lot.   -->
 
-This suggests using only 10 clusters, since going from 10 clusters to 9 is very expensive. (Alternately, use 63 clusters; but that would be silly.)
+<!-- This suggests using only 10 clusters, since going from 10 clusters to 9 is very expensive. (Alternately, use 63 clusters; but that would be silly.) -->
 
-Task 4
-===
+<!-- Task 4 -->
+<!-- === -->
 
-Suppose you did not know the cell classes. Can you think of any reason to prefer one clustering method over another here? 
+<!-- Suppose you did not know the cell classes. Can you think of any reason to prefer one clustering method over another here?  -->
 
 
 

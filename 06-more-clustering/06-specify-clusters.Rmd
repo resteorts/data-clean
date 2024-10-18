@@ -9,6 +9,11 @@ output:
 font-size: 8px
 ---
 
+```{r, echo= FALSE}
+knitr::opts_chunk$set(fig.width=5, fig.height=4, 
+                      cache=TRUE) 
+```
+
 Agenda
 ===
 - K-means versus Hierarchical clustering
@@ -119,11 +124,17 @@ variation just keeps decreasing
 \bigskip
 Example: $n=250$, $p=2$, $K=1,\ldots 10$
 
-\smallskip
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/chooseex1a.pdf}
-\includegraphics[width=0.5\textwidth]{figures/chooseex1b.pdf}
-\end{center}
+\center
+```{r, echo=FALSE, out.width="45%"}
+knitr::include_graphics("figures/chooseex1a.pdf")
+knitr::include_graphics("figures/chooseex1b.pdf")
+```
+
+<!-- \smallskip -->
+<!-- \begin{center} -->
+<!-- \includegraphics[width=0.5\textwidth]{figures/chooseex1a.pdf} -->
+<!-- \includegraphics[width=0.5\textwidth]{figures/chooseex1b.pdf} -->
+<!-- \end{center} -->
 
 Between cluster variation
 ===
@@ -165,11 +176,17 @@ Problem: between-cluster variation just keeps increasing
 \bigskip
 Running example: $n=250$, $p=2$, $K=1,\ldots 10$
 
-\smallskip
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/chooseex1a.pdf}
-\includegraphics[width=0.5\textwidth]{figures/chooseex3.pdf}
-\end{center}
+\center
+```{r, echo=FALSE, out.width="45%"}
+knitr::include_graphics("figures/chooseex1a.pdf")
+knitr::include_graphics("figures/chooseex3.pdf")
+```
+
+<!-- \smallskip -->
+<!-- \begin{center} -->
+<!-- \includegraphics[width=0.35\textwidth]{figures/chooseex1a.pdf}{width=50%} -->
+<!-- \includegraphics[width=0.35\textwidth]{figures/chooseex3.pdf}{width=50%} -->
+<!-- \end{center} -->
 
 CH index
 ===
@@ -194,12 +211,18 @@ Example: CH index
 ===
 Running example: $n=250$, $p=2$, $K=2,\ldots 10$.
 
-\smallskip
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/chooseex1a.pdf}
-\includegraphics[width=0.5\textwidth]{figures/chooseex4.pdf}
-\end{center}
-\vspace{-8pt}
+\center
+```{r, echo=FALSE, out.width="45%"}
+knitr::include_graphics("figures/chooseex1a.pdf")
+knitr::include_graphics("figures/chooseex4.pdf")
+```
+
+<!-- \smallskip -->
+<!-- \begin{center} -->
+<!-- \includegraphics[width=0.5\textwidth]{figures/chooseex1a.pdf} -->
+<!-- \includegraphics[width=0.5\textwidth]{figures/chooseex4.pdf} -->
+<!-- \end{center} -->
+<!-- \vspace{-8pt} -->
 We would choose $K=4$ clusters, which seems reasonable
 
 \bigskip
@@ -244,10 +267,13 @@ $$\hat{K} = \min \Big\{K \in \{1,\ldots K_\text{max}\} :
 Example: Gap statistic
 ===
 Running example: $n=250$, $p=2$, $K=1,\ldots 10$
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/chooseex5a.pdf}
-\includegraphics[width=0.5\textwidth]{figures/chooseex5b.pdf}
-\end{center}
+
+\center
+```{r, echo=FALSE, out.width="45%"}
+knitr::include_graphics("figures/chooseex5a.pdf")
+knitr::include_graphics("figures/chooseex5b.pdf")
+```
+
 We would choose $K=3$ clusters, which is also reasonable
 
 The gap statistic does especially well when the 
@@ -284,7 +310,8 @@ for our data and what we'd see from uniform data
 
 Application to Tennis data set
 ===
-We will walk through understanding clustering more through five tasks that you will finish for homework. 
+
+We will partially walk through an application that you will finish on your own.  
 
 Task 1
 ===
@@ -294,11 +321,11 @@ In your \textsf{read.csv()} remember to set the \textsf{stringsAsFactors()} para
 
 Remove the first two columns of your dataset, paste the names together, and replace the row numberings with these match names.
 
-Task 2
+Task 1
 ===
 There are two columns in your dataset that contain only \textsf{NA} values. Remove these. For all other columns that contain missing values, replace the missing values with the median values for that column. Store this cleaned dataset into the variable \textsf{iFinalTennisData}
 
-Solution to Task 1 and 2 
+Solution to Task 1 
 ===
 \tiny
 ```{r, echo = TRUE}
@@ -325,19 +352,19 @@ iFinalTennisData <- apply(finalTennisData, 2,
 	na.rm=TRUE); return(x)})
 ```
 
-Task 3
+Task 2
 ===
 Create a log-Euclidean distance matrix for your data and perform single linkage and complete linkage clustering on the data and store these in the variables \textsf{singeLinkage} and \textsf{completeLinkage} respectively.
 
-Task 4
+Task 3
 ===
 Using the command \textsf{intCriteria()} in the \textsf{clusterCrit} package, write a function that takes as its inputs the number of clusters to be tested (say 10), a clustered object (e.g \textsf{SingleLinkage} from above) and the original data frame (e.g. \textsf{iFinalTennisData}), and computes the CH Index for each assumed number of clusters and creates a plot of the resulting CH indices for each cluster count with a dotted vertical line indicating the maximum value. Also return the maximum CH Index computed. Test this function for up to 10 clusters with both single and complete linkage on \textsf{iFinalTennisData}, and include the maximum CH Index calculated and the related plots. What should the CH Index value be when the number of clusters is 1 and why?
 
-Task 5
+Task 4
 ===
 For each clustering (based on linkage) what is the optimal number of clusters?
 
-Task 6
+Task 5
 ===
 Create a dendogram for each of your two clustering assignments. Based on the data type, what is the most appropriate type of clustering and why?
 

@@ -1,0 +1,15 @@
+\frametitle{$K$-means and $K$-medoids in R}
+The $K$-means algorithm is part of the base
+distribution in R, given by the {\tt kmeans} function
+(use {\tt algorithm="Lloyd"})
+
+\bigskip
+E.g.,
+\begin{verbatim}
+km = kmeans(x, centers=k, nstart=10, algorithm="Lloyd")
+\end{verbatim}
+
+\bigskip
+The $K$-medoids algorithm is implemented by the
+function {\tt pam} (stands ``for partitioning
+around medoids'') in the package {\tt cluster}
