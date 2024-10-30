@@ -1,0 +1,145 @@
+
+---
+title: "Module 7: fastlink, Part I"
+author: "Rebecca C. Steorts"
+output: 
+     beamer_presentation:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
+---
+
+Reading
+===
+
+- Binette and Steorts (2020)
+- Edmorando et al. (2020)
+- Fellegi and Sunter (1969)
+
+
+# Probabilistic Entity Resolution 
+
+While Fellegi and Sunter (1969) have provided a framework for probabilistic entity resolution, there are few implmentations that scale to large data sets. 
+
+# Agenda
+
+- We review fastlink, Edmorando et al. (2020)
+- We illustrate a toy example on \texttt{RLdata10000}
+
+# fastlink
+
+- Edmorando et al. (2020) developed fastlink
+a scalable implementation of the FS method. 
+
+- In addition, the authors incorporated
+auxiliary information such as population name frequency and migration rates.
+
+- The authors used parallelization and hashing to merge millions of records in
+a near real-time on a laptop computer, and provided open-source software of
+their proposed methodology. 
+
+# Agreement Patterns
+
+\begin{itemize}
+\item Assume two data sets ($A$ and $B$) with overlapping variables in common (such as name, gender, address, etc.)
+\item Define an agreement value in field $k$ for record pair $(i,j):$
+\end{itemize}
+
+$$\gamma_k(i,j) \ = \ \left\{\begin{array}{l}   \color{blue}{\texttt{agree}} \\ \\
+    								     \color{blue}{\texttt{disagree}} \end{array}
+                               \right.$$
+                               
+                               
+
+
+# Agreement Patterns
+
+\begin{table}[]
+\begin{tabular}{ccccccc}
+    &  & First & Last &  Age & Street \\
+  \hline
+    & \multicolumn{3}{l}{Data set $\mathcal{A}$} \\
+    &  1 &  \texttt{James}  	& \texttt{Smith}  	& \texttt{35} & \bf{{\texttt{Devereux St.}}} \\
+    &  \multicolumn{3}{l}{Data set $\mathcal{B}$} \\
+    &  7 &  \texttt{James} 	& \texttt{Smit} 		& \texttt{43} & \bf{{\texttt{Dvereux St.}}}  \\
+	 \hdashline
+    & & \color{blue} {\texttt{agree}} 	& \color{blue} {\texttt{agree}}  	& \color{blue} {\texttt{disagree}} 		&   \color{blue} {\bf{{\texttt{agree}}}} \\  \hline
+\end{tabular}
+\end{table}
+
+\vspace*{4em}
+\pause
+
+\begin{center}
+\textbf{Agreement pattern} $\gamma(i, j) = \{\gamma_1(i,j), \gamma_2(i,j), \ldots, \gamma_K(i,j) \}$ 
+\end{center}  
+
+\pause
+
+One computational bottleneck is calculating these agreement patterns. 
+
+# Agreement Patterns
+
+- We **observe** the agreement patterns $\gamma(i,j)$ 
+- We **do not observe** the matching status 
+
+$$C_{i,j} \ = \ \left\{\begin{array}{l}   \color{blue}{\texttt{non-match}} \\ \\
+    								     \color{red}{\texttt{match}} \end{array}
+                               \right.$$
+
+
+
+# \texttt{fastLink} Model
+
+\begin{center}
+\begin{eqnarray*}
+  C(i, j) & \iid & \text{Bernoulli}(\mu) \\ 
+  \gamma(i,j) \mid C(i, j) = \text{\color{blue}{non-match}} & \iid &  \mathcal{F}({ \color{blue}{\pi}_{\text{\color{blue}{NM}}} }) \\ 
+  \gamma(i,j) \mid C(i, j) = \text{\color{white}{non-}\color{red}{match}} & \iid &  \mathcal{F}( {\color{red}{\pi}_{\text{\color{red}{M}}} }),
+\end{eqnarray*} 
+\end{center}
+
+where $\lambda$, ${\color{red}{\pi}_{\text{\color{red}{M}}}}$, ${\color{blue}{\pi}_{\text{\color{blue}{NM}}}}$  are estimated via the EM algorithm
+
+# \texttt{fastLink} Model
+
+More formally, we write 
+\begin{center}
+\begin{eqnarray*}
+  C(i, j) & \iid & \text{Bernoulli}(\mu) \\ 
+  \gamma(i,j) \mid C(i, j) & \iid &  \text{Categorical}(\pi),
+\end{eqnarray*} 
+\end{center}
+
+# \texttt{fastLink} Model
+
+Independence assumptions: 
+
+1. Independence across pairs
+2. Conditional Independence across linkage fields: 
+$$\gamma_k (i,j) \perp \gamma_{k^\prime} (i,j) \mid
+C(i,j).$$
+
+# Log-likelihood
+
+\begin{align}
+& \log L(\lambda, \pi \mid \gamma(i,j)) \\
+&=
+\prod_{i=1}^{N_1} 
+\prod_{i=1}^{N_2}
+\{
+\lambda
+\prod_{k=1}^{K}
+\prod_{\ell=1}^{L_k - 1}
+\pi_{M k \ell}^{I(\gamma_k(i,j) = \ell)}
++
+(1 - \lambda)
+\prod_{k=1}^{K}
+\prod_{\ell=1}^{L_k - 1}
+\pi_{N_{M} k \ell}^{I(\gamma_k(i,j) = \ell)}
+\}
+\end{align}
+
+# Exercises
+
+Show the E and M steps. 

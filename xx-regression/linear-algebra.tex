@@ -1,0 +1,476 @@
+\documentclass[mathserif]{beamer}
+
+\setbeamertemplate{frametitle}[default][center]%Centers the frame title.
+\setbeamertemplate{navigation symbols}{}%Removes navigation symbols.
+\setbeamertemplate{footline}{\raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[10pt]{\scriptsize\insertframenumber}}}}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx,array,dsfont}
+\usepackage{harvard}
+\citationmode{abbr}
+
+\newcommand{\Hrule}{\rule{\linewidth}{0.2pt}}
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}}
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\newcommand{\minimize}{\mathop{\mathrm{minimize}}}
+\def\half{\frac{1}{2}}
+\def\th{\mathrm{th}}
+\def\sign{\mathrm{sign}}
+\def\supp{\mathrm{supp}}
+\def\E{\mathrm{E}}
+\def\P{\mathrm{P}}
+\def\Var{\mathrm{Var}}
+\def\Cov{\mathrm{Cov}}
+\def\R{\mathds{R}} 
+\def\cA{\mathcal{A}}
+\def\cB{\mathcal{B}}
+\def\cE{\mathcal{E}}
+\def\cF{\mathcal{F}}
+\def\cG{\mathcal{G}}
+\def\cN{\mathcal{N}}
+\def\red{\color[rgb]{0.8,0,0}}
+\def\white{\color[rgb]{1,1,1}}
+\def\blue{\color[rgb]{0,0,0.8}}
+
+\begin{document}
+
+\title{Linear Algebra}
+\author{Rebecca C. Steorts}
+\date{}
+
+\frame{
+\frametitle{Linear algebra}
+
+Some linear algebra is important for understanding many machine learning methods, such as linear or logistic regression. 
+
+}
+
+\frame{
+\frametitle{Matrices and transposes}
+$A$ is a $m \times n$ real matrix, written $A \in \mathbb{R}^{m \times n}$ if 
+\[
+A = \begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{pmatrix}
+\]
+where $a_{ij} \in \mathbb{R}.$ The $(i,j)$th entry of A is $A_{ij} = a_{ij}.$
+
+\vspace*{1em}
+The transpose of $A \in \mathbb{R}^{m \times n}$ is defined as 
+
+
+
+$$A^T = \begin{pmatrix}
+A_{11} & A_{21} & \cdots & A_{m1} \\
+A_{12} & A_{22} & \cdots & A_{m2} \\
+\vdots & \vdots & \ddots & \vdots \\
+A_{1n} & a_{2n} & \cdots & A_{mn}
+\end{pmatrix}
+\in \mathbb{R}^{n \times m}
+$$
+
+That is, $(A^{T})_{ij} = A_{ji}.$
+
+Note that $x \in \mathbb{R}^n$ is considered to be a column vector in $\mathbb{R}^{n \times 1}.$
+}
+
+\begin{frame}
+\frametitle{Sums and products of matrices}
+
+The sum of matrices $A \in \mathbb{R}^{m \times n}$ and $B \in \mathbb{R}^{m \times n}$ is the matrix
+$A + B \in \mathbb{R}^{m \times n}$ such that
+
+$$(A + B)_{ij} = A_{ij} + B_{ij}.$$
+
+The product of matrices $A \in \mathbb{R}^{m \times n}$ and $B \in \mathbb{R}^{n \times \ell}$ is the matrix
+$AB \in  \mathbb{R}^{m \times \ell}$ such that
+$$ (AB)_{ij} = \sum_{k=1}^n A_{ik} B_{kj}.$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Basic matrix properties}
+
+In the following properties, it is assumed that the matrix
+dimensions are compatible. (For example, if we write $A + B$ then
+it is assumed that $A$ and $B$ are the same size.)
+
+\begin{itemize}
+\item $(AB) C = A (BC)$
+\item $A (B + C) = AB + AC$
+\item $(B + C) A = BA + CA$
+\item Except in certain situations, $AB$ is not equal to $BA.$ 
+\item $(AB)^T = B^TA^T$
+\item $(A + B)^T = A^T + B^T.$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Identity}
+
+The $n \times n$ identity matrix denoted $I_{n \times n}$ or I is 
+
+$$
+I = I_n = \begin{pmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 1
+\end{pmatrix} \in \mathbb{R}^{n \times n}
+$$
+\vspace*{1em}
+
+$$IA = A = AI$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Inverse}
+
+If it exists, the inverse of $A$ denoted $A^{-1}$ is a matrix such that $A^{-1}A = I$ and $AA^{-1} = I.$
+
+\vspace*{1em}
+
+If $A^{-1}$ exists, we say that A is invertible. 
+
+\vspace*{1em}
+
+
+$(A^{-1})^T = (A^T)^{-1}$
+
+\vspace*{1em}
+
+$(AB)^{-1} = B^{-1}A^{-1}$
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Trace}
+
+The trace of a square matrix $A \in \mathbb{R}^{n \times n}$, denoted $tr{A}$ is defined as 
+$$tr(A) = \sum_{i=1}^n A_{ii}.$$
+
+\vspace*{1em}
+
+$tr(AB) = tr(BA)$ if $AB$ is a square matrix. 
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Symmetric and definite matrices}
+
+$A$ is symmetric if $A = A^{T}.$
+
+\vspace*{1em}
+
+$A$ is symmetric positive semi-definite (SPSD) if and only if 
+$A = B^TB$ for some $B \in \mathbb{R}^{m \times n}.$
+
+\vspace*{1em}
+
+$A$ is symmetric positive definite (SPD) if and only if 
+$A$ is SPSD and $A^{-1}$ exists. 
+
+\vspace*{1em}
+
+There are many equivalent definitions of SPSD and SPD, however, these are the ones that I will provide
+for this course. 
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Discrete random variables}
+
+Informally, a random variable (r.v.) is a quantity that
+probabilistically takes any one of a range of values.
+
+\vspace*{0.5em}
+
+Usual: uppercase for a r.v. and lowercase for the observed value. 
+\vspace*{0.5em}
+
+A r.v. $X$ is discrete if it takes values in a
+countable set $\mathcal{X} = \{x_1, x_2,  \ldots \}.$
+
+\vspace*{0.5em}
+
+Examples: Bernoulli, Binomial, Poisson, Geometric. 
+
+\vspace*{0.5em}
+The density of a discrete r.v. is the function
+$p(x) = \mathbb{P}(X = x)$= probability that X equals x.
+
+\vspace*{0.5em}
+
+Sometimes, $p(x)$ is called the probability mass function in the
+discrete case, but “density” is also correct.
+
+\vspace*{0.5em}
+
+Properties:
+
+$$0 \leq p(x) \leq 1, \quad \sum_{x \in \mathcal{X}} p(x) = 1 \quad \mathbb{P}(X \in A) = \sum_{x \in A} p(x).$$
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Continuous random variables}
+
+A random variable $X \in \mathbb{R}$ is continuous if there is a function
+$p(x) \geq 0$ such that $P(X \in A) = \int_A p(x) \; dx$ for all $A \subseteq \mathbb{R}.$
+\vspace*{0.5em}
+Examples: Normal, Uniform, Beta, Gamma, Exponential. 
+
+\vspace*{0.5em}
+
+We call $p(x)$ the probability density function of $X.$ But, it's not the probability that $X$ equals $x$! 
+
+\vspace*{0.5em}
+
+While $\int_A p(x) \; dx = 1$, it can occur that $p(x) > 1.$
+
+\vspace*{0.5em}
+
+Note that the same definitions apply to random vectors $X \in \mathbb{R}^n.$
+
+\vspace*{0.5em}
+
+The cumulative distribution function (cdf) of $X \in \mathbb{R}$ is 
+$$F(x) = \mathbb{P}(X \leq x) = \int_{-\infty}^{\infty} p(x^{\prime}) \; dx^\prime$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Joint distributions and random variables}
+
+
+Let $p(x,y)$ denotes the joint density of $X \in \mathcal{X}$ and $Y \in \mathcal{Y}.$
+
+\begin{itemize}
+\item $\mathbb{P}(X = x, Y = y) = p(x,y)$ if $X$ and $Y$ are discrete r.v.
+\item $\mathbb{P}(X \in A, Y \in B) = \int_{A \times B} p(x, y) \; dx \; dy$ if X and Y are continuous.
+\item The density of $X$ can be recovered from the joint density by marginality (summing/integrating) over Y: 
+\begin{itemize}
+\item $p(x) = \sum_{y \in \mathcal{Y}} p(x,y)$ if Y discrete.
+\item $p(x) = \int_{\mathcal{Y}} p(x,y) \; dy$ if Y continuous.
+\end{itemize}
+\end{itemize}
+
+\vspace*{1em}
+It is common to use “p” to denote all densities and
+follow the convention that X is taking the value x, Y is
+taking the value y, etc.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Conditional densities and independence}
+
+If $p(y) > 0$ then the conditional density of $X$ given $Y = y$ is 
+
+$$p(x \mid y) = \frac{p(x , y)}{p(y)}.$$
+
+\vspace*{1em}
+
+$X$ and $Y$ are independent if $p(x , y) = p(x) p(y)$ for all $x,y.$
+
+\vspace*{1em}
+
+$X_1, \ldots, X_n$ are independent if 
+
+$$p(x_1, \ldots, x_n) = p(x_1) \times p(x_n)$$ for all $x_1, \ldots, x_n.$
+
+\vspace*{1em}
+
+$X_1, \ldots, X_n$ are conditionally independent given $Y$ if 
+$$p(x_1, \ldots, x_n \mid y) = p(x_1 \mid y) \times p(x_n \mid y)$$
+for all $x_1, \ldots, x_n, y.$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Expectations}
+
+Suppose $h(x)$ is a real-valued function of $x.$
+
+The expectation of $h(X)$, denoted $ E(h(X))$ is 
+\begin{itemize}
+\item $E(h(X)) = \sum_{x \in \mathcal{X}} h(x) p(x)$ if $X$ is discrete. 
+\item $E(h(X)) = \int_{\mathcal{X}} h(x) p(x) dx$ if $X$ is continuous.
+\end{itemize}
+
+\vspace*{1em}
+
+The conditional expectation of $h(X)$ given $Y=y$ is 
+\begin{itemize}
+\item $E(h(X) \mid Y=y) = \sum_{x \in \mathcal{X}} h(x) p(x \mid y)$ if $X$ is discrete. 
+\item $E(h(X) \mid Y=y) = \int_{\mathcal{X}} h(x) p(x \mid y) dx$ if $X$ is continuous.
+\end{itemize}
+
+\vspace*{1em}
+
+Let $g(Y) = E[h(X) \mid Y],$ where $g(y) = E[ h(X) \mid Y = y ].$
+
+\vspace*{0.5em}
+The law of iterated expectations is 
+
+$$E\left[
+E(h(X) \mid Y)
+= E(h(X)
+\right]
+$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Random vectors}
+
+Let $Z_1, \ldots, Z_n \in \mathbb{R}$ be r.v.. Then 
+
+$$Z =  \begin{pmatrix}
+Z_1 \\
+Z_2 \\
+\vdots \\
+Z_n
+\end{pmatrix}
+= 
+\begin{pmatrix}
+Z_1 & Z_2 & \cdots & Z_n
+\end{pmatrix}^T
+$$
+is a random vector in $\mathbb{R}^n.$
+
+\vspace*{1em}
+
+The expectation of a random vector $Z \in \mathbb{R}^n$ is 
+$$E(Z) = \begin{pmatrix}
+E(Z_1) \\
+E(Z_2)\\
+\vdots \\
+E(Z_n)
+\end{pmatrix}
+$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Covariance matrix}
+
+The covariance matrix of a random vector $Z \in \mathbb{R}^{n}$ is the matrix 
+$Cov(Z) \in \mathbb{R}^{n \times n}$ with $(i,j)$th entry
+
+$$Cov(Z)_{ij} = Cov(Z_i, Z_j).$$
+
+where 
+\begin{align}
+Cov(Z_i, Z_j)
+& = 
+E \left[
+(
+Z_i - E(Z_i)
+)
+(Z_j - E(Z_j)
+)
+\right ] \\
+&= E(Z_i Z_j) - E(Z_i) E(Z_j)
+\end{align}
+
+It is equivalent that 
+
+\begin{align}
+Cov(Z)
+& = 
+E \left[
+(
+Z - E(Z)
+)
+(Z - E(Z)
+)^T
+\right ] \\
+&= E(Z Z^T) - E(Z) E(Z)^T
+\end{align}
+Recall that $Z \in \mathbb{R}^n$ is considered to be a column vector in $\mathbb{R}^{n \times 1}$ so 
+$ZZ^T$ is a matrix in $\mathbb{R}^{n \times n}.$ 
+\end{frame}
+
+\begin{frame}
+\frametitle{Covariance matrix}
+
+$Cov(Z)$ is always SPSD. 
+
+\vspace*{1em}
+
+If $Z \in \mathbb{R}^{n}$ is a random vector, then 
+
+$$E[AZ + b] = A E[Z] + b$$
+
+and 
+
+$$Cov(AZ + b) = A Cov(Z) A^T.$$
+
+for any fixed (non-random) $A \in \mathbb{R}^{m \times n}$  and $b  \in \mathbb{R}^{m}.$ 
+
+If $Y, Z  \in \mathbb{R}^{n}$ are independent, random vectors, then 
+
+$$Cov(Y + Z) = Cov(Y) + Cov(Z).$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Multivariate normal distribution}
+
+If $\mu \in \mathbb{R}^n$ and $C \in \mathbb{R}^{n \times n}$ is SPSD, then $Z \sim N(\mu, C)$ denotes 
+that $Z$ is multivariate normal with $E(Z) = \mu$ and $Cov(Z) = C.$
+
+\vspace*{1em}
+
+Standard Multivariate normal: If $Z_1, \ldots, Z_n \sim N(0, 1)$ independently and $Z = (Z_1, \ldots, Z_n)^T$ then 
+$Z \sim N(0, I).$
+
+\vspace*{1em}
+
+Affine transformation property: If $Z \sim N(\mu, C)$ then $AZ + b \sim N(A\mu + b, ACA^T)$ for any fixed matrix $A \in 
+\mathbb{R}^{m \times n}, b \in \mathbb{R}^m, \mu \in \mathbb{R}^n$ and SPSD $C \in \mathbb{R}^{n \times n}.$
+
+\vspace*{1em}
+
+Any multivariate normal distribution can be obtained via an
+affine transformation $(AZ + b)$ of $Z \sim N(0, I_{n \times n})$ for an appropriate choice of $n, A, and b.$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Multivariate normal distribution}
+
+Sum property: If $Y \sim N(\mu_1, C_1)$ and $Z \sim N(\mu_2, C_2),$ independently, then $Y+Z \sim N(\mu_1 + \mu_2, C_1 + C_2).$
+
+\vspace*{1em}
+
+Density: If $Z = (Z_1, \ldots, Z_n)^T \sim N(\mu, C)$ and $C^{-1}$ exists, the $Z$ has density:
+$$p(x) = \frac{1}{
+2(\pi)^{n/2} 
+| det(C)|^{1/2}
+}
+\exp\{
+\frac{-1}{2} (z - \mu)^T C^{-1} (z - \mu)
+\}
+$$
+for all $z \in \mathbb{R}^n$
+\end{frame}
+
+
+
+
+
+
+
+
+\end{document}
