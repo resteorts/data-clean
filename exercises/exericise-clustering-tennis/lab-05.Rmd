@@ -27,6 +27,31 @@ row.names(myTennisDataC) <- as.character(apply(myTennisDataD[,1:2], 1,
 
 3. Using the command \textsf{intCriteria()} in the \textsf{clusterCrit} package, write a function that takes as its inputs the number of clusters to be tested (say 10), a clustered object (e.g \textsf{SingleLinkage} from above) and the original data frame (e.g. \textsf{iFinalTennisData}), and computes the CH Index for each assumed number of clusters and creates a plot of the resulting CH indices for each cluster count with a dotted vertical line indicating the maximum value. Also return the maximum CH Index computed. Test this function for up to 10 clusters with both single and complete linkage on \textsf{iFinalTennisData}, and include the maximum CH Index calculated and the related plots. What should the CH Index value be when the number of clusters is 1 and why?
 
+\newpage
+Hint:
+
+```{r}
+# computeCH <- function(num.clust, clust.obj, data.set){
+
+#}
+###################################################### # 
+
+#This function creates a plot of CH indices
+# and returns the largest CH index
+# when the number of clusters is less than a given value
+#
+# Inputs:
+#   num.clust:  a positive integer,
+#   will test all cluster numbers up to this
+#   clust.obj:  a cluster object that can be cut into various
+  # clusters
+#   data.set:  a data frame containing data that generated clust.obj
+#
+# Output:
+#   A plot of the CH indices
+# The largest CH index for # of clusters below num.clust
+```
+
 4. For each clustering (based on linkage) what is the optimal number of clusters?
 
 5. Create a dendogram for each of your two clustering assignments. Based on the data type, what is the most appropriate type of clustering and why? 
