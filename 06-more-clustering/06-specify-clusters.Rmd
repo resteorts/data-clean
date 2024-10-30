@@ -369,7 +369,12 @@ Task 5
 Create a dendogram for each of your two clustering assignments. Based on the data type, what is the most appropriate type of clustering and why?
 
 
+Full exercise
+===
 
+The full exercise can be found here:
+
+https://github.com/resteorts/data-clean/tree/main/exercises/exericise-clustering-tennis
 
 
 
