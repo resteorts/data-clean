@@ -41,8 +41,12 @@ https://github.com/resteorts/data-clean/tree/main/exercises/exericise-clustering
 
 Please work on this on Monday, November 4 in OH if you need assistance and help before solutions are posted. This is a non-graded exercise/homework assignment. 
 
-Exercise: Mixture Models 
+Exercise: Exponential Mixture Models 
 ===
+
+The exercise on exponential mixture models can be found here:
+
+https://github.com/resteorts/data-clean/blob/main/exercises/exercise-mixture-models/exercise-exponential.pdf
 
 
 
