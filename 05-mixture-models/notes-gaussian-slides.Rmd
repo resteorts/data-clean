@@ -1,0 +1,146 @@
+
+---
+title: "Gaussian Mixture Models"
+author: "Rebecca C. Steorts"
+output: 
+     pdf_document:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
+---
+
+# Simple EM Algorithm
+
+Notation and Setup
+\vspace*{1em}
+
+We know the following: 
+
+-   Observations $x_{1:n}$.
+-   K total classes
+-   $P(Z_i = k) = \pi_k$ (for $i=1,\ldots, K$)
+-   Common variance $\sigma^2.$
+
+We do not know $\mu_1, \ldots, \mu_K$ and want to learn these. 
+
+\vspace*{1em}
+
+This is a very unrealistic setting, however, it hopefully provides intuition regarding the algorithm itself (and the math is simplified).
+
+# EM Algorithm
+
+$\propto$ will drop any constants (and I will make sure to include them back in later). Common trick in Bayesian statistics. 
+
+```{=tex}
+\begin{align}
+& p(x_1, \ldots, x_n \mid \mu_1, \ldots, \mu_K) \\
+& = \prod_{i=1}^n p(x_i \mid \mu_1, \ldots, \mu_K) \; \text{independent data}  \\
+& = \prod_{i=1}^n \sum_{k=1}^K p(x_i, z_i = k \mid \mu_1, \ldots, \mu_K) \; \text{marg. over labels}\\
+& = \prod_{i=1}^n \sum_{k=1}^K p(x_i \mid z_i = k, \mu_1, \ldots, \mu_K) p(z_i = k) \\
+& \propto \prod_{i=1}^n \sum_{k=1}^K \exp(-\frac{1}{2\sigma^2} (x_i - \mu_k)^2) \pi_k \;\; \text{dropped normal constants}
+\end{align}
+```
+# EM Algorithm
+
+Let $\theta^{(t)} = (\mu_1^{(t)}, \ldots, \mu_k^{(t)})$ at some
+iteration $t.$
+
+At iteration $t$ consider the function:
+
+```{=tex}
+\begin{align}
+Q(\theta^{(t)} \mid  \theta^{(t-1)}) &=
+\sum_{i=1}^n \sum_{k=1}^K \textcolor{purple}{P(z_i = k \mid x_i, \theta^{(t-1)})} \\
+& \quad \times \log P(x_i, z_i = k \mid \theta^{(t-1)})
+\end{align}
+```
+# E-step
+
+```{=tex}
+\begin{align}
+&\textcolor{purple}{P(z_i = k \mid x_i, \theta^{t-1})} \\
+&= P(z_i = k \mid x_i, \mu_1^{(t-1)}, \ldots, \mu_K^{(t-1)}) \\
+&\propto P(x_i \mid z_i = k, \mu_1^{(t-1)}, \ldots, \mu_K^{(t-1)}) P(z_i = k) \\
+&\propto \exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2) \pi_k \\
+&= \frac{\exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2) \pi_k}
+{\sum_{k=1}^K \exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2) \pi_k}
+\end{align}
+```
+
+This is equivalent to assigning clusters to each data point in a soft-way (clusters can overlap). 
+
+# M-step
+
+Recall that in the E-step, we calculated 
+$R_{ik}^{(t-1)} = P(z_i = k \mid x_i, \theta^{(t-1)})$
+
+\begin{align}
+&Q(\theta^{(t)} \mid  \theta^{(t-1)}) \\
+&=
+\sum_{i=1}^n \sum_{k=1}^K \textcolor{purple}{P(z_i = k \mid x_i, \theta^{(t-1)})} \times
+\log P(x_i, z_i = k \mid \theta^{(t-1)})\\
+&= \sum_{i=1}^n \sum_{k=1}^K \textcolor{purple}{P(z_i = k \mid x_i, \theta^{(t-1)})} \\
+& \quad \times
+[
+\log P(x_i \mid z_i = k, \theta^{(t-1)}) + \log P(z_i = k \mid \theta^{(t-1)})
+] \\
+&= \sum_{i=1}^n \sum_{k=1}^K
+R_{ik}^{(t-1)} [
+-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2) + \log \pi_k
+]
+\end{align}
+
+
+M-step
+===
+
+At each iteration $t$, maximize $Q$ in term of $\theta^{(t)}.$
+
+\begin{align}
+Q(\mu_k^{(t)} \mid \theta^{(t-1)}) &\propto \sum_{i=1}^n R_{ik}^{(t-1)} 
+(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2), \implies \\
+\frac{\partial Q(\mu_k^{(t)} \mid \theta^{(t-1)})}{\partial \mu_k^{(t)}} &= 
+\sum_{i=1}^n R_{ik}^{(t-1)} (x_i - \mu_k^{(t-1)})) = 0 \implies
+\end{align}
+
+$$\textcolor{blue}{\mu_k^{(t)} = \sum_{i=1}^n w_i x_i} \quad \text{where}
+$$
+
+$$
+w_i = \dfrac{
+R_{ik}^{t-1}
+}{
+\sum_{i=1}^n R_{ik}^{t-1}
+}
+=
+\dfrac{
+P(z_i = k \mid x_i, \theta^{(t-1)})
+}
+{
+\sum_{i=1}^n
+P(z_i = k \mid x_i, \theta^{(t-1)})
+}
+$$
+
+
+This is equivalent to updating the cluster centers. 
+
+Summarize EM Algorithm
+===
+
+1. E-step
+
+Compute the expected classes of all data points for each class:
+
+$$P(z_i = k \mid x_i, \theta^{(t-1)}) =
+\frac{\exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2) \pi_k^{(t-1)}}
+{\sum_{k=1}^K \exp(-\frac{1}{2\sigma^2} (x_i - \mu_k^{(t-1)})^2) \pi_k^{(t-1)}}
+$$
+
+2. M-step
+
+Then compute the maximum value given our data's class membership. 
+
+$$\mu_i^{(t)} = \sum_{i=1}^n w_i x_i.$$ 
+
+In this case, it's the MLE but with weighted data.

@@ -348,7 +348,7 @@ assuming it came from component $k$.
 
 # Extension
 
-Then the two-component Normal mixture model is: \begin{align}
+Then the $k$-component Normal mixture model is: \begin{align}
   & X_1,\ldots, X_n \mid \mu,\pi\ \sim F(\mu,\pi)
 \end{align} where $F(\mu,\pi)$ is the distribution with p.d.f.
 $$ f(x|\mu,\textcolor{blue}{\pi}) = \sum_{k=1}^K \pi_k N(\mu_k, \lambda^{-1}).$$

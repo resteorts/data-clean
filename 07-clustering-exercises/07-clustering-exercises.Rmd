@@ -48,5 +48,11 @@ The exercise on exponential mixture models can be found here:
 
 https://github.com/resteorts/data-clean/blob/main/exercises/exercise-mixture-models/exercise-exponential.pdf
 
+The tutorial on mixture models can be found here: https://arxiv.org/pdf/1901.06708
+
+Solutions on mixture models will be updated here: 
+
+https://github.com/resteorts/data-clean/tree/main/exercises/exercise-mixture-models/solutions/
+
 
 
