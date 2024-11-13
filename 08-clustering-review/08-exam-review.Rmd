@@ -1,0 +1,416 @@
+---
+title: "Exam Review"
+author: "Rebecca C. Steorts, Duke University "
+date: STA 325
+output: 
+     beamer_presentation:
+      includes: 
+          in_header: custom2.tex
+font-size: 8px
+---
+
+```{r, echo= FALSE}
+knitr::opts_chunk$set(fig.width=5, fig.height=3.5, 
+                      cache=TRUE) 
+```
+
+ 
+
+What is clustering?
+===
+
+Clustering is an unsupervised method that divides up data into groups (clusters), so that points in any one group are more similar to each other than to points outside the group. 
+
+When might we want to use clustering?
+===
+
+One practical application of clustering is recommender systems, where one clusters  users with similar viewing patterns on Netflix/Hulu, etc. 
+
+What are other applications we have seen in class or you have encountered? 
+
+
+Machine Learning Algorithms for Clustering 
+===
+
+- Mixture Models and the EM Algorithm
+- k-means
+- hierarchical clustering
+- how to choose the number of clusters
+
+Agenda
+===
+
+- In this review, I will focus on mixture models
+- Review Exponential Mixture Models
+- Review Derivation of Estimates
+- How to Code These Models Up
+
+
+Mixture models can be viewed as probabilistic clustering
+===
+
+-   Mixture models put similar data points into "clusters".
+
+-   This is appealing as we can potentially compare different
+    probabilistic clustering methods by how well they predict (under
+    cross-validation). 
+
+-   This contrasts other methods such as k-means and hierarchical
+    clustering as they produce clusters (and not predictions), so it's
+    difficult to test if they are correct/incorrect.
+    
+Resources
+===
+
+One resource that is a tutorial on mixture models is the following: 
+https://arxiv.org/pdf/1901.06708 
+
+The derivations are adapted from the authors' materials. 
+
+Mixture Model
+===
+
+Assume that we have a mixture of $K$ exponential distributions. 
+
+Following the notation in the article, assume that
+$$g_k(x, \lambda_k) = \lambda_k e^{- \lambda_k x}, x>0$$ 
+
+From equation (1) in the article, it follows that 
+
+$$f(x, \lambda_1, \ldots, \lambda_K) = \sum_{k=1}^K \pi_k \lambda_k e^{- \lambda_k x},$$ which is a K-component exponential distribution with rate parameter $\lambda_k$ and mixing proportions (or weights) $\pi_k.$
+
+EM Algorithm
+===
+
+Because the likelihood and log-likelihood is complex for mixture models, we often utilize an algorithm called 
+the expectation-maximization (EM) algorithm to estimate any unknown parameter values. 
+
+Properties of the EM Algorithm
+===
+
+1. It's quite general (see the tutorial), so we can apply it to any type of mixture model. 
+
+2. It converges to a local minimum but not a global one. 
+
+3. It can get stuck depending on the starting value, so this is something to watch out for in practice. 
+
+4. We typically monitor convergence of the algorithm using the log-likelihood. 
+
+Derivation of the E-Step
+===
+
+From equation (38) in the tutorial, we can update $\gamma_{ik}$ as follows:
+
+$$\gamma_{ik} = \frac{
+\pi_k \lambda_k e^{- \lambda_k x_i}
+}
+{
+\sum_{j=1}^K \pi_j \lambda_j e^{- \lambda_j x_i}
+}
+$$
+
+What does this step do in words? 
+
+Derivation of the M-Step
+===
+
+Using section 3 of the tutorial, we can work with a function $Q()$ that takes advantage of the latent components/variables. 
+
+\begin{align}
+Q(\lambda_1, \ldots, \lambda_K)
+&= \sum_{i=1}^n 
+\sum_{k=1}^K
+\gamma_{ik}
+\log [
+\pi_k g_k(x_i, \lambda_k)
+] \\
+&=
+ \sum_{i=1}^n 
+\sum_{k=1}^K
+\gamma_{ik}
+\log [
+\pi_k \lambda_k e^{- \lambda_k x_i}
+] \\
+&= 
+ \sum_{i=1}^n 
+\sum_{k=1}^K
+\gamma_{ik}
+ [
+\log \pi_k+ \log \lambda_k-  \lambda_k x_i ] 
+\end{align}
+
+Note that the following constraint must be satisfied $\sum_{k=1}^K \pi_k = 1.$ 
+
+Derivation of the M-Step
+===
+
+The Lagrangian\footnote{This is a constrained optimization problem.} becomes
+
+\begin{align}
+\mathcal{L}(\lambda, \pi, \alpha)
+&= 
+\sum_{i=1}^n 
+\sum_{k=1}^K
+[
+\gamma_{ik}
+\log \pi_k+ \gamma_{ik} \log \lambda_k - \gamma_{ik} \lambda_k x_i ] 
+- \alpha(\sum_{k=1}^K \pi_k - 1).
+\end{align}
+
+This implies that 
+
+\begin{align}
+\frac{\partial{\mathcal{L}}}{\partial{\lambda_k}}
+&= \sum_{i=1}^n 
+\left[
+\frac{\gamma_{ik}}{\lambda_k} - \gamma_{ik} x_i
+\right] = 0 \implies \\
+& \frac{\sum_{i=1}^n \gamma_{ik}} {\lambda_k} 
+=  \sum_{i=1}^n \gamma_{ik} x_i \implies \\
+& \lambda_k  = \frac{\sum_{i=1}^n \gamma_{ik}}
+{\sum_{i=1}^n \gamma_{ik} x_i
+}
+\end{align}
+
+Derivation of the M-Step
+===
+
+There are two approaches we can use to find $\pi_{k}.$
+
+1. Using the tutorial, pg. 7 and equation (41), it follows that
+$$\pi_{k} =  \frac{
+\sum_{i=1}^n \gamma_{ik}
+}
+{
+\sum_{i=1}^n \sum_{j=1}^K \gamma_{ij}
+}
+= \frac{1}{n} \sum_{i=1}^n \gamma_{ik}, 
+$$
+
+where $\sum_{i=1}^n \sum_{j=1}^K \gamma_{ij} = n.$
+
+2. You can also derive the estimate using the Lagrangian.
+
+
+Derivation of the M-Step
+===
+
+ 
+
+$$
+\mathcal{L}(\lambda, \pi, \alpha)
+=
+\sum_{i=1}^n 
+\sum_{k=1}^K
+[
+\gamma_{ik}
+\log \pi_k+ \gamma_{ik} \log \lambda_k - \gamma_{ik} \lambda_k x_i ] 
+- \alpha(\sum_{k=1}^K \pi_k - 1).
+$$
+
+\begin{align}
+\frac{\partial{\mathcal{L}}}{\partial{\pi_k}}
+&= \frac{\sum_{i=1}^n \gamma_{ik}}{\pi_k} - \alpha = 0 \implies \\
+& \pi_k = \frac{1}{\alpha} \sum_{i=1}^n \gamma_{ik} \implies \\
+& \sum_{k=1}^K \pi_k = \frac{1}{\alpha} \sum_{k=1}^K \sum_{i=1}^n \gamma_{ik} \implies \\
+& 1 = \frac{1}{\alpha} \sum_{k=1}^K \sum_{i=1}^n \gamma_{ik} \implies \\
+& \alpha = \frac{1}{ \sum_{k=1}^K \sum_{i=1}^n \gamma_{ik}}
+\end{align}
+
+Derivation of the M-Step
+===
+
+Putting this together, we find that 
+
+$$\pi_{k} =  \frac{
+\sum_{i=1}^n \gamma_{ik}
+}
+{
+\sum_{i=1}^n \sum_{j=1}^K \gamma_{ij}
+}
+= \frac{1}{n} \sum_{i=1}^n \gamma_{ik}.
+$$
+
+
+
+
+
+Monitor the expected log-likelihood
+===
+Again, recall that 
+
+$$
+Q(\lambda_1, \ldots, \lambda_K)
+=
+ \sum_{i=1}^n 
+\sum_{k=1}^K
+\gamma_{ik}
+ [
+\log \pi_k+ \log \lambda_k-  \lambda_k x_i ] 
+$$
+
+Formally, this is the expected log-likelihood, which can be used an approximation to monitor convergence of the EM algorithm. 
+
+We cannot calculate the log-likelihood in closed form, so this is why we monitor changes to the expected log-likelihood. 
+
+Monitor the expected log-likelihood
+===
+
+Specifically for an iteration $t+1$ and $t$ we can monitor 
+
+$$\Delta Q^{(t + 1)} = |\Delta Q^{(t + 1)} - \Delta Q^{(t)}| < \epsilon$$
+We often plot the expected log-likelihood versus the number iterations. 
+
+Simulation Study
+===
+
+Simulate a two-component exponential mixture model with 2,000 data points. Let the true rates be 0.5 and 2.0. Let the mixing proportions be 0.5 and 0.5. 
+
+\tiny
+```{r, echo = FALSE}
+set.seed(1234)
+# sample
+n_samples <- 2000          
+true_rates <- c(0.5, 2.0)  
+true_proportions <- c(0.5, 0.5)  
+
+# Sample group assignments (1 or 2) based on mixing proportions
+component_labels <- sample(1:2, n_samples, replace = TRUE, prob = true_proportions)
+
+# Stage 2: Generate data from the corresponding exponential 
+# distribution based on the group assignment
+data <- numeric(n_samples)  # Initialize the data vector
+# Generate data for group 1 (rate = 0.5)
+data[component_labels == 1] <- rexp(sum(component_labels == 1), rate = true_rates[1])
+# Generate data for group 2 (rate = 2.0)
+data[component_labels == 2] <- rexp(sum(component_labels == 2), rate = true_rates[2])
+```
+
+<!-- Exponential Mixture Model -->
+<!-- === -->
+
+<!-- \begin{align} -->
+<!-- f(x \mid \lambda, \pi) &=  \pi_1 \lambda_1 e^{- \lambda_1 x} +  -->
+<!--  \pi_2 \lambda_2 e^{- \lambda_2 x} \\ -->
+<!-- &= 0.5 \lambda_1 e^{- 0.5 x} +  -->
+<!-- 0.5 \lambda_2 e^{- 2.0 x}  -->
+<!-- \end{align}  -->
+ 
+
+Simulation Study
+===
+```{r, echo = FALSE}
+library(ggplot2)
+# Create a data frame for plotting
+plot_data <- data.frame(
+  Value = data,  # Data points
+  Component = factor(component_labels, labels = c("Component 1", "Component 2"))  # Component labels
+)
+
+# Plot the data using ggplot2
+ggplot(plot_data, aes(x = Value, fill = Component)) +
+  geom_histogram(binwidth = 0.1, position = "identity", alpha = 0.6) +
+  scale_fill_manual(values = c("skyblue", "orange")) +  # Set colors for the components
+  labs(
+    x = "Value",
+    y = "Frequency",
+    fill = "Component"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_blank())  # Remove the title
+```
+
+
+Code
+===
+\tiny
+```{r}
+exponentialMixture <- function(data, K, max_iter = 1000, tol = 1e-5) {
+  n <- length(data)
+  pi <- rep(1/K, K)  # mixing proportions
+  lambda <- runif(K, 0.1, 1)  # rate parameters
+  
+  log_likelihoods <- numeric(max_iter)  # store log-likelihood values
+  
+  for (iter in 1:max_iter) {   # E-step: numerator of the gammas
+    gamma <- matrix(NA, nrow = n, ncol = K)
+    for (k in 1:K) {
+      gamma[, k] <- pi[k] * dexp(data, rate = lambda[k])
+    }
+    row_sums <- rowSums(gamma) # denominator of the gammas 
+    gamma <- gamma / row_sums  # normalize probabilities 
+    
+    pi_old <- pi              # M-step: Update mixing proportions and rate parameters
+    lambda_old <- lambda
+    
+    pi <- colMeans(gamma)  # update mixing proportions
+    for (k in 1:K) {
+      lambda[k] <- sum(gamma[, k]) / sum(gamma[, k] * data)  # update rate parameters
+    }
+    
+    log_likelihoods[iter] <- sum(log(row_sums)) # calculate log-likelihood
+    
+    if (max(abs(pi - pi_old)) < tol && max(abs(lambda - lambda_old)) < tol) {
+      log_likelihoods <- log_likelihoods[1:iter]  # trim to the number of iterations
+      cat("Convergence reached at iteration", iter, 
+          "with log-likelihood:", log_likelihoods[iter], "\n")
+      break
+    }
+  }
+  return(list(pi = pi, lambda = lambda, log_likelihood = log_likelihoods))
+}
+```
+
+Results
+===
+\tiny
+```{r}
+set.seed(1234)
+library(knitr)
+# Fit the mixture model
+result <- exponentialMixture(data, K = 2)
+
+# Create a data frame to display the results in a table
+results_table <- data.frame(
+  "Component" = 1:2,
+  "Estimated Mixing Proportion" = round(result$pi, 4),
+  "Estimated Rate Parameter (lambda)" = round(result$lambda, 4)
+)
+
+# move results to a table
+kable(results_table, caption = "Estimated Parameters for the Mixture Model", format = "pipe")
+```
+
+Expected Log-Likelihood Plot
+===
+
+```{r, echo = FALSE}
+log_likelihoods <- result$log_likelihood
+plot(log_likelihoods, type = "o", col = "blue", xlab = "Iteration", 
+     ylab = "Log-Likelihood")
+grid()
+```
+
+Findings
+===
+
+- Observe that the parameter estimates are close to the true values. 
+- Running this multiple times, should result similar findings and similar estimates each time. 
+- Why would the results change even if we re-run things and have a seed? 
+- What does the expected log-likelihood plot indicate? 
+
+Next Steps
+===
+
+- What would you do next for data analysis to investigate this simulation study?  
+- How can you utilize this code for the second simulation study? 
+- My major recommendation to prepare for the second exam is to go through these review slides and fully understand this material as we have spend a large amount of time on it in and out of class. 
+- Exam II will test your knowledge mostly of mixture models to allow you to dig deeply into one problem instead of testing your knowledge at the surface level on many problems. 
+
+Exam II
+===
+
+This will look something similar to the exponential exercises that I have released to you, however, most of the code you will have available to make the task easier as this proved to be difficult for students to implement.
+
+
+
