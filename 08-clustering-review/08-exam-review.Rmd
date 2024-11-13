@@ -252,6 +252,20 @@ $$\pi_{k} =  \frac{
 = \frac{1}{n} \sum_{i=1}^n \gamma_{ik}.
 $$
 
+Monitor the log-likelihood
+===
+
+Recall that the log-likelihood is computed as follows: 
+
+$$L(\pi, \lambda) = \sum_{i=1}^{n} \log\left(\sum_{k=1}^{K} \pi_k \cdot \text{dexp}(x_i \mid \lambda_k)\right),$$
+where \text{dexp()} represents the Exponential density. 
+
+Specifically for an iteration $t+1$ and $t$ we can monitor 
+
+$$\Delta L^{(t + 1)} = |\Delta L^{(t + 1)} - \Delta L^{(t)}| < \epsilon$$
+Why can we monitor this? We estimate the parameters using the EM algorithm! 
+(See the code below for a connection to the mathematical formulation and implementation).
+
 Monitor the expected log-likelihood
 ===
 Again, recall that 
@@ -267,8 +281,6 @@ Q(\lambda_1, \ldots, \lambda_K)
 $$
 
 Formally, this is the expected log-likelihood, which can be used an approximation to monitor convergence of the EM algorithm. 
-
-We cannot calculate the log-likelihood in closed form, so this is why we monitor changes to the expected log-likelihood. 
 
 Monitor the expected log-likelihood
 ===
@@ -356,9 +368,8 @@ exponentialMixture <- function(data, K, max_iter = 1000, tol = 1e-5) {
     row_sums <- rowSums(gamma) # denominator of the gammas
     gamma <- gamma / row_sums  # normalize probabilities
 
-    pi_old <- pi              # M-step: Update mixing proportions and rate parameters
-    lambda_old <- lambda
-
+    pi_old <- pi; lambda_old <- lambda
+    # M-step: Update mixing proportions and rate parameters
     pi <- colMeans(gamma)  # update mixing proportions
     for (k in 1:K) {
       lambda[k] <- sum(gamma[, k]) / sum(gamma[, k] * data)  # update rate parameters
@@ -376,6 +387,27 @@ exponentialMixture <- function(data, K, max_iter = 1000, tol = 1e-5) {
   return(list(pi = pi, lambda = lambda, log_likelihood = log_likelihoods))
 }
 ```
+
+Code
+===
+
+Why does `sum(log(row_sums))` correspond to the log-likelihood? 
+
+1. In the E-step, we calculate the ``responsibilities" using Bayes Theorem for each data point belonging to each component. (The gammas). 
+
+```{r, eval = FALSE}
+gamma <- sapply(1:K, 
+                function(k) pi[k] * dexp(data, 
+                    rate = lambda[k]))
+row_sums <- rowSums(gamma) 
+gamma <- gamma / row_sums
+```
+
+- gamma is the matrix of weighted probabilities
+- row_sums are the total probabilities for each data point under the current parameters
+
+Mathematically, row_sums represents $\sum_k \pi_k \text{dexp}(x_i \mid \lambda_k)$
+So taking the log and then summing gives the entire log-likelihood 
 
 Results
 ===
