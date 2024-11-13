@@ -15,6 +15,12 @@ knitr::opts_chunk$set(fig.width=5, fig.height=3.5,
 ```
 
  
+Announcements
+===
+
+Exam 2: Released Monday, November 18th at 10:00 AM. Due Monday November 25th at 5:00 PM. 
+ 
+Exam 3: Released Monday, December 2. Due Friday December 6. 
 
 What is clustering?
 ===
@@ -411,6 +417,10 @@ Exam II
 ===
 
 This will look something similar to the exponential exercises that I have released to you, however, most of the code you will have available to make the task easier as this proved to be difficult for students to implement.
+
+Questions? 
+===
+
 
 
 

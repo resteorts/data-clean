@@ -17,7 +17,7 @@ knitr::opts_chunk$set(fig.width=5, fig.height=4,
 Agenda
 ===
 
-- We will consider at some longer exercises as a class on clustering to help prepare for your upcoming exams but also get more practical experience with working with the methods/algorithms that have been introduced in the class. 
+- We will consider at some longer exercises as a class on clustering to help prepare for your upcoming exams but also get more practical experience with working with the methods/algorithms that have been introduced in the class. There are three in total, and are highlighted below. 
 
 - Specifically, we will go more in depth into hierarchical clustering and mixture models to explore these more thoroughly. 
 
@@ -31,6 +31,13 @@ As you go through these, please do the following (especially on the mixture mode
 3. Utilize class resources or think on your own about how to approach the problem. It might help to write down and summarize something that you're not sure about before proceeding. 
 4. Do not proceed to for example part II before understanding and make sure that you have completed part I. 
 5. Be aware that you will work at your own pace and this is okay! Some students may work faster on the theory part or faster on the coding part, etc. The most important part is that you work at your own pace and have a full understanding of the problem. 
+
+Exercise: Mixture Models
+===
+
+There are two exercises with solutions on mixture models that can be found here:
+
+https://github.com/resteorts/data-clean/blob/main/exercises/exercise-intro-to-mixture-models.pdf
 
 Exercise: Application to Tennis data set
 ===
