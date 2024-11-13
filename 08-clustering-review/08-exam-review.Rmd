@@ -18,9 +18,21 @@ knitr::opts_chunk$set(fig.width=5, fig.height=3.5,
 Announcements
 ===
 
-Exam 2: Released Monday, November 18th at 10:00 AM. Due Monday November 25th at 5:00 PM. 
+Exam 2: Released Monday, November 18th. Due Monday November 25th. 
  
 Exam 3: Released Monday, December 2. Due Friday December 6. 
+
+Questions for the Class
+===
+
+- Would you like the exam released earlier to have more time to work on it and to ask questions 
+to me on Monday, Wednesday, and Friday (as well as the teaching assistants)? 
+
+- What would be the most helpful? 
+
+- What else can we provide to provide support?
+
+- I will also post some optional lecture slides in case you wish to learn about some other machine learning methods in case you finish the materials early. 
 
 What is clustering?
 ===
@@ -404,6 +416,50 @@ Findings
 - Running this multiple times, should result similar findings and similar estimates each time. 
 - Why would the results change even if we re-run things and have a seed? 
 - What does the expected log-likelihood plot indicate? 
+
+Second Simulation Study
+===
+
+In this part, I am giving you a second simulation study. 
+
+```{r, echo = FALSE}
+# Simulation parameters
+set.seed(123)  # For reproducibility
+n_samples <- 1000  # Number of samples
+true_rates <- c(0.5, 1.5)  # True rate parameters for two components
+true_proportions <- c(0.6, 0.4)  # True mixing proportions
+
+# Generate synthetic data 
+data <- c(rexp(n_samples * true_proportions[1], rate = true_rates[1]),
+          rexp(n_samples * true_proportions[2], rate = true_rates[2]))
+```
+
+Results
+===
+
+The true rate parameters are 0.5 and 1.5. The true mixing proportions are 0.6 and 0.4. 
+
+\tiny
+```{r, echo = FALSE, message = FALSE}
+# Fit the mixture model
+result <- exponentialMixture(data, K = 2)
+
+# Create a data frame to display the results in a table
+results_table <- data.frame(
+  "Component" = 1:2,
+  "Estimated Mixing Proportion" = round(result$pi, 4),
+  "Estimated Rate Parameter (lambda)" = round(result$lambda, 4)
+)
+
+# move results to a table
+kable(results_table, caption = "Estimated Parameters for the Mixture Model", format = "pipe")
+```
+
+Second Simulation Study
+===
+
+Go dig into what you think is going on here! 
+
 
 Next Steps
 ===
