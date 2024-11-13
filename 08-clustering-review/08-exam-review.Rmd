@@ -232,7 +232,7 @@ $$
 & \pi_k = \frac{1}{\alpha} \sum_{i=1}^n \gamma_{ik} \implies \\
 & \sum_{k=1}^K \pi_k = \frac{1}{\alpha} \sum_{k=1}^K \sum_{i=1}^n \gamma_{ik} \implies \\
 & 1 = \frac{1}{\alpha} \sum_{k=1}^K \sum_{i=1}^n \gamma_{ik} \implies \\
-& \alpha = \frac{1}{ \sum_{k=1}^K \sum_{i=1}^n \gamma_{ik}}
+& \alpha = \sum_{k=1}^K \sum_{i=1}^n \gamma_{ik} = n
 \end{align}
 
 Derivation of the M-Step
