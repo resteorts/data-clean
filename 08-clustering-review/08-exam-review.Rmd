@@ -11,7 +11,7 @@ font-size: 8px
 
 ```{r, echo= FALSE}
 knitr::opts_chunk$set(fig.width=5, fig.height=3.5, 
-                      cache=TRUE) 
+                      cache=FALSE) 
 ```
 
  
@@ -88,6 +88,8 @@ The derivations are adapted from the authors' materials.
 Mixture Model
 ===
 
+Assume data points $x_1, \ldots, x_n.$
+
 Assume that we have a mixture of $K$ exponential distributions. 
 
 Following the notation in the article, assume that
@@ -126,6 +128,7 @@ $$\gamma_{ik} = \frac{
 \sum_{j=1}^K \pi_j \lambda_j e^{- \lambda_j x_i}
 }
 $$
+where $i=1,ldots,n$ and $k=1,\ldots, K.$
 
 What does this step do in words? 
 
@@ -249,10 +252,6 @@ $$\pi_{k} =  \frac{
 = \frac{1}{n} \sum_{i=1}^n \gamma_{ik}.
 $$
 
-
-
-
-
 Monitor the expected log-likelihood
 ===
 Again, recall that 
@@ -347,30 +346,29 @@ exponentialMixture <- function(data, K, max_iter = 1000, tol = 1e-5) {
   n <- length(data)
   pi <- rep(1/K, K)  # mixing proportions
   lambda <- runif(K, 0.1, 1)  # rate parameters
-  
   log_likelihoods <- numeric(max_iter)  # store log-likelihood values
-  
+
   for (iter in 1:max_iter) {   # E-step: numerator of the gammas
     gamma <- matrix(NA, nrow = n, ncol = K)
     for (k in 1:K) {
       gamma[, k] <- pi[k] * dexp(data, rate = lambda[k])
     }
-    row_sums <- rowSums(gamma) # denominator of the gammas 
-    gamma <- gamma / row_sums  # normalize probabilities 
-    
+    row_sums <- rowSums(gamma) # denominator of the gammas
+    gamma <- gamma / row_sums  # normalize probabilities
+
     pi_old <- pi              # M-step: Update mixing proportions and rate parameters
     lambda_old <- lambda
-    
+
     pi <- colMeans(gamma)  # update mixing proportions
     for (k in 1:K) {
       lambda[k] <- sum(gamma[, k]) / sum(gamma[, k] * data)  # update rate parameters
     }
-    
+
     log_likelihoods[iter] <- sum(log(row_sums)) # calculate log-likelihood
-    
+
     if (max(abs(pi - pi_old)) < tol && max(abs(lambda - lambda_old)) < tol) {
       log_likelihoods <- log_likelihoods[1:iter]  # trim to the number of iterations
-      cat("Convergence reached at iteration", iter, 
+      cat("Convergence reached at iteration", iter,
           "with log-likelihood:", log_likelihoods[iter], "\n")
       break
     }
@@ -453,6 +451,16 @@ results_table <- data.frame(
 
 # move results to a table
 kable(results_table, caption = "Estimated Parameters for the Mixture Model", format = "pipe")
+```
+
+Expected Log-Likelihood Plot
+===
+
+```{r, echo = FALSE}
+log_likelihoods <- result$log_likelihood
+plot(log_likelihoods, type = "o", col = "blue", xlab = "Iteration", 
+     ylab = "Log-Likelihood")
+grid()
 ```
 
 Second Simulation Study
