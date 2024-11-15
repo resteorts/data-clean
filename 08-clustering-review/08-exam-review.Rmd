@@ -128,7 +128,7 @@ $$\gamma_{ik} = \frac{
 \sum_{j=1}^K \pi_j \lambda_j e^{- \lambda_j x_i}
 }
 $$
-where $i=1,ldots,n$ and $k=1,\ldots, K.$
+where $i=1, \ldots,n$ and $k=1,\ldots, K.$
 
 What does this step do in words? 
 
@@ -266,8 +266,9 @@ $$\Delta L^{(t + 1)} = |\Delta L^{(t + 1)} - \Delta L^{(t)}| < \epsilon$$
 Why can we monitor this? We estimate the parameters using the EM algorithm! 
 (See the code below for a connection to the mathematical formulation and implementation).
 
-Monitor the expected log-likelihood
+Monitor the log-likelihood
 ===
+
 Again, recall that 
 
 $$
@@ -393,9 +394,10 @@ Code
 
 Why does `sum(log(row_sums))` correspond to the log-likelihood? 
 
-1. In the E-step, we calculate the ``responsibilities" using Bayes Theorem for each data point belonging to each component. (The gammas). 
+In the E-step, we calculate the gamma values using Bayes Theorem for each data point belonging to each component. 
 
 ```{r, eval = FALSE}
+# https://www.geeksforgeeks.org/apply-lapply-sapply-and-tapply-in-r/
 gamma <- sapply(1:K, 
                 function(k) pi[k] * dexp(data, 
                     rate = lambda[k]))
@@ -485,7 +487,23 @@ results_table <- data.frame(
 kable(results_table, caption = "Estimated Parameters for the Mixture Model", format = "pipe")
 ```
 
-Expected Log-Likelihood Plot
+What are your observations?
+=== 
+
+1. Are the estimates close to the truth?  
+
+<!-- \textcolor{blue}{No!} -->
+
+2. What could be the cause of the issue?  
+
+<!-- \textcolor{blue}{The starting values could be problematic and we're likely stuck in a local mode.} -->
+
+3. How could we potentially remedy the issue?  
+
+<!-- \textcolor{blue}{We could try better starting values, such as initializing at k-means. What happens if there's no improvement?} -->
+
+
+Log-Likelihood Plot
 ===
 
 ```{r, echo = FALSE}
@@ -507,12 +525,12 @@ Next Steps
 - What would you do next for data analysis to investigate this simulation study?  
 - How can you utilize this code for the second simulation study? 
 - My major recommendation to prepare for the second exam is to go through these review slides and fully understand this material as we have spend a large amount of time on it in and out of class. 
-- Exam II will test your knowledge mostly of mixture models to allow you to dig deeply into one problem instead of testing your knowledge at the surface level on many problems. 
+- Exam II will test your knowledge of mixture models to allow you to dig deeply into one problem instead of testing your knowledge at the surface level on many problems. 
 
 Exam II
 ===
 
-This will look something similar to the exponential exercises that I have released to you, however, most of the code you will have available to make the task easier as this proved to be difficult for students to implement.
+This will very similar to the exponential exercise, however, most of the code you will have available to make the task easier as this proved to be difficult for students to implement.
 
 Questions? 
 ===
