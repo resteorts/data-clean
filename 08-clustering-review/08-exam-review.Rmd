@@ -1,6 +1,6 @@
 ---
 title: "Exam Review"
-author: "Rebecca C. Steorts, Duke University "
+author: "Rebecca C. Steorts"
 date: STA 325
 output: 
      beamer_presentation:
@@ -18,15 +18,15 @@ knitr::opts_chunk$set(fig.width=5, fig.height=3.5,
 Announcements
 ===
 
-Exam 2: Released Monday, November 18th. Due Monday November 25th. 
+Exam 2: Released Friday, November 15th, 5:00 PM. Due Monday November at 25th, 10:00 AM. 
  
 Exam 3: Released Monday, December 2. Due Friday December 6. 
+
 
 Questions for the Class
 ===
 
-- Would you like the exam released earlier to have more time to work on it and to ask questions 
-to me on Monday, Wednesday, and Friday (as well as the teaching assistants)? 
+- Would you like the exam released earlier to have more time to work on it and to ask questions to me on Monday, Wednesday, and Friday (as well as the teaching assistants)? 
 
 - What would be the most helpful? 
 
@@ -289,7 +289,7 @@ Monitor the expected log-likelihood
 Specifically for an iteration $t+1$ and $t$ we can monitor 
 
 $$\Delta Q^{(t + 1)} = |\Delta Q^{(t + 1)} - \Delta Q^{(t)}| < \epsilon$$
-We often plot the expected log-likelihood versus the number iterations. 
+We could alternatively plot the expected log-likelihood versus the number iterations, however, this is not done in my code. 
 
 Simulation Study
 ===
@@ -389,6 +389,7 @@ exponentialMixture <- function(data, K, max_iter = 1000, tol = 1e-5) {
 }
 ```
 
+
 Code
 ===
 
@@ -431,7 +432,7 @@ results_table <- data.frame(
 kable(results_table, caption = "Estimated Parameters for the Mixture Model", format = "pipe")
 ```
 
-Expected Log-Likelihood Plot
+Log-Likelihood Plot
 ===
 
 ```{r, echo = FALSE}
@@ -532,8 +533,36 @@ Exam II
 
 This will very similar to the exponential exercise, however, most of the code you will have available to make the task easier as this proved to be difficult for students to implement.
 
-Questions? 
+Supplementary Materials
 ===
+
+Below I am providing some questions that students asked regarding some question that came up. 
+
+Why is there randomness in the EM algorithm? 
+===
+
+The main randomness occurs from the parameter initialization. 
+
+The EM algorithm assumes initial parameter estimates for the model. If the parameters are chosen randomly, the starting values can affect the convergence of the algorithm and the final solution, especially in cases where the log-likelihood has multiple local maxima. 
+
+Dempster, A. P., Laird, N. M., & Rubin, D. B. (1977). Maximum likelihood from incomplete data via the EM algorithm. Journal of the Royal Statistical Society: Series B (Methodological), 39(1), 1–38.
+
+Bishop, C. M. (2006). Pattern Recognition and Machine Learning. Springer. See Chapter 9. 
+
+Can other randomness occur?
+===
+
+It depends. 
+
+In the variant we have introduced, the EM is deterministic after the initialization, so there is no other randomness after this step. 
+
+There are other variants that include an extra random component. 
+
+- It is good to be aware that there are variants of the EM algorithm that include randomness, such as stochastic EM or Monte Carlo EM. 
+
+Neal, R. M., & Hinton, G. E. (1998). A view of the EM algorithm that justifies incremental, sparse, and other variants. In Learning in Graphical Models (pp. 355-368). Springer, Dordrecht.
+
+
 
 
 
