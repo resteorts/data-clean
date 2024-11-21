@@ -12,5 +12,4 @@
 *.o
 *.so
 .Rproj.user
-*exams/
 *hws/
